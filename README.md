@@ -62,7 +62,7 @@ in following actions:
 These actions represent the base functionality of the system. As the project develops,
 new functionality can be added. The following graph shows a rough sketch of how these
 actions can be grouped into views, and what the information architecture and interaction
-flow of the system could look like.
+flow of the system will look like.
 
 ![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
 
@@ -131,11 +131,22 @@ POST /api/v1/game which will allow developers to create a new game. The request 
  ‘slug’: ‘slug'
 }
 
-#### Mobile Friendly (Simo)
+#### Responsiveness
 
-We use a framework! Maybe http://foundation.zurb.com could work well. They have an ecommerce template http://foundation.zurb.com/templates-previews-sites-f6/ecommerce.html and other templates too: http://foundation.zurb.com/templates.
-“Foundation is built with HTML, CSS and Javascript, the core components of the Web. While Foundation is fairly cutting-edge, we use bulletproof technology like jQuery, HTML5 Boilerplate and Normalizr as our baseline. We then layer on top components and plugins designed to work well in all of our supported browsers and devices.
-Since Foundation only uses front-end technology, it has no incompatibilities with back-end or server technology and has been used with everything from Wordpress and Drupal to .Net.”
+The project will implement ZURB Foundation, which provides basic HTML, CSS and JavaScript
+functionality, to jump start the development. Foundation is also built for mobile and has
+[multiple templates](http://foundation.zurb.com/templates). [An ecommerce](http://foundation.zurb.com/templates-previews-sites-f6/ecommerce.html) template will be
+used for this project as the website is mainly about browsing and buying games.
+
+
+> Foundation is built with HTML, CSS and Javascript, the core components of the Web.
+> While Foundation is fairly cutting-edge, we use bulletproof technology like jQuery,
+> HTML5 Boilerplate and Normalizr as our baseline. We then layer on top components and
+> plugins designed to work well in all of our supported browsers and devices.
+> 
+> Since Foundation only uses front-end technology, it has no incompatibilities with
+> back-end or server technology and has been used with everything from Wordpress and
+> Drupal to .Net.
 
 #### Social media sharing (Simo)
 
