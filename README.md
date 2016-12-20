@@ -260,3 +260,10 @@ Unit testing will be conducted on user permissions and authentication, the URL s
 content etc.) and the APIs.
 
 ## 7. Risk Analysis
+
+Following is a list of possible risks during the project development and how they can be combatted.
+
+- __Loss of a team member__ Frequent commits
+- __Running out of time__ Prioritize the required features and leave extra ones for later development
+- __Finding a critical bug or flaw late in development__ Keep code modular, well structured and documented
+- __Git conflicts__ Divide tasks as to minimize the risk of simultaneous editing of same code, commit often
