@@ -27,7 +27,7 @@ Moreover, we will set different permissions to different type of users in order 
 
 #### Views
 
-![asd](./docs/Views.png)
+![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
 
 #### Basic Functionalities
 - Authentication (login/logout/signup)
