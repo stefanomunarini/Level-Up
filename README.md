@@ -1,21 +1,21 @@
 #Fifty Points Project Plan
 
-##1. Team
+## 1. Team
 
 - 604985 Stefano Munarini
 - 427272 Simo Santala
 - 597254 Phu Pham
 
-##2. Goal
+## 2. Goal
 
 In this project, we will build a space ship powered by waste
 cooker oil. Helm is string operated.
 
-##3. Plans
+## 3. Plans
 
-###3.1. Features
+### 3.1. Features
 
-####Authentication and permissions (Stefano)
+#### Authentication and permissions (Stefano)
 
 To authenticate users to the system we will use the Django authentication system (see https://docs.djangoproject.com/en/1.10/topics/auth/). Django provides functionalities to authenticate, signup, login, and logout.
 
@@ -25,25 +25,25 @@ We will use either the login_required decorator (for function-based views) or th
 
 Moreover, we will set different permissions to different type of users in order to grant access to reserved pages only to some specific categories of users.
 
-####Basic Functionalities
+#### Basic Functionalities
 - Authentication (login/logout/signup)
 - Profile update
 
-####Basic player functionalities (Simo)
+#### Basic player functionalities (Simo)
 
-####Basic developer functionalities (Phu)
+#### Basic developer functionalities (Phu)
 
 - Add a game: developers are able to add a game URL to his inventory and then set a prize for it.
 - Remove, update own games: after uploading games for selling, developer can delete his own games or update them (including price, url and other information)
 - Game inventory: developer can see a list of his game from the inventory with numbers related to sale statistics.
 - Buy game from other developers: developer can also buy other game developed by other people and play just like a normal player.
 
-####Administration functionalities
+#### Administration functionalities
 
 - Accept developer registration requests
 - Delete/deactivate users
 
-####Game/service interaction & Save/load and resolution feature (Stefano)
+#### Game/service interaction & Save/load and resolution feature (Stefano)
 
 When a user has finished playing a game, a POST request will be sent to the server containing all the information about that particular game. As we structured the database, in particular, we will need to send the score, the game_id, the user_id, and the date. The message for this request will have a messageType of type SCORE.
 
@@ -53,11 +53,11 @@ When a user wants to load a previous started game, a POST request will be sent w
 
 Finally, a POST request containing a messageType of type SETTING will be sent every time a game has finished loading and it will contain configuration information (such as layout sizes).
 
-####3rd party login (Phu)
+#### 3rd party login (Phu)
 
 There are different django packages to implement 3rd party authentication. After doing some research, we decided to use ‘django-allauth’ package to support 3rd-party authentication. ‘Django-allauth’ supports many popular providers out of the box. In this project, we only use a few of them. Users can login or signup with their facebook, google, openID or github account. In our user collection, we have field call ‘provider’ to indicate if the user was created via local authentication or a 3rd party. All the necessary information of user like email, name, date of birth,... will be stored in our database when the 3rd party successfully authenticate the user. Because the 3rd party provider may not have enough information to fit our user model, user will be able to update the missing information later when they get in our platform. 
 
-####RESTful API (Stefano)
+#### RESTful API (Stefano)
 
 We will develop a set of RESTful APIs which will be used by external developers to integrate our service in third party applications.
 
@@ -89,13 +89,13 @@ POST /api/v1/game which will allow developers to create a new game. The request 
  ‘slug’: ‘slug'
 }
 
-####Mobile Friendly (Simo)
+#### Mobile Friendly (Simo)
 
 We use a framework! Maybe http://foundation.zurb.com could work well. They have an ecommerce template http://foundation.zurb.com/templates-previews-sites-f6/ecommerce.html and other templates too: http://foundation.zurb.com/templates.
 “Foundation is built with HTML, CSS and Javascript, the core components of the Web. While Foundation is fairly cutting-edge, we use bulletproof technology like jQuery, HTML5 Boilerplate and Normalizr as our baseline. We then layer on top components and plugins designed to work well in all of our supported browsers and devices.
 Since Foundation only uses front-end technology, it has no incompatibilities with back-end or server technology and has been used with everything from Wordpress and Drupal to .Net.”
 
-####Social media sharing (Simo)
+#### Social media sharing (Simo)
 
 We use Open Graph Protocol (https://ogp.me), developed by Facebook and also used by Pinterest, and Twitter Cards (https://dev.twitter.com/cards/overview)
 Documentation from different Social Media sites:
@@ -104,10 +104,10 @@ https://developers.pinterest.com/docs/rich-pins/overview/
 https://developers.google.com/+/web/snippet/
 In addition to Open Graph and Twitter cards, we use the share button thingys
 
-###3.2. Models
+### 3.2. Models
 
 
-##4. Priorities (Stefano)
+## 4. Priorities (Stefano)
 
 We will start the implementation of the project from the models. After that, we will implemente the authentication system using Django internal authentication system.
 Once the authentication has been completed, we will be ready to start to implement the basic functionalities for all the users (homepage, profile-page). After that we will split the work to implement both the developer and the player functionalities. At this stage we will also implement some unit test in order to guarantee the correct output and business logic for sensible functionalities.
@@ -116,7 +116,7 @@ Once the whole implementation is working properly, we will focus on developing R
 
 We will finally implement our own game, as well as some admin functionalities.
 
-##5. Process and Time Schedule (Phu)
+## 5. Process and Time Schedule (Phu)
 
 To deliver a good product, this project requires a lot of time and commitment from all of our members. To manage time and avoid wasting resources, we follow the following process:
 
@@ -133,7 +133,7 @@ What deadlines do we have for ourselves?
 
 Communication and tools for management (Trello, Telegram, Google Drive, Git).
 
-###5.1. Timetable
+### 5.1. Timetable
 
 Sprint 1, week 51
 20.12. Project Plan submission (models defined)
@@ -146,7 +146,7 @@ Sprint 2, weeks 1 & 2
 Sprint 3, week 3 & 4
 19.2. Final submission
 
-##6. Testing
+## 6. Testing
 
 - Unit tests
     - User permissions and authentication
@@ -158,4 +158,4 @@ Sprint 3, week 3 & 4
     - Validation of open graph stuff
     - Facebook share button
 
-##7. Risk Analysis
+## 7. Risk Analysis
