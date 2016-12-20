@@ -15,6 +15,37 @@ cooker oil. Helm is string operated.
 
 ### 3.1. Features and Implementation
 
+#### Basic Functionality and Views
+
+The users of the system will be divided into three groups: administrators, developers and players.
+A single user account may be in one or more of these groups at the same time. The users can engage
+in following actions:
+
+##### All users
+
+- Authentication (login/logout/signup)
+- Profile update
+
+##### Administrators
+
+- Accept developer registration requests
+- Deactivate users
+
+##### Developers (Phu)
+
+- Add a game: developers are able to add a game URL to his inventory and then set a prize for it.
+- Remove, update own games: after uploading games for selling, developer can delete his own games or update them (including price, url and other information)
+- Game inventory: developer can see a list of his game from the inventory with numbers related to sale statistics.
+- Buy game from other developers: developer can also buy other game developed by other people and play just like a normal player.
+
+##### Players
+
+![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
+
+
+
+
+
 #### Authentication and permissions (Stefano)
 
 To authenticate users to the system we will use the Django authentication system (see https://docs.djangoproject.com/en/1.10/topics/auth/). Django provides functionalities to authenticate, signup, login, and logout.
@@ -24,28 +55,6 @@ After a set of credentials (username and password) have been verified through th
 We will use either the login_required decorator (for function-based views) or the LoginRequired mixin (for class-based views) to block access to pages which require the user to be authenticated. (see https://docs.djangoproject.com/en/1.10/topics/auth/default/)
 
 Moreover, we will set different permissions to different type of users in order to grant access to reserved pages only to some specific categories of users.
-
-#### Views
-
-![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
-
-#### Basic Functionalities
-- Authentication (login/logout/signup)
-- Profile update
-
-#### Basic player functionalities (Simo)
-
-#### Basic developer functionalities (Phu)
-
-- Add a game: developers are able to add a game URL to his inventory and then set a prize for it.
-- Remove, update own games: after uploading games for selling, developer can delete his own games or update them (including price, url and other information)
-- Game inventory: developer can see a list of his game from the inventory with numbers related to sale statistics.
-- Buy game from other developers: developer can also buy other game developed by other people and play just like a normal player.
-
-#### Administration functionalities
-
-- Accept developer registration requests
-- Delete/deactivate users
 
 #### Game/service interaction & Save/load and resolution feature (Stefano)
 
