@@ -27,7 +27,7 @@ Moreover, we will set different permissions to different type of users in order 
 
 #### Views
 
-![asd](wsd_projects/docs/Views.png)
+![asd](/docs/Views.png)
 
 #### Basic Functionalities
 - Authentication (login/logout/signup)
