@@ -22,7 +22,7 @@ In addition to the [required functionality and features](https://plus.cs.hut.fi/
 - Ability for a user to signup/login with a third party account
 - Ability for a user to update their account information
 - Ability for a user to see game high scores
-- Ability for a user to share games and high scores on social media
+- Ability for a user to share games and and possibly high scores on social media
 - Ability for a player to save the game state
 - Ability for a game to set its preferred resolution
 - RESTful APIs
@@ -64,7 +64,7 @@ in following actions:
     - Browse their own games
     - View an information page of a game, where they can
         - Play the game
-        - Share their highscore of the game on social media
+        - Share their high score of the game on social media
         - Contact the developer (email address link)
         - View their own scores
         - View game high scores
@@ -163,12 +163,16 @@ used for this project as the website is mainly about browsing and buying games.
 
 #### Social Media Sharing
 
-We use Open Graph Protocol (https://ogp.me), developed by Facebook and also used by Pinterest, and Twitter Cards (https://dev.twitter.com/cards/overview)
-Documentation from different Social Media sites:
-https://developers.facebook.com/docs/sharing/webmasters/
-https://developers.pinterest.com/docs/rich-pins/overview/
-https://developers.google.com/+/web/snippet/
-In addition to Open Graph and Twitter cards, we use the share button thingys
+The most basic type of social media sharing is sharing links. For this type of sharing the service
+will implement [Open Graph](https://ogp.me) and [Twitter Cards](https://dev.twitter.com/cards/overview) so that links that point to information pages for a game
+or a developer will include relevant pictures and an excerpt of the game or developer description.
+
+As Open Graph is supported by Facebook, Pinterest and Google Plus, combining it with Twitter Cards
+will cover the largest social networks in Europe and North America.
+
+The service will possibly also allow the users to share their high scores on social media. On Facebook,
+for example, this requires [acquiring an access token and submitting the service for a review](https://developers.facebook.com/docs/opengraph/getting-started). As this
+project is only for school and not an actual public web service, this feature may not be implemented.
 
 ### 3.2. Models
 
