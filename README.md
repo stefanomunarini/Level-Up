@@ -33,7 +33,7 @@ in following actions:
 
 ##### Developers (Phu)
 
-- Add a game: developers are able to add a game URL to his inventory and then set a prize for it.
+- Add a game: developers are able to add a game URL to his inventory and then set a price for it.
 - Remove, update own games: after uploading games for selling, developer can delete his own games or update them (including price, url and other information)
 - Game inventory: developer can see a list of his game from the inventory with numbers related to sale statistics.
 - Buy game from other developers: developer can also buy other game developed by other people and play just like a normal player.
@@ -51,7 +51,7 @@ in following actions:
     - Browse their own games
     - View a game page
         - Play
-        - Share result/score/something of last game
+        - Share the highscore of the game
         - Contact the seller (email address link)
         - View their own scores
         - View game high scores
@@ -59,13 +59,15 @@ in following actions:
         - Share game
 - View transaction history
 
-These are the basic actions
+These actions represent the base functionality of the system. As the project develops,
+new functionality can be added. The following graph shows a rough sketch of how these
+actions can be grouped into views, and what the information architecture and interaction
+flow of the system could look like.
 
 ![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
 
-
-
-
+As can be seen from the graph, many of the views can and should be divided into modular
+templates. This will ensure rapid redesign and reduce bugs by removing duplicate code.
 
 #### Authentication and permissions (Stefano)
 
