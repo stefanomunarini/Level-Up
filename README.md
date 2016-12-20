@@ -173,13 +173,15 @@ We will finally implement our own game, as well as some admin functionalities.
 ## 5. Process and Time Schedule (Phu)
 
 ### 5.1. Process
+
 To deliver a good product, this project requires a lot of time and commitment from all of our members. In order to manage time and avoid wasting resources, we follow the following process:
-- Design and stick to plan: in the beginning of the project, we discuss and develop a list of features, tasks and a projected schedule to complete the tasks. We use Trello as our project management tool.
-- Prioritize the task and focus on the most important ones: Based on the list of tasks and features, we give each task a specific priority point indicating the importance level of the task. The task with highest priority point will be on top of the list and will be implement before other tasks. Additional features and tasks will be marked with low priority and will be considered to be implemented when all basic features are completed.
-- Assign tasks for each member: The project timeline will be divided into several sprints. In each sprint, we will assign tasks for each member. At the end of the sprint, we will have a sprint meeting to discuss about what have been completed and what have not. Sprint meeting is also the time when we will be planning the workload of the next sprint.
-- Estimate resource availability: we plan the sprint according to available time and resources. The workload will be much less during a holiday season such as Christmas and New year.
-- Develop and control project schedule: the schedule will be first estimated based on the task list we have. However, the schedule will be adjusted and updated during the development process.
-- Testing and fixing bugs: In normal process, it is a good idea to keep testing the current application during the lifetime of the project. However, in this project, testing might take a lot of time and effort, so we are not able to do that. Instead, the main testing phase will happen near the end of the project. But important features will always be tested while we implementing them.
+
+- **Design and stick to plan**: in the beginning of the project, we discuss and develop a list of features, tasks and a projected schedule to complete the tasks. We use Trello as our project management tool.
+- **Prioritize the task and focus** on the most important ones: Based on the list of tasks and features, we give each task a specific priority point indicating the importance level of the task. The task with highest priority point will be on top of the list and will be implement before other tasks. Additional features and tasks will be marked with low priority and will be considered to be implemented when all basic features are completed.
+- **Assign tasks for each member**: The project timeline will be divided into several sprints. In each sprint, we will assign tasks for each member. At the end of the sprint, we will have a sprint meeting to discuss about what have been completed and what have not. Sprint meeting is also the time when we will be planning the workload of the next sprint.
+- **Estimate resource availability**: we plan the sprint according to available time and resources. The workload will be much less during a holiday season such as Christmas and New year.
+- **Develop and control project schedule**: the schedule will be first estimated based on the task list we have. However, the schedule will be adjusted and updated during the development process.
+- **Testing and fixing bugs**: In normal process, it is a good idea to keep testing the current application during the lifetime of the project. However, in this project, testing might take a lot of time and effort, so we are not able to do that. Instead, the main testing phase will happen near the end of the project. But important features will always be tested while we implementing them.
 
 **Communication**
 
