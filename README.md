@@ -249,14 +249,14 @@ Even though we will not have daily meetings, we will organize face-to-face meeti
 
 ## 6. Testing
 
-- Unit tests
-    - User permissions and authentication
-    - URL scheme (response code)
-    - APIs (authentication, permissions and output)
-- User/manual testing
-    - Using the app: try out all the features
-    - Validation of html css js
-    - Validation of open graph stuff
-    - Facebook share button
+The project will be tested both manually and by creating unit tests where applicable. Manual testing
+will consist of using the service, trying out its different features and maybe also subjecting it to
+completely new users and observing their actions. This should provide insight on possible problems in
+the UI and possible bugs in handling the interaction flow. Manual testing also includes the use of
+variety of validation software, such as code validators, but also the Open Graph validation systems
+that are provided by different social media network sites.
+
+Unit testing will be conducted on user permissions and authentication, the URL scheme (testing response code,
+content etc.) and the APIs.
 
 ## 7. Risk Analysis
