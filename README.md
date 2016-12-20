@@ -267,3 +267,8 @@ Following is a list of possible risks during the project development and how the
 - __Running out of time__ Prioritize the required features and leave extra ones for later development
 - __Finding a critical bug or flaw late in development__ Keep code modular, well structured and documented
 - __Git conflicts__ Divide tasks as to minimize the risk of simultaneous editing of same code, commit often
+- __Inadequate architecture, performance and quality__ Make reasonable decision on architecture and system design
+- __Poor productivity__ Make sure everyone is on the same page, open to discussions, feedbacks
+- __Lack of resource__ Plan carefully based on member's commitment to the project
+- __Uncertainty of technology__ Read documentation and discuss with the team when having difficulties
+- __Lack of tools and support__ Be active in the community of the technology
