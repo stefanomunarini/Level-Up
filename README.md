@@ -8,12 +8,25 @@
 
 ## 2. Goal
 
-In this project, we will build a space ship powered by waste
-cooker oil. Helm is string operated.
+The goal of the project is to create an online game store for JavaScript games. The project is a part of
+Aalto University Web Software Development course (CSE-C3210). The game store service will be built with
+Django deployed to Heroku.
 
 ## 3. Plans
 
 ### 3.1. Features and Implementation
+
+In addition to the [required functionality and features](https://plus.cs.hut.fi/wsd/2016-2017/project/description/) the service will also feature
+
+- Administrator users with the capability of activating or deactivating (banning) user accounts
+- Ability for a user to signup/login with a third party account
+- Ability for a user to update their account information
+- Ability for a user to see game high scores
+- Ability for a user to share games and high scores on social media
+- Ability for a player to save the game state
+- Ability for a game to set its preferred resolution
+- RESTful APIs
+- Responsive user interface
 
 #### Basic Functionality and Views
 
@@ -40,34 +53,34 @@ in following actions:
 
 ##### Players
 
-- Buy games
+- Buying games: A player can
     - Browse/search games on the store
     - View a game page
         - Buy
         - Contact the seller (email address link) (display if the player has bought the game to prevent spam)
         - Go to seller website
         - Share game
-- Play games
+- Playing games: A player can
     - Browse their own games
-    - View a game page
-        - Play
-        - Share the highscore of the game
-        - Contact the seller (email address link)
+    - View an information page of a game, where they can
+        - Play the game
+        - Share their highscore of the game on social media
+        - Contact the developer (email address link)
         - View their own scores
         - View game high scores
-        - Go to seller website
-        - Share game
-- View transaction history
+        - Go to developer website
+        - Share the game page on social media
+- Other: A player can also
+    - View their transaction history
 
-These actions represent the base functionality of the system. As the project develops,
-new functionality can be added. The following graph shows a rough sketch of how these
-actions can be grouped into views, and what the information architecture and interaction
-flow of the system will look like.
+These actions represent the base functionality of the system. As the project develops, new functionality
+can be added. The following graph shows a rough sketch of how these actions can be grouped into views,
+and what the information architecture and interaction flow of the system will look like.
 
 ![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
 
-As can be seen from the graph, many of the views can and should be divided into modular
-templates. This will ensure rapid redesign and reduce bugs by removing duplicate code.
+As can be seen from the graph, many of the views can be divided into modular templates. This will
+ensure rapid redesign and reduce bugs by removing duplicate code.
 
 #### Authentication and permissions (Stefano)
 
@@ -131,7 +144,7 @@ POST /api/v1/game which will allow developers to create a new game. The request 
  ‘slug’: ‘slug'
 }
 
-#### Responsiveness
+#### Responsive User Interface
 
 The project will implement ZURB Foundation, which provides basic HTML, CSS and JavaScript
 functionality, to jump start the development. Foundation is also built for mobile and has
@@ -148,7 +161,7 @@ used for this project as the website is mainly about browsing and buying games.
 > back-end or server technology and has been used with everything from Wordpress and
 > Drupal to .Net.
 
-#### Social media sharing (Simo)
+#### Social Media Sharing
 
 We use Open Graph Protocol (https://ogp.me), developed by Facebook and also used by Pinterest, and Twitter Cards (https://dev.twitter.com/cards/overview)
 Documentation from different Social Media sites:
