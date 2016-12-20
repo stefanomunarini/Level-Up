@@ -91,7 +91,13 @@ Finally, a POST request containing a messageType of type SETTING will be sent ev
 
 #### 3rd party login (Phu)
 
-There are different django packages to implement 3rd party authentication. After doing some research, we decided to use ‘django-allauth’ package to support 3rd-party authentication. ‘Django-allauth’ supports many popular providers out of the box. In this project, we only use a few of them. Users can login or signup with their facebook, google, openID or github account. In our user collection, we have field call ‘provider’ to indicate if the user was created via local authentication or a 3rd party. All the necessary information of user like email, name, date of birth,... will be stored in our database when the 3rd party successfully authenticate the user. Because the 3rd party provider may not have enough information to fit our user model, user will be able to update the missing information later when they get in our platform. 
+There are different django packages to implement 3rd party authentication. After doing some research, we decided to use ‘django-allauth’ package to support 3rd-party authentication. 
+
+‘Django-allauth’ supports many popular providers out of the box. In this project, we only use a few of them. 
+Users can login or signup with their facebook, google, openID or github account. 
+In our user collection, we have field call ‘provider’ to indicate if the user was created via local authentication or a 3rd party. 
+All the necessary information of user like email, name, date of birth,... will be stored in our database when the 3rd party successfully authenticate the user. 
+Because the 3rd party provider may not have enough information to fit our user model, user will be able to update the missing information later when they get in our platform. 
 
 #### RESTful API (Stefano)
 
@@ -155,33 +161,61 @@ We will finally implement our own game, as well as some admin functionalities.
 
 ## 5. Process and Time Schedule (Phu)
 
-To deliver a good product, this project requires a lot of time and commitment from all of our members. To manage time and avoid wasting resources, we follow the following process:
-
+### 5.1. Process
+To deliver a good product, this project requires a lot of time and commitment from all of our members. In order to manage time and avoid wasting resources, we follow the following process:
 - Design and stick to plan: in the beginning of the project, we discuss and develop a list of features, tasks and a projected schedule to complete the tasks. We use Trello as our project management tool.
 - Prioritize the task and focus on the most important ones: Based on the list of tasks and features, we give each task a specific priority point indicating the importance level of the task. The task with highest priority point will be on top of the list and will be implement before other tasks. Additional features and tasks will be marked with low priority and will be considered to be implemented when all basic features are completed.
 - Assign tasks for each member: The project timeline will be divided into several sprints. In each sprint, we will assign tasks for each member. At the end of the sprint, we will have a sprint meeting to discuss about what have been completed and what have not. Sprint meeting is also the time when we will be planning the workload of the next sprint.
-- Estimate resource availability: 
+- Estimate resource availability: we plan the sprint according to available time and resources. The workload will be much less during a holiday season such as Christmas and New year.
+- Develop and control project schedule: the schedule will be first estimated based on the task list we have. However, the schedule will be adjusted and updated during the development process.
+- Testing and fixing bugs: In normal process, it is a good idea to keep testing the current application during the lifetime of the project. However, in this project, testing might take a lot of time and effort, so we are not able to do that. Instead, the main testing phase will happen near the end of the project. But important features will always be tested while we implementing them.
 
-When and how do we work?
+**Communication**
 
-Who does mostly what? 
+Even though we will not have daily meetings, we will organize face-to-face meeting at least once each sprint. This is the most suitable and efficient option for us. Moreover, we also communicate through Telegram and Skype.
 
-What deadlines do we have for ourselves? 
+### 5.2. Timetable
 
-Communication and tools for management (Trello, Telegram, Google Drive, Git).
+#### Sprint 1, week 51
 
-### 5.1. Timetable
+- 20.12.2016:
+    - Project Plan submission (models defined)
+- 23.12.2016:
+    - URL Scheme defined and Django (+ Foundation) installed, project setup
+- 24.12.2016. Models implementation + authentication
 
-Sprint 1, week 51
-20.12. Project Plan submission (models defined)
-23.12. URL Scheme defined and Django (+ Foundation) installed, project setup
-24.12 Models implementation + authentication
-Sprint 1.5, Christmas (work if you want to)
-Templates (Simo)
-Sprint 2, weeks 1 & 2
+#### Sprint 2, week 51 - Christmas and New Year
 
-Sprint 3, week 3 & 4
-19.2. Final submission
+- 31.12.2016: 
+    - Add HTML templates
+- 31.12.2016: 
+    - Basic user functionalities
+
+#### Sprint 3, weeks 1 & 2
+
+- 07.01.2016: 
+    - Player functionalities: buy game, high score
+	- Developer functionalities: add, edit, delete game
+- 14.01.2017:
+    - Payment, search games, save game state, developer inventory, sale statistics
+    - Sprint 4, weeks 3 & 4
+- 21.01.2017:
+    - Message service
+    - 3rd party authentication
+    - Responsiveness
+	- Social media sharing
+- 28.01.2017:
+    - Admin features
+    - Own game (if applicable)
+    - Testing
+
+#### Sprint 5, weeks 5 & 6
+
+- Whole sprint:
+    - Bug fixing  and finalization
+    - Complete documentation
+	- Writing and submitting final report
+
 
 ## 6. Testing
 
