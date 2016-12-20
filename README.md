@@ -1,4 +1,4 @@
-#Fifty Points Project Plan
+# Fifty Points Project Plan
 
 ## 1. Team
 
@@ -13,7 +13,7 @@ cooker oil. Helm is string operated.
 
 ## 3. Plans
 
-### 3.1. Features
+### 3.1. Features and Implementation
 
 #### Authentication and permissions (Stefano)
 
@@ -24,6 +24,10 @@ After a set of credentials (username and password) have been verified through th
 We will use either the login_required decorator (for function-based views) or the LoginRequired mixin (for class-based views) to block access to pages which require the user to be authenticated. (see https://docs.djangoproject.com/en/1.10/topics/auth/default/)
 
 Moreover, we will set different permissions to different type of users in order to grant access to reserved pages only to some specific categories of users.
+
+#### Views
+
+![asd](docs/Views.png)
 
 #### Basic Functionalities
 - Authentication (login/logout/signup)
