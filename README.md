@@ -40,6 +40,27 @@ in following actions:
 
 ##### Players
 
+- Buy games
+    - Browse/search games on the store
+    - View a game page
+        - Buy
+        - Contact the seller (email address link) (display if the player has bought the game to prevent spam)
+        - Go to seller website
+        - Share game
+- Play games
+    - Browse their own games
+    - View a game page
+        - Play
+        - Share result/score/something of last game
+        - Contact the seller (email address link)
+        - View their own scores
+        - View game high scores
+        - Go to seller website
+        - Share game
+- View transaction history
+
+These are the basic actions
+
 ![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
 
 
