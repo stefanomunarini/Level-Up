@@ -110,6 +110,7 @@ In addition to Open Graph and Twitter cards, we use the share button thingys
 
 ### 3.2. Models
 
+![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/ER.png)
 
 ## 4. Priorities (Stefano)
 
