@@ -8,9 +8,7 @@
 
 ## 2. Goal
 
-The goal of the project is to create an online game store for JavaScript games. The project is a part of
-Aalto University Web Software Development course (CSE-C3210). The game store service will be built with
-Django deployed to Heroku.
+The goal of the project is to create an online game store for JavaScript games. The project is a part of Aalto University Web Software Development course (CSE-C3210). The game store service will be built with Django deployed to Heroku.
 
 ## 3. Plans
 
@@ -42,14 +40,14 @@ in following actions:
 ##### Administrators
 
 - Accept developer registration requests
-- Deactivate users
+- Deactivate/ban users
 
 ##### Developers
 
-- Add a game: developers are able to add a game URL to his inventory and then set a price for it.
-- Remove, update own games: after uploading games for selling, developer can delete his own games or update them (including price, url and other information)
-- Game inventory: developer can see a list of his game from the inventory with numbers related to sale statistics.
-- Buy game from other developers: developer can also buy other game developed by other people and play just like a normal player.
+- Add a game: developers are able to add a game URL to their inventory and then set a price for it.
+- Remove, update own games: after uploading games for selling, developers can delete their own games or update them (including price, url and other information)
+- Game inventory: developers can see a list of their games from the inventory with sale statistics.
+- Buy game from other developers: developers can also buy games developed by other people and play just like a normal player.
 
 ##### Players
 
@@ -73,14 +71,11 @@ in following actions:
 - Other: A player can also
     - View their transaction history
 
-These actions represent the base functionality of the system. As the project develops, new functionality
-can be added. The following graph shows a rough sketch of how these actions can be grouped into views,
-and what the information architecture and interaction flow of the system will look like.
+These actions represent the base functionality of the system. As the project develops, new functionality can be added. The following graph shows a rough sketch of how these actions can be grouped into views, and what the information architecture and interaction flow of the system will look like.
 
 ![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
 
-As can be seen from the graph, many of the views can be divided into modular templates. This will
-ensure rapid redesign and reduce bugs by removing duplicate code.
+As can be seen from the graph, many of the views can be divided into modular templates. This will ensure rapid redesign and reduce bugs by removing duplicate code.
 
 #### Authentication and permissions
 
@@ -106,10 +101,12 @@ Finally, a POST request containing a messageType of type SETTING will be sent ev
 There are different django packages to implement 3rd party authentication. After doing some research, we decided to use ‘django-allauth’ package to support 3rd-party authentication. 
 
 ‘Django-allauth’ supports many popular providers out of the box. In this project, we only use a few of them. 
-Users can login or signup with their facebook, google, openID or github account. 
-In our user collection, we have field call ‘provider’ to indicate if the user was created via local authentication or a 3rd party. 
-All the necessary information of user like email, name, date of birth,... will be stored in our database when the 3rd party successfully authenticate the user. 
-Because the 3rd party provider may not have enough information to fit our user model, user will be able to update the missing information later when they get in our platform. 
+Users can login or signup with their Facebook, Google, openID or GitHub account.
+
+In our user collection, we have field called ‘provider’ to indicate if the user was created via local authentication or a 3rd party.
+All the necessary information of a user (e.g. email, name, date of birth) will be stored in our database when the 3rd party successfully authenticate the user.
+
+Because the 3rd party provider may not have enough information to fit our user model, user will be able to update the missing information later when they get in our platform.
 
 #### RESTful API
 
@@ -117,9 +114,9 @@ We will develop a set of RESTful APIs which will be used by external developers 
 
 Only registered users will be allowed to use our APIs.
 
-The APIs will require the user to be authenticated before being able to execute any request. Moreover, we will add a mechanism to allow users to execute only 100 requests/day, in order to block bad uses of the service. Every user will be authenticated for 24 hours since its last request.
+The APIs will require the user to be authenticated before being able to execute any request. Moreover, we will add a mechanism to allow users to execute only 100 requests/day, in order to deny bad uses of the service.
 
-Our APIs will have the following endpoints:
+The APIs will have the following endpoints:
 
 - **POST** /api/v1/login which allows a user to authenticate in order to use the APIs. The body of the request will be
 		
@@ -135,10 +132,10 @@ Our APIs will have the following endpoints:
 - **POST** /api/v1/game which will allow developers to create a new game. The request body will be
 
         {
-            ‘token’: THE_TOKEN,
+            ‘token’: token,
             'price': 0.99,
             'url': URL,
-            'Is_public': True,
+            'is_public': True,
             ‘icon’: byte_stream,
             ‘name’: ‘game_name’,
             ‘description’: description,
@@ -147,10 +144,7 @@ Our APIs will have the following endpoints:
 
 #### Responsive User Interface
 
-The project will implement ZURB Foundation, which provides basic HTML, CSS and JavaScript
-functionality, to jump start the development. Foundation is also built for mobile and has
-[multiple templates](http://foundation.zurb.com/templates). [An ecommerce](http://foundation.zurb.com/templates-previews-sites-f6/ecommerce.html) template will be
-used for this project as the website is mainly about browsing and buying games.
+The project will implement ZURB Foundation, which provides basic HTML, CSS and JavaScript functionality, to jump start the development. Foundation is also built for mobile and has [multiple templates](http://foundation.zurb.com/templates). [An ecommerce](http://foundation.zurb.com/templates-previews-sites-f6/ecommerce.html) template will be used for this project as the website is mainly about browsing and buying games.
 
 
 > Foundation is built with HTML, CSS and Javascript, the core components of the Web.
@@ -164,16 +158,12 @@ used for this project as the website is mainly about browsing and buying games.
 
 #### Social Media Sharing
 
-The most basic type of social media sharing is sharing links. For this type of sharing the service
-will implement [Open Graph](https://ogp.me) and [Twitter Cards](https://dev.twitter.com/cards/overview) so that links that point to information pages for a game
-or a developer will include relevant pictures and an excerpt of the game or developer description.
+The most basic type of social media sharing is sharing links. For this type of sharing the service will implement [Open Graph](https://ogp.me) and [Twitter Cards](https://dev.twitter.com/cards/overview) so that links that point to information pages for a game or a developer will include relevant pictures and an excerpt of the game or developer description.
 
 As Open Graph is supported by Facebook, Pinterest and Google Plus, combining it with Twitter Cards
 will cover the largest social networks in Europe and North America.
 
-The service will possibly also allow the users to share their high scores on social media. On Facebook,
-for example, this requires [acquiring an access token and submitting the service for a review](https://developers.facebook.com/docs/opengraph/getting-started). As this
-project is only for school and not an actual public web service, this feature may not be implemented.
+The service will possibly also allow the users to share their high scores on social media. On Facebook, for example, this requires [acquiring an access token and submitting the service for a review](https://developers.facebook.com/docs/opengraph/getting-started). As this project is only for school and not an actual public web service, this feature may not be implemented.
 
 ### 3.2. Models
 
@@ -248,15 +238,9 @@ Even though we will not have daily meetings, we will organize face-to-face meeti
 
 ## 6. Testing
 
-The project will be tested both manually and by creating unit tests where applicable. Manual testing
-will consist of using the service, trying out its different features and maybe also subjecting it to
-completely new users and observing their actions. This should provide insight on possible problems in
-the UI and possible bugs in handling the interaction flow. Manual testing also includes the use of
-variety of validation software, such as code validators, but also the Open Graph validation systems
-that are provided by different social media network sites.
+The project will be tested both manually and by creating unit tests where applicable. Manual testing will consist of using the service and trying out its different features by external actors. Their actions will be observed and collected in a document, in order to improve the usability of the system. This should provide insight on possible problems in the UI and possible bugs in handling the interaction flow. Manual testing also includes the use of variety of validation software, such as code validators, but also the Open Graph validation systems that are provided by different social media network sites.
 
-Unit testing will be conducted on user permissions and authentication, the URL scheme (testing response code,
-content etc.) and the APIs.
+Unit testing will be conducted on user permissions and authentication, the URL scheme (testing response code, content etc.) and the APIs.
 
 ## 7. Risk Analysis
 
@@ -265,9 +249,9 @@ Following is a list of possible risks during the project development and how the
 - __Loss of a team member__ Frequent commits
 - __Running out of time__ Prioritize the required features and leave extra ones for later development
 - __Finding a critical bug or flaw late in development__ Keep code modular, well structured and documented
-- __Git conflicts__ Divide tasks as to minimize the risk of simultaneous editing of same code, commit often
+- __Git conflicts__ Divide tasks as to minimize the risk of simultaneous editing of same code, commit often, work on different branches
 - __Inadequate architecture, performance and quality__ Make reasonable decision on architecture and system design
 - __Poor productivity__ Make sure everyone is on the same page, open to discussions, feedbacks
-- __Lack of resource__ Plan carefully based on member's commitment to the project
-- __Uncertainty of technology__ Read documentation and discuss with the team when having difficulties
+- __Lack of resources__ Plan carefully based on member's commitment to the project
+- __Uncertainty of technology__ Read documentation, discuss and collaborate with other team members when having difficulties
 - __Lack of tools and support__ Be active in the community of the technology
