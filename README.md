@@ -44,7 +44,7 @@ in following actions:
 - Accept developer registration requests
 - Deactivate users
 
-##### Developers (Phu)
+##### Developers
 
 - Add a game: developers are able to add a game URL to his inventory and then set a price for it.
 - Remove, update own games: after uploading games for selling, developer can delete his own games or update them (including price, url and other information)
@@ -101,7 +101,7 @@ When a user wants to load a previous started game, a POST request will be sent w
 
 Finally, a POST request containing a messageType of type SETTING will be sent every time a game has finished loading and it will contain configuration information (such as layout sizes).
 
-#### 3rd party login (Phu)
+#### 3rd party login
 
 There are different django packages to implement 3rd party authentication. After doing some research, we decided to use ‘django-allauth’ package to support 3rd-party authentication. 
 
