@@ -1,4 +1,4 @@
-# Fifty Points Project Plan
+# LevelUp
 
 ## 1. Team
 
@@ -82,17 +82,16 @@ and what the information architecture and interaction flow of the system will lo
 As can be seen from the graph, many of the views can be divided into modular templates. This will
 ensure rapid redesign and reduce bugs by removing duplicate code.
 
-#### Authentication and permissions (Stefano)
+#### Authentication and permissions
 
 To authenticate users to the system we will use the Django authentication system (see https://docs.djangoproject.com/en/1.10/topics/auth/). Django provides functionalities to authenticate, signup, login, and logout.
-
-After a set of credentials (username and password) have been verified through the method authenticate, we are able to login a user and create a new session.
+After a set of credentials (username and password) have been verified through the authenticate method, we are able to login a user and create a new session.
 
 We will use either the login_required decorator (for function-based views) or the LoginRequired mixin (for class-based views) to block access to pages which require the user to be authenticated. (see https://docs.djangoproject.com/en/1.10/topics/auth/default/)
 
 Moreover, we will set different permissions to different type of users in order to grant access to reserved pages only to some specific categories of users.
 
-#### Game/service interaction & Save/load and resolution feature (Stefano)
+#### Game/service interaction & Save/load and resolution feature
 
 When a user has finished playing a game, a POST request will be sent to the server containing all the information about that particular game. As we structured the database, in particular, we will need to send the score, the game_id, the user_id, and the date. The message for this request will have a messageType of type SCORE.
 
@@ -121,28 +120,30 @@ Only registered users will be allowed to use our APIs.
 The APIs will require the user to be authenticated before being able to execute any request. Moreover, we will add a mechanism to allow users to execute only 100 requests/day, in order to block bad uses of the service. Every user will be authenticated for 24 hours since its last request.
 
 Our APIs will have the following endpoints:
-POST /api/v1/login which allows a user to authenticate in order to use the APIs. The body of the request will be
+
+- **POST** /api/v1/login which allows a user to authenticate in order to use the APIs. The body of the request will be
 		
 		{
 			‘username’: ‘username’,
 			‘password’: ‘password'
 		}
 
-    	and the response will contain a token to be used for every following request.
-GET /api/v1/games?token=THE_TOKEN which will return a list of games in alphabetical order (with a pagination of 20 games in order to maintain a low response time)
-GET /api/v1/game?token=THE_TOKEN&search_query=QUERY which will search the database for games containing QUERY in their name or description, and will return all the information of a game and the 10 best scores (if available) for that game.
-GET /api/v1/scores?token=THE_TOKEN&game_id=GAME_ID which will return the list of scores for a particular game, ordered by score descending)
-POST /api/v1/game which will allow developers to create a new game. The request body will be
-{
- ‘token’: THE_TOKEN,
-'price': 0.99,
-'url': URL,
-'Is_public': True,
- ‘icon’: byte_stream,
- ‘name’: ‘game_name’,
- ‘description’: description,
- ‘slug’: ‘slug'
-}
+    and the response will contain a token to be used for every following request.
+- **GET** /api/v1/games?token=THE_TOKEN which will return a list of games in alphabetical order (with a pagination of 20 games in order to maintain a low response time)
+- **GET** /api/v1/game?token=THE_TOKEN&search_query=QUERY which will search the database for games containing QUERY in their name or description, and will return all the information of a game and the 10 best scores (if available) for that game.
+- **GET** /api/v1/scores?token=THE_TOKEN&game_id=GAME_ID which will return the list of scores for a particular game, ordered by score descending)
+- **POST** /api/v1/game which will allow developers to create a new game. The request body will be
+
+        {
+            ‘token’: THE_TOKEN,
+            'price': 0.99,
+            'url': URL,
+            'Is_public': True,
+            ‘icon’: byte_stream,
+            ‘name’: ‘game_name’,
+            ‘description’: description,
+            ‘slug’: ‘slug'
+        }
 
 #### Responsive User Interface
 
@@ -182,9 +183,7 @@ project is only for school and not an actual public web service, this feature ma
 
 We will start the implementation of the project from the models. After that, we will implemente the authentication system using Django internal authentication system.
 Once the authentication has been completed, we will be ready to start to implement the basic functionalities for all the users (homepage, profile-page). After that we will split the work to implement both the developer and the player functionalities. At this stage we will also implement some unit test in order to guarantee the correct output and business logic for sensible functionalities.
-
 Once the whole implementation is working properly, we will focus on developing RESTful APIs, social media sharing button and third-party signin.
-
 We will finally implement our own game, as well as some admin functionalities.
 
 ## 5. Process and Time Schedule (Phu)
