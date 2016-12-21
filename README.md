@@ -111,7 +111,7 @@ In our user collection, we have field call ‘provider’ to indicate if the use
 All the necessary information of user like email, name, date of birth,... will be stored in our database when the 3rd party successfully authenticate the user. 
 Because the 3rd party provider may not have enough information to fit our user model, user will be able to update the missing information later when they get in our platform. 
 
-#### RESTful API (Stefano)
+#### RESTful API
 
 We will develop a set of RESTful APIs which will be used by external developers to integrate our service in third party applications.
 
@@ -179,14 +179,14 @@ project is only for school and not an actual public web service, this feature ma
 
 ![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/ER.png)
 
-## 4. Priorities (Stefano)
+## 4. Priorities
 
 We will start the implementation of the project from the models. After that, we will implemente the authentication system using Django internal authentication system.
 Once the authentication has been completed, we will be ready to start to implement the basic functionalities for all the users (homepage, profile-page). After that we will split the work to implement both the developer and the player functionalities. At this stage we will also implement some unit test in order to guarantee the correct output and business logic for sensible functionalities.
 Once the whole implementation is working properly, we will focus on developing RESTful APIs, social media sharing button and third-party signin.
 We will finally implement our own game, as well as some admin functionalities.
 
-## 5. Process and Time Schedule (Phu)
+## 5. Process and Time Schedule
 
 ### 5.1. Process
 
