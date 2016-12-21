@@ -1,18 +1,18 @@
-# LevelUp
+## LevelUp
 
-## 1. Team
+### 1. Team
 
 - 604985 Stefano Munarini
 - 427272 Simo Santala
 - 597254 Phu Pham
 
-## 2. Goal
+### 2. Goal
 
 The goal of the project is to create an online game store for JavaScript games. The project is a part of Aalto University Web Software Development course (CSE-C3210). The game store service will be built with Django deployed to Heroku.
 
-## 3. Plans
+### 3. Plans
 
-### 3.1. Features and Implementation
+#### 3.1. Features and Implementation
 
 In addition to the [required functionality and features](https://plus.cs.hut.fi/wsd/2016-2017/project/description/) the service will also feature
 
@@ -26,30 +26,32 @@ In addition to the [required functionality and features](https://plus.cs.hut.fi/
 - RESTful APIs
 - Responsive user interface
 
+
 #### Basic Functionality and Views
 
 The users of the system will be divided into three groups: administrators, developers and players.
 A single user account may be in one or more of these groups at the same time. The users can engage
 in following actions:
 
-##### All users
+
+###### All users
 
 - Authentication (login/logout/signup)
 - Profile update
 
-##### Administrators
+###### Administrators
 
 - Accept developer registration requests
 - Deactivate/ban users
 
-##### Developers
+###### Developers
 
 - Add a game: developers are able to add a game URL to their inventory and then set a price for it.
 - Remove, update own games: after uploading games for selling, developers can delete their own games or update them (including price, url and other information)
 - Game inventory: developers can see a list of their games from the inventory with sale statistics.
 - Buy game from other developers: developers can also buy games developed by other people and play just like a normal player.
 
-##### Players
+###### Players
 
 - Buying games: A player can
     - Browse/search games on the store
@@ -77,6 +79,7 @@ These actions represent the base functionality of the system. As the project dev
 
 As can be seen from the graph, many of the views can be divided into modular templates. This will ensure rapid redesign and reduce bugs by removing duplicate code.
 
+
 #### Authentication and permissions
 
 To authenticate users to the system we will use the Django authentication system (see https://docs.djangoproject.com/en/1.10/topics/auth/). Django provides functionalities to authenticate, signup, login, and logout.
@@ -85,6 +88,7 @@ After a set of credentials (username and password) have been verified through th
 We will use either the login_required decorator (for function-based views) or the LoginRequired mixin (for class-based views) to block access to pages which require the user to be authenticated. (see https://docs.djangoproject.com/en/1.10/topics/auth/default/)
 
 Moreover, we will set different permissions to different type of users in order to grant access to reserved pages only to some specific categories of users.
+
 
 #### Game/service interaction & Save/load and resolution feature
 
@@ -95,6 +99,7 @@ A user will also be able to pause a game. In this case, a POST request with a me
 When a user wants to load a previous started game, a POST request will be sent with messageType = LOAD_REQUEST. The server will response with a LOAD messageType or an ERROR if something goes wrong.
 
 Finally, a POST request containing a messageType of type SETTING will be sent every time a game has finished loading and it will contain configuration information (such as layout sizes).
+
 
 #### 3rd party login
 
@@ -107,6 +112,7 @@ In our user collection, we have field called ‘provider’ to indicate if the u
 All the necessary information of a user (e.g. email, name, date of birth) will be stored in our database when the 3rd party successfully authenticate the user.
 
 Because the 3rd party provider may not have enough information to fit our user model, user will be able to update the missing information later when they get in our platform.
+
 
 #### RESTful API
 
@@ -142,6 +148,7 @@ The APIs will have the following endpoints:
             ‘slug’: ‘slug'
         }
 
+
 #### Responsive User Interface
 
 The project will implement ZURB Foundation, which provides basic HTML, CSS and JavaScript functionality, to jump start the development. Foundation is also built for mobile and has [multiple templates](http://foundation.zurb.com/templates). [An ecommerce](http://foundation.zurb.com/templates-previews-sites-f6/ecommerce.html) template will be used for this project as the website is mainly about browsing and buying games.
@@ -156,6 +163,7 @@ The project will implement ZURB Foundation, which provides basic HTML, CSS and J
 > back-end or server technology and has been used with everything from Wordpress and
 > Drupal to .Net.
 
+
 #### Social Media Sharing
 
 The most basic type of social media sharing is sharing links. For this type of sharing the service will implement [Open Graph](https://ogp.me) and [Twitter Cards](https://dev.twitter.com/cards/overview) so that links that point to information pages for a game or a developer will include relevant pictures and an excerpt of the game or developer description.
@@ -165,20 +173,20 @@ will cover the largest social networks in Europe and North America.
 
 The service will possibly also allow the users to share their high scores on social media. On Facebook, for example, this requires [acquiring an access token and submitting the service for a review](https://developers.facebook.com/docs/opengraph/getting-started). As this project is only for school and not an actual public web service, this feature may not be implemented.
 
-### 3.2. Models
+#### 3.2. Models
 
 ![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/ER.png)
 
-## 4. Priorities
+### 4. Priorities
 
 We will start the implementation of the project from the models. After that, we will implemente the authentication system using Django internal authentication system.
 Once the authentication has been completed, we will be ready to start to implement the basic functionalities for all the users (homepage, profile-page). After that we will split the work to implement both the developer and the player functionalities. At this stage we will also implement some unit test in order to guarantee the correct output and business logic for sensible functionalities.
 Once the whole implementation is working properly, we will focus on developing RESTful APIs, social media sharing button and third-party signin.
 We will finally implement our own game, as well as some admin functionalities.
 
-## 5. Process and Time Schedule
+### 5. Process and Time Schedule
 
-### 5.1. Process
+#### 5.1. Process
 
 To deliver a good product, this project requires a lot of time and commitment from all of our members. In order to manage time and avoid wasting resources, we follow the following process:
 
@@ -189,13 +197,15 @@ To deliver a good product, this project requires a lot of time and commitment fr
 - **Develop and control project schedule**: the schedule will be first estimated based on the task list we have. However, the schedule will be adjusted and updated during the development process.
 - **Testing and fixing bugs**: In normal process, it is a good idea to keep testing the current application during the lifetime of the project. However, in this project, testing might take a lot of time and effort, so we are not able to do that. Instead, the main testing phase will happen near the end of the project. But important features will always be tested while we implementing them.
 
+
 #### Communication
 
 Even though we will not have daily meetings, we will organize face-to-face meeting at least once each sprint. This is the most suitable and efficient option for us. Moreover, we also communicate through Telegram and Skype.
 
-### 5.2. Timetable
+#### 5.2. Timetable
 
-#### Sprint 1, week 51
+
+##### Sprint 1, week 51
 
 - 20.12.2016:
     - Project Plan submission (models defined)
@@ -203,14 +213,14 @@ Even though we will not have daily meetings, we will organize face-to-face meeti
     - URL Scheme defined and Django (+ Foundation) installed, project setup
 - 24.12.2016. Models implementation + authentication
 
-#### Sprint 2, week 51 - Christmas and New Year
+##### Sprint 2, week 51 - Christmas and New Year
 
 - 31.12.2016: 
     - Add HTML templates
 - 31.12.2016: 
     - Basic user functionalities
 
-#### Sprint 3, weeks 1 & 2
+##### Sprint 3, weeks 1 & 2
 
 - 07.01.2016: 
     - Player functionalities: buy game, high score
@@ -228,21 +238,20 @@ Even though we will not have daily meetings, we will organize face-to-face meeti
     - Own game (if applicable)
     - Testing
 
-#### Sprint 5, weeks 5 & 6
+##### Sprint 5, weeks 5 & 6
 
 - Whole sprint:
     - Bug fixing  and finalization
     - Complete documentation
 	- Writing and submitting final report
 
-
-## 6. Testing
+### 6. Testing
 
 The project will be tested both manually and by creating unit tests where applicable. Manual testing will consist of using the service and trying out its different features by external actors. Their actions will be observed and collected in a document, in order to improve the usability of the system. This should provide insight on possible problems in the UI and possible bugs in handling the interaction flow. Manual testing also includes the use of variety of validation software, such as code validators, but also the Open Graph validation systems that are provided by different social media network sites.
 
 Unit testing will be conducted on user permissions and authentication, the URL scheme (testing response code, content etc.) and the APIs.
 
-## 7. Risk Analysis
+### 7. Risk Analysis
 
 Following is a list of possible risks during the project development and how they can be combatted.
 
