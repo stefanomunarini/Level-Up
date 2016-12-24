@@ -17,3 +17,7 @@ Create first database migrations:
 Apply migrations:
 
 `python manage.py migrate`
+
+Apply fixtures (load data):
+
+`python manage.py loaddata groups.json`

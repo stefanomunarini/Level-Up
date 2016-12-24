@@ -1,0 +1,16 @@
+[
+  {
+    "fields": {
+      "name": "Developers"
+    },
+    "pk": 1,
+    "model": "django.contrib.auth.models.Group"
+  },
+  {
+    "fields": {
+      "name": "Players"
+    },
+    "pk": 2,
+    "model": "django.contrib.auth.models.Group"
+  }
+]

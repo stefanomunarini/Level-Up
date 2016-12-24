@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for error in form.errors %}
+<p>{{ error }}</p>
+{% endfor %}
+
+{% for error in user_profile_formset.errors %}
+<p>{{ error }}</p>
+{% endfor %}
+
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
+
+<a href="{% url 'profile:user-profile' %}">Profile</a>
+<p>{{ user_profile.username }}</p>
+<form action="{% url 'profile:user-profile-update' %}" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+{{ user_profile_formset.as_p }}
+
+<input type="submit" value="update" />
+</form>
+
+{% endblock %}

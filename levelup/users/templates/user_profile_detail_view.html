@@ -4,6 +4,7 @@
     <div>
         <a href="{% url 'profile:logout' %}" >Logout</a>
         <h3>{{ user_profile.user.username }}</h3>
+        <a href="{% url 'profile:user-profile-update' %}">Update profile</a>
         <img src="{{ user_profile.profile_pic }}"/>
         <p>First Name: {{ user_profile.user.first_name }}</p>
         <p>Last Name: {{ user_profile.user.last_name }}</p>

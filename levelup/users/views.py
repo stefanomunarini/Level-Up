@@ -1,25 +1,64 @@
 from django.contrib import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
+from django.views.generic import UpdateView
 
 from users.models import UserProfile
-from users.forms import LoginForm, UserModelForm, UserProfileModelForm
+from users.forms import LoginForm, UserModelForm, UserProfileModelForm, UserProfileInlineFormset, UserUpdateModelForm
 
 
-class UserProfileDetailView(LoginRequiredMixin, TemplateView):
+class UserProfileMixin(object):
+    """
+    This is a convenient mixin that set the user_profile object as a variable in the context
+    """
+
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileMixin, self).get_context_data(**kwargs)
+        context['user_profile'] = get_object_or_404(UserProfile, id=self.request.session.get('user_profile_id'))
+        return context
+
+
+class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
     login_url = reverse_lazy('profile:login')
     template_name = 'user_profile_detail_view.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(UserProfileDetailView, self).get_context_data(**kwargs)
-        context['user_profile'] = get_object_or_404(UserProfile, id=self.request.session.get('user_profile_id'))
-        return context
+
+class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
+    form_class = UserUpdateModelForm
+    model = User
+    success_url = reverse_lazy('profile:user-profile')
+    template_name = 'user_profile_update_view.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form(self.form_class)
+        user_profile_formset = UserProfileInlineFormset(
+            queryset=UserProfile.objects.filter(user=self.get_object()))
+        return self.render_to_response(self.get_context_data(form=form, user_profile_formset=user_profile_formset))
+
+    def get_object(self, queryset=None):
+        self.object = User.objects.get(userprofile__id=self.request.session.get('user_profile_id'))
+        return self.object
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form(self.form_class)
+        user_profile_formset = UserProfileInlineFormset(
+            request.POST,
+            request.FILES
+        )
+        if form.is_valid() & user_profile_formset.is_valid():
+            form.save()
+            user_profile_formset.save()
+            return HttpResponseRedirect(reverse_lazy('profile:user-profile'))
+        else:
+            return render(request, self.template_name, {'form': form, 'user_profile_formset': user_profile_formset})
 
 
 def login(request):
@@ -61,5 +100,13 @@ def register(request):
                 user_profile_form.instance.user = user
                 user_profile_form.instance.user_id = user.id
                 user_profile_form.save()
+                if user_profile_form.cleaned_data['user_type'] == UserProfileModelForm.DEVELOPER_SLUG:
+                    group = Group.objects.get(pk=1)
+                    user.groups.set([group])
+                    user.save()
+                else:
+                    group = Group.objects.get(pk=2)
+                    user.groups.set([group])
+                    user.save()
             return HttpResponseRedirect(reverse('profile:login'))
         return render(request, 'register.html', {'user_form': user_form, 'user_profile_form': user_profile_form})

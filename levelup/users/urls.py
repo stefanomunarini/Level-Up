@@ -18,7 +18,8 @@ from django.conf.urls import url
 from django.contrib.auth.views import password_reset, logout
 from django.urls import reverse_lazy
 
-from users.views import UserProfileDetailView, login, register
+from users.views import UserProfileDetailView, UserProfileUpdateView, login, register
+
 urlpatterns = [
 
     # Auth
@@ -31,5 +32,5 @@ urlpatterns = [
     # Profile
     # url(r'^(?P<pk>[0-9]+)/$', UserProfileDetailView.as_view(), name='user-profile'),
     url(r'^$', UserProfileDetailView.as_view(), name='user-profile'),
-
+    url(r'^update/$', UserProfileUpdateView.as_view(), name='user-profile-update'),
 ]
