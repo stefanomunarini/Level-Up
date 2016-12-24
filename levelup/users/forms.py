@@ -43,10 +43,10 @@ class UserProfileUpdateModelForm(ModelForm):
         exclude = ('deactivated_until', 'user',)
 
 
-UserProfileInlineFormset = modelformset_factory(
-    model=UserProfile,
-    form=UserProfileUpdateModelForm,
-    can_delete=False,
-    extra=1,
-    max_num=1,
-)
+# UserProfileInlineFormset = modelformset_factory(
+#     model=UserProfile,
+#     form=UserProfileUpdateModelForm,
+#     can_delete=False,
+#     extra=1,
+#     max_num=1,
+# )

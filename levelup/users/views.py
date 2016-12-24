@@ -2,6 +2,7 @@ from django.contrib import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
+from django.forms import model_to_dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -10,7 +11,7 @@ from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
 from users.models import UserProfile
-from users.forms import LoginForm, UserModelForm, UserProfileModelForm, UserProfileInlineFormset, UserUpdateModelForm
+from users.forms import LoginForm, UserModelForm, UserProfileModelForm, UserUpdateModelForm, UserProfileUpdateModelForm
 
 
 class UserProfileMixin(object):
@@ -38,9 +39,9 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         user_form = self.get_form(self.form_class)
-        user_profile_formset = UserProfileInlineFormset(
-            queryset=UserProfile.objects.filter(user=self.get_object()))
-        return self.render_to_response(self.get_context_data(user_form=user_form, user_profile_formset=user_profile_formset))
+        user_profile_form = UserProfileUpdateModelForm(
+            initial=model_to_dict(UserProfile.objects.get(user=self.get_object())))
+        return self.render_to_response(self.get_context_data(user_form=user_form, user_profile_form=user_profile_form))
 
     def get_object(self, queryset=None):
         self.object = User.objects.get(userprofile__id=self.request.session.get('user_profile_id'))
@@ -49,17 +50,17 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         user_form = self.get_form(self.form_class)
-        user_profile_formset = UserProfileInlineFormset(
+        user_profile_form = UserProfileUpdateModelForm(
             request.POST,
             request.FILES
         )
         import ipdb; ipdb.set_trace()
-        if user_form.is_valid() & user_profile_formset.is_valid():
+        if user_form.is_valid() & user_profile_form.is_valid():
             user_form.save()
-            user_profile_formset.save()
+            user_profile_form.save()
             return HttpResponseRedirect(reverse_lazy('profile:user-profile'))
         else:
-            return render(request, self.template_name, {'user_form': user_form, 'user_profile_formset': user_profile_formset})
+            return render(request, self.template_name, {'user_form': user_form, 'user_profile_form': user_profile_form})
 
 
 def login(request):
