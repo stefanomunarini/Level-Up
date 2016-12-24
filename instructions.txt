@@ -1,0 +1,19 @@
+Create a virtual environment:
+
+`mkvirtualenv levelup`
+
+Activate the environment:
+
+`workon levelup`
+
+Install requirements:
+
+`pip install -r requirements.txt`
+
+Create first database migrations:
+
+`python manage.py makemigrations`
+
+Apply migrations:
+
+`python manage.py migrate`
