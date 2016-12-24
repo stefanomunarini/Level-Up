@@ -91,3 +91,6 @@ ENV/
 .ropeproject
 
 .idea/*
+
+# Django migrations
+migrations/*
