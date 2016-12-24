@@ -14,7 +14,7 @@
 <p>{{ error }}</p>
 {% endif %}
 
-<form action="{% url 'profile:register' %}" method="post">
+<form action="{% url 'profile:register' %}" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 {{ user_form.as_p }}
 {{ user_profile_form.as_p }}

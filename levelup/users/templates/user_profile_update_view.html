@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% for error in form.errors %}
+{% for error in user_form.errors %}
 <p>{{ error }}</p>
 {% endfor %}
 
@@ -16,9 +16,10 @@
 
 <a href="{% url 'profile:user-profile' %}">Profile</a>
 <p>{{ user_profile.username }}</p>
-<form action="{% url 'profile:user-profile-update' %}" method="post">
+
+<form action="{% url 'profile:user-profile-update' %}" method="post" enctype="multipart/form-data">
 {% csrf_token %}
-{{ form.as_p }}
+{{ user_form.as_p }}
 {{ user_profile_formset.as_p }}
 
 <input type="submit" value="update" />

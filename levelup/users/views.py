@@ -16,8 +16,8 @@ from users.forms import LoginForm, UserModelForm, UserProfileModelForm, UserProf
 class UserProfileMixin(object):
     """
     This is a convenient mixin that set the user_profile object as a variable in the context
+    so that it can be used in the template like this: {{ user_profile.user.email }}
     """
-
     def get_context_data(self, **kwargs):
         context = super(UserProfileMixin, self).get_context_data(**kwargs)
         context['user_profile'] = get_object_or_404(UserProfile, id=self.request.session.get('user_profile_id'))
@@ -37,10 +37,10 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = self.get_form(self.form_class)
+        user_form = self.get_form(self.form_class)
         user_profile_formset = UserProfileInlineFormset(
             queryset=UserProfile.objects.filter(user=self.get_object()))
-        return self.render_to_response(self.get_context_data(form=form, user_profile_formset=user_profile_formset))
+        return self.render_to_response(self.get_context_data(user_form=user_form, user_profile_formset=user_profile_formset))
 
     def get_object(self, queryset=None):
         self.object = User.objects.get(userprofile__id=self.request.session.get('user_profile_id'))
@@ -48,17 +48,18 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = self.get_form(self.form_class)
+        user_form = self.get_form(self.form_class)
         user_profile_formset = UserProfileInlineFormset(
             request.POST,
             request.FILES
         )
-        if form.is_valid() & user_profile_formset.is_valid():
-            form.save()
+        import ipdb; ipdb.set_trace()
+        if user_form.is_valid() & user_profile_formset.is_valid():
+            user_form.save()
             user_profile_formset.save()
             return HttpResponseRedirect(reverse_lazy('profile:user-profile'))
         else:
-            return render(request, self.template_name, {'form': form, 'user_profile_formset': user_profile_formset})
+            return render(request, self.template_name, {'user_form': user_form, 'user_profile_formset': user_profile_formset})
 
 
 def login(request):
@@ -86,7 +87,7 @@ def register(request):
         user_profile_form = UserProfileModelForm()
         return render(request, 'register.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
     elif request.method == 'POST':
-        user_form = UserModelForm(request.POST)
+        user_form = UserModelForm(request.POST, request.FILES)
         user_profile_form = UserProfileModelForm(request.POST)
         if user_form.is_valid():
             user = user_form.save(commit=False)
