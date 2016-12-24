@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <h3>{{ user_profile.user.username }}</h3>
+        <form action="{% url 'profile:user-profile-update' pk=user_profile.user.id %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit"/>
+        </form>
+    </div>
+</body>
+</html>
