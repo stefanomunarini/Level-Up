@@ -4,7 +4,15 @@
 {% block content %}
     <div>
         {% if user_profile.is_developer %}
-            <p>Is developer</p>
+            <a href="{% url 'game:create' %}">Add game</a>
+            <div>
+                <h2>Games</h2>
+                {% for game in games %}
+                    <p>{{ game.name }}</p>
+                {% empty %}
+                    <p>No games yet.</p>
+                {% endfor %}
+            </div>
         {% endif %}
         <a href="{% url 'profile:logout' %}" >Logout</a>
         <h3>{{ user_profile.user.username }}</h3>

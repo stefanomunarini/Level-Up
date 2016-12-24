@@ -10,6 +10,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
+from games.models import Game
 from users.models import UserProfile
 from users.forms import LoginForm, UserModelForm, UserProfileModelForm, UserUpdateModelForm, UserProfileUpdateModelForm
 
@@ -30,6 +31,12 @@ class UserProfileMixin(object):
 class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
     login_url = reverse_lazy('profile:login')
     template_name = 'user_profile_detail_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileDetailView, self).get_context_data(**kwargs)
+        if self.user_profile.is_developer():
+            context['games'] = Game.objects.filter(dev=self.user_profile)
+        return context
 
 
 class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
