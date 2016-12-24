@@ -3,6 +3,9 @@
 
 {% block content %}
     <div>
+        {% if user_profile.is_developer %}
+            <p>Is developer</p>
+        {% endif %}
         <a href="{% url 'profile:logout' %}" >Logout</a>
         <h3>{{ user_profile.user.username }}</h3>
         <a href="{% url 'profile:user-profile-update' %}">Update profile</a>

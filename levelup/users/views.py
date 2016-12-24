@@ -18,10 +18,12 @@ class UserProfileMixin(object):
     """
     This is a convenient mixin that set the user_profile object as a variable in the context
     so that it can be used in the template like this: {{ user_profile.user.email }}
+    Moreover, it adds a reference to the same object in the class
     """
     def get_context_data(self, **kwargs):
         context = super(UserProfileMixin, self).get_context_data(**kwargs)
-        context['user_profile'] = get_object_or_404(UserProfile, id=self.request.session.get('user_profile_id'))
+        self.user_profile = get_object_or_404(UserProfile, id=self.request.session.get('user_profile_id'))
+        context['user_profile'] = self.user_profile
         return context
 
 
@@ -54,7 +56,6 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
             request.POST,
             request.FILES
         )
-        import ipdb; ipdb.set_trace()
         if user_form.is_valid() & user_profile_form.is_valid():
             user_form.save()
             user_profile_form.save()

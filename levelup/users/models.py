@@ -1,10 +1,12 @@
 from __future__ import unicode_literals
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import models
 
 
 class UserProfile(models.Model):
+
+    DEVELOPER_GROUP = 'Developers'
 
     # Extend django.contrib.auth.models.user
     user = models.OneToOneField(User)
@@ -20,3 +22,8 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def is_developer(self):
+        if self.user.groups.filter(name=self.DEVELOPER_GROUP).count() > 0:
+            return True
+        return False
