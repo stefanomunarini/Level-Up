@@ -16,6 +16,7 @@ class Game(models.Model):
     description = models.TextField()
     price = models.FloatField(null=False, blank=False)
     is_public = models.BooleanField(default=True)
+    is_published = models.BooleanField(default=True)
 
 
 class GameScreenshot(models.Model):
