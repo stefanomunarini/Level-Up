@@ -13,10 +13,23 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+import django
 from django.conf.urls import url
+from django.contrib.auth.views import password_reset, logout
+from django.urls import reverse_lazy
 
-from users.views import UserProfileDetailView\
-
+from users.views import UserProfileDetailView, login, register
 urlpatterns = [
-    url(r'^(?P<pk>[0-9]+)/$', UserProfileDetailView.as_view(), name='user-profile'),
+
+    # Auth
+    url(r'^login/$', login, name='login'),
+    url(r'^logout/$', logout, {'next_page': reverse_lazy('profile:login')}, name='logout'),
+    url(r'^register/$', register, name='register'),
+    url(r'^login/password_reset/$', password_reset, name='password_reset'),
+
+
+    # Profile
+    # url(r'^(?P<pk>[0-9]+)/$', UserProfileDetailView.as_view(), name='user-profile'),
+    url(r'^$', UserProfileDetailView.as_view(), name='user-profile'),
+
 ]

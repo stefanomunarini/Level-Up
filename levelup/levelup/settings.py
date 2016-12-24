@@ -58,7 +58,7 @@ ROOT_URLCONF = 'levelup.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['users/templates'],
+        'DIRS': ['levelup/templates', 'users/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

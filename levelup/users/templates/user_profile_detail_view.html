@@ -1,23 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <div>
+        <a href="{% url 'profile:logout' %}" >Logout</a>
         <h3>{{ user_profile.user.username }}</h3>
         <img src="{{ user_profile.profile_pic }}"/>
         <p>First Name: {{ user_profile.user.first_name }}</p>
         <p>Last Name: {{ user_profile.user.last_name }}</p>
         <p>Email: {{ user_profile.user.email }}</p>
         <p>Last login: {{ user_profile.user.last_login }}</p>
-        <p>Groups: {{ user_profile.user.groups }}</p>
+        <p>
+            Groups:
+            {% for group in user_profile.user.groups.all %}
+                <b>{{ group }}</b>
+            {% empty %}
+                <b>No groups</b>
+            {% endfor %}
+        </p>
         <p>Permissions: {{ user_profile.user.permissions|default:'None' }}</p>
-
-        <br/>
-
-        <p>{{ something }}</p>
     </div>
-</body>
-</html>
+{% endblock %}
