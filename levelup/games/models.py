@@ -18,6 +18,9 @@ class Game(models.Model):
     is_public = models.BooleanField(default=True)
     is_published = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.name
+
 
 class GameScreenshot(models.Model):
     image = models.ImageField(null=False, blank=False)

@@ -24,6 +24,6 @@ class UserProfile(models.Model):
         return self.user.username
 
     def is_developer(self):
-        if self.user.groups.filter(name=self.DEVELOPER_GROUP).count() > 0:
+        if self.user.groups.filter(name=self.DEVELOPER_GROUP).exists():
             return True
         return False

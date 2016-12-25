@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.urls import reverse_lazy
+from django.views.generic import RedirectView
 
 from users import urls as users_url
 from games import urls as games_url
@@ -23,4 +25,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^profile/', include(users_url, namespace='profile')),
     url(r'^game/', include(games_url, namespace='game')),
+    url(r'^$', RedirectView.as_view(url=reverse_lazy('profile:login'), permanent=False)),
 ]

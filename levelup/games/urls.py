@@ -13,15 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-import django
 from django.conf.urls import url
-from django.contrib.auth.views import password_reset, logout
-from django.urls import reverse_lazy
 
-from users.views import UserProfileDetailView, UserProfileUpdateView, login, register
-
-from games.views import GameCreateView
+from games.views import GameCreateView, GameDeleteView
 
 urlpatterns = [
     url(r'^create/$', GameCreateView.as_view(), name='create'),
+    url(r'^delete/(?P<pk>[0-9]+)/$', GameDeleteView.as_view(), name='delete'),
 ]
