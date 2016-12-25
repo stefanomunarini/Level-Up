@@ -73,6 +73,8 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
 
 def login(request):
     if request.method == 'GET':
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(reverse_lazy('profile:user-profile'))
         form = LoginForm()
         return render(request, 'login.html', {'form': form})
     elif request.method == 'POST':
