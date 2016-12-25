@@ -4,13 +4,13 @@
       "name": "Developers"
     },
     "pk": 1,
-    "model": "django.contrib.auth.models.Group"
+    "model": "auth.Group"
   },
   {
     "fields": {
       "name": "Players"
     },
     "pk": 2,
-    "model": "django.contrib.auth.models.Group"
+    "model": "auth.Group"
   }
 ]
