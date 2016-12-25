@@ -12,7 +12,7 @@ from django.views.generic import UpdateView
 
 from games.models import Game
 from users.models import UserProfile
-from users.forms import LoginForm, UserModelForm, UserProfileModelForm, UserUpdateModelForm, UserProfileUpdateModelForm
+from users.forms import LoginForm, RegistrationForm, RegistrationUserProfileModelForm, UserUpdateModelForm, UserProfileUpdateModelForm
 
 
 class UserProfileMixin(object):
@@ -94,12 +94,12 @@ def login(request):
 
 def register(request):
     if request.method == 'GET':
-        user_form = UserModelForm()
-        user_profile_form = UserProfileModelForm()
+        user_form = RegistrationForm()
+        user_profile_form = RegistrationUserProfileModelForm()
         return render(request, 'register.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
     elif request.method == 'POST':
-        user_form = UserModelForm(request.POST, request.FILES)
-        user_profile_form = UserProfileModelForm(request.POST)
+        user_form = RegistrationForm(request.POST, request.FILES)
+        user_profile_form = RegistrationUserProfileModelForm(request.POST)
         if user_form.is_valid():
             user = user_form.save(commit=False)
             user_profile_form.instance.user = user
@@ -112,7 +112,7 @@ def register(request):
                 user_profile_form.instance.user = user
                 user_profile_form.instance.user_id = user.id
                 user_profile_form.save()
-                if user_profile_form.cleaned_data['user_type'] == UserProfileModelForm.DEVELOPER_SLUG:
+                if user_profile_form.cleaned_data['user_type'] == RegistrationUserProfileModelForm.DEVELOPER_SLUG:
                     group = Group.objects.get(pk=1)
                     user.groups.set([group])
                     user.save()

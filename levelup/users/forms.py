@@ -9,12 +9,20 @@ class LoginForm(Form):
     password = CharField(label='Password', widget=PasswordInput())
 
 
-class UserModelForm(ModelForm):
+class RegistrationUserForm(ModelForm):
     confirm_password = CharField(label='Confirm Password', widget=PasswordInput())
 
     class Meta:
         model = User
         fields = ('username', 'password', 'email', 'first_name', 'last_name')
+
+
+class RegistrationUserProfileModelForm(ModelForm):
+    PLAYER_SLUG = 'player'
+    DEVELOPER_SLUG = 'developer'
+
+    user_type = ChoiceField(choices=((PLAYER_SLUG, 'Player'),
+                                     (DEVELOPER_SLUG, 'Developer'),))
 
 
 class UserUpdateModelForm(ModelForm):
@@ -23,13 +31,6 @@ class UserUpdateModelForm(ModelForm):
         model = User
         fields = ('email', 'first_name', 'last_name')
 
-
-class UserProfileModelForm(ModelForm):
-
-    PLAYER_SLUG = 'player'
-    DEVELOPER_SLUG = 'developer'
-    user_type = ChoiceField(choices=((PLAYER_SLUG, 'Player'),
-                                     (DEVELOPER_SLUG, 'Developer'),))
 
     class Meta:
         model = UserProfile
@@ -41,12 +42,3 @@ class UserProfileUpdateModelForm(ModelForm):
     class Meta:
         model = UserProfile
         exclude = ('deactivated_until', 'user',)
-
-
-# UserProfileInlineFormset = modelformset_factory(
-#     model=UserProfile,
-#     form=UserProfileUpdateModelForm,
-#     can_delete=False,
-#     extra=1,
-#     max_num=1,
-# )
