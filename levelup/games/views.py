@@ -10,6 +10,12 @@ from games.models import Game
 from users.models import UserProfile
 
 
+class GameDetailView(DetailView):
+    model = Game
+    context_object_name = 'game'
+    template_name = 'game_detail_view.html'
+
+
 class GameCreateView(LoginRequiredMixin, CreateView):
     fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
     model = Game
@@ -44,9 +50,3 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
         if not obj.dev == self.request.user.userprofile:
             raise HttpResponseForbidden
         return obj
-
-
-class GameDetailView(DetailView):
-    model = Game
-    context_object_name = 'game'
-    template_name = 'game_detail_view.html'

@@ -1,9 +1,6 @@
-import os
-
 from django.db import models
 from django.db.models import Q
 
-from levelup.settings import BASE_DIR
 from users.models import UserProfile
 
 
@@ -11,7 +8,7 @@ def get_upload_path(instance, filename):
     if isinstance(instance, Game):
         return "dev_{}/game_{}/{}".format(instance.dev.dev_slug, instance.slug, filename)
     if isinstance(instance, GameScreenshot):
-        return "dev_{}/game_{}/{}".format(instance.game.dev.dev_slug, instance.game.slug, filename)
+        return "dev_{}/game_{}/screenshots/{}".format(instance.game.dev.dev_slug, instance.game.slug, filename)
 
 
 class Game(models.Model):

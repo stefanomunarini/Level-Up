@@ -96,11 +96,11 @@ def login(request):
 
 def register(request):
     if request.method == 'GET':
-        user_form = RegistrationForm()
+        user_form = RegistrationUserModelForm()
         user_profile_form = RegistrationUserProfileModelForm()
         return render(request, 'register.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
     elif request.method == 'POST':
-        user_form = RegistrationForm(request.POST, request.FILES)
+        user_form = RegistrationUserModelForm(request.POST, request.FILES)
         user_profile_form = RegistrationUserProfileModelForm(request.POST)
         if user_form.is_valid():
             user = user_form.save(commit=False)

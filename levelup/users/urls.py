@@ -26,11 +26,9 @@ urlpatterns = [
     url(r'^login/$', login, name='login'),
     url(r'^logout/$', logout, {'next_page': reverse_lazy('profile:login')}, name='logout'),
     url(r'^register/$', register, name='register'),
-    url(r'^login/password_reset/$', password_reset, name='password_reset'),
-
+    # url(r'^login/password_reset/$', password_reset, name='password_reset'),
 
     # Profile
-    # url(r'^(?P<pk>[0-9]+)/$', UserProfileDetailView.as_view(), name='user-profile'),
     url(r'^$', UserProfileDetailView.as_view(), name='user-profile'),
     url(r'^update/$', UserProfileUpdateView.as_view(), name='user-profile-update'),
 ]
