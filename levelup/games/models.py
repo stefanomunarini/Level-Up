@@ -19,18 +19,19 @@ class Game(models.Model):
                             limit_choices_to=Q(groups__name='Developers'),
                             related_name='games')
     url = models.URLField(null=False, blank=False)
-    icon = models.ImageField(null=True, blank=True, upload_to=get_upload_path, max_length=500)
+    icon = models.ImageField(null=True, blank=True, upload_to=get_upload_path, max_length=255)
     description = models.TextField()
     price = models.FloatField(null=False, blank=False)
     is_public = models.BooleanField(default=True)
     is_published = models.BooleanField(default=True)
+    date_added = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):
         return self.name
 
 
 class GameScreenshot(models.Model):
-    image = models.ImageField(null=False, blank=False, upload_to=get_upload_path, max_length=500)
+    image = models.ImageField(null=False, blank=False, upload_to=get_upload_path, max_length=255)
     game = models.ForeignKey(Game, related_name='screenshots')
 
 

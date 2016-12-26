@@ -6,6 +6,7 @@
 <a href="{% url 'profile:user-profile' %}">Go back</a>
 <h3>{{ game.name }}</h3>
 <img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>
+<p>Added: {{ game.date_added }}</p>
 <p>Slug: {{ game.slug }}</p>
 <p>Dev: {{ game.dev.dev_slug }}</p>
 <p>Url: {{ game.url }}</p>
