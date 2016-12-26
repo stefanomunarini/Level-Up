@@ -1,3 +1,7 @@
+Download the repository:
+
+`git clone git@git.niksula.hut.fi:munaris1/wsd_project.git`
+
 Create a virtual environment:
 
 `mkvirtualenv levelup`

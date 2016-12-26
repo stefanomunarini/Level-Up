@@ -1,0 +1,22 @@
+To collaborate in the development of this project, work on a separate branch from master. When the piece of work you're working at is completed (or it is not completed but you need help to move forward), push the branch and create a new Pull Request (PR) (called Merge Request in Niksula).
+
+Before creating a new branch, always switch to the master branch:
+
+`git checkout master`
+
+and pull the latest updates:
+
+`git pull`
+
+Then create a new branch:
+
+`git checkout -b feature/name` or `git checkout -b fix/name`
+
+Before creating the PR, get the latest updates from master and merge them in your branch:
+
+`git fetch origin master`
+`git rebase origin/master`
+
+and solve eventual conflicts.
+
+Then go to Niksula and open a new Merge Request that points to master and assign it to the other team members so that it can be reviewed and, eventually, merged.
