@@ -7,6 +7,7 @@ from django.db import models
 class UserProfile(models.Model):
 
     DEVELOPER_GROUP = 'Developers'
+    PLAYER_GROUP = 'Players'
 
     # Extend django.contrib.auth.models.user
     user = models.OneToOneField(User)

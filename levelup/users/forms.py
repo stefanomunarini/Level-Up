@@ -9,7 +9,7 @@ class LoginForm(Form):
     password = CharField(label='Password', widget=PasswordInput())
 
 
-class RegistrationUserForm(ModelForm):
+class RegistrationUserModelForm(ModelForm):
     confirm_password = CharField(label='Confirm Password', widget=PasswordInput())
 
     class Meta:

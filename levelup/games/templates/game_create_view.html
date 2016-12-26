@@ -4,6 +4,10 @@
 <form action="{% url 'game:create' %}" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 {{ form.as_p }}
+{{ game_screenshot_forms.management_form }}
+{% for game_screenshot_form in game_screenshot_forms %}
+    {{ game_screenshot_form.as_p }}
+{% endfor %}
 
 <input type="submit" value="Crea" />
 </form>

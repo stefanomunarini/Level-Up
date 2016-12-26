@@ -12,7 +12,8 @@ from django.views.generic import UpdateView
 
 from games.models import Game
 from users.models import UserProfile
-from users.forms import LoginForm, RegistrationForm, RegistrationUserProfileModelForm, UserUpdateModelForm, UserProfileUpdateModelForm
+from users.forms import LoginForm, RegistrationUserModelForm, RegistrationUserProfileModelForm, UserUpdateModelForm, \
+    UserProfileUpdateModelForm
 
 
 class UserProfileMixin(object):
@@ -21,6 +22,7 @@ class UserProfileMixin(object):
     so that it can be used in the template like this: {{ user_profile.user.email }}
     Moreover, it adds a reference to the same object in the class
     """
+
     def get_context_data(self, **kwargs):
         context = super(UserProfileMixin, self).get_context_data(**kwargs)
         self.user_profile = get_object_or_404(UserProfile, id=self.request.session.get('user_profile_id'))

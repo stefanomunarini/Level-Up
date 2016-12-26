@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<a href="{% url 'profile:user-profile' %}">Go back</a>
+<h3>{{ game.name }}</h3>
+<img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>
+<p>Slug: {{ game.slug }}</p>
+<p>Dev: {{ game.dev.dev_slug }}</p>
+<p>Url: {{ game.url }}</p>
+<p>Description: {{ game.description }}</p>
+<p>Price: {{ game.price }}</p>
+
+{% if game.screenshots.all %}
+    <p>Screenshots:</p>
+{% endif %}
+
+{% for screenshot in game.screenshots.all %}
+    <img src="{% get_static_prefix %}images/{{screenshot.image}}" width="150" height="150"/>
+{% endfor %}
+
+
+{% endblock %}

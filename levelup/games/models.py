@@ -1,7 +1,17 @@
+import os
+
 from django.db import models
 from django.db.models import Q
 
+from levelup.settings import BASE_DIR
 from users.models import UserProfile
+
+
+def get_upload_path(instance, filename):
+    if isinstance(instance, Game):
+        return "dev_{}/game_{}/{}".format(instance.dev.dev_slug, instance.slug, filename)
+    if isinstance(instance, GameScreenshot):
+        return "dev_{}/game_{}/{}".format(instance.game.dev.dev_slug, instance.game.slug, filename)
 
 
 class Game(models.Model):
@@ -12,7 +22,7 @@ class Game(models.Model):
                             limit_choices_to=Q(groups__name='Developers'),
                             related_name='games')
     url = models.URLField(null=False, blank=False)
-    icon = models.ImageField(null=True, blank=True)
+    icon = models.ImageField(null=True, blank=True, upload_to=get_upload_path, max_length=500)
     description = models.TextField()
     price = models.FloatField(null=False, blank=False)
     is_public = models.BooleanField(default=True)
@@ -23,7 +33,7 @@ class Game(models.Model):
 
 
 class GameScreenshot(models.Model):
-    image = models.ImageField(null=False, blank=False)
+    image = models.ImageField(null=False, blank=False, upload_to=get_upload_path, max_length=500)
     game = models.ForeignKey(Game, related_name='screenshots')
 
 
@@ -33,4 +43,3 @@ class GameScore(models.Model):
     start_time = models.DateTimeField(auto_now_add=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     score = models.IntegerField(null=True, blank=True)
-

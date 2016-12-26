@@ -8,7 +8,11 @@
             <div>
                 <h2>Games</h2>
                 {% for game in games %}
-                    <p>{{ game.name }} <a href="{% url 'game:delete' game.pk %}">X</a></p>
+                    <div>
+                        <p>
+                            <img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>
+                            <a href="{% url 'game:detail' game.pk %}">{{ game.name }}</a> <a href="{% url 'game:delete' game.pk %}">X</a></p>
+                    </div>
                 {% empty %}
                     <p>No games yet.</p>
                 {% endfor %}
