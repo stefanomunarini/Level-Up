@@ -29,16 +29,20 @@ class UserUpdateModelForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name')
-
-
-    class Meta:
-        model = UserProfile
-        exclude = ('deactivated_until', 'user',)
+        fields = ('first_name', 'last_name')
 
 
 class UserProfileUpdateModelForm(ModelForm):
 
     class Meta:
         model = UserProfile
-        exclude = ('deactivated_until', 'user',)
+        exclude = ('deactivated_until', 'user', 'third_party_login')
+
+
+UserProfileUpdateModelFormset = modelformset_factory(
+    model=UserProfile,
+    form=UserProfileUpdateModelForm,
+    extra=1,
+    min_num=1,
+    max_num=1
+)

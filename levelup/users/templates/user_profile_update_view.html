@@ -20,7 +20,33 @@
 <form action="{% url 'profile:user-profile-update' %}" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 {{ user_form.as_p }}
-{{ user_profile_form.as_p }}
+
+{{ user_profile_form.management_form }}
+{% for profile_form in user_profile_form %}
+{{ profile_form.id }}
+{% if user_profile.is_developer %}
+    <p><div class="fieldWrapper">
+        {{ profile_form.dev_slug.errors }}
+        {{ profile_form.dev_slug.label_tag }}
+        {{ profile_form.dev_slug }}
+    </div></p>
+    <p><div class="fieldWrapper">
+        {{ profile_form.dev_website.errors }}
+        {{ profile_form.dev_website.label_tag }}
+        {{ profile_form.dev_website }}
+    </div></p>
+    <p><div class="fieldWrapper">
+        {{ profile_form.dev_email_support.errors }}
+        {{ profile_form.dev_email_support.label_tag }}
+        {{ profile_form.dev_email_support }}
+    </div></p>
+{% endif %}
+    <p><div class="fieldWrapper">
+        {{ profile_form.profile_pic.errors }}
+        {{ profile_form.profile_pic.label_tag }}
+        {{ profile_form.profile_pic }}
+    </div></p>
+{% endfor %}
 
 <input type="submit" value="update" />
 </form>

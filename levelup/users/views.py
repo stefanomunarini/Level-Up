@@ -13,7 +13,7 @@ from django.views.generic import UpdateView
 from games.models import Game
 from users.models import UserProfile
 from users.forms import LoginForm, RegistrationUserModelForm, RegistrationUserProfileModelForm, UserUpdateModelForm, \
-    UserProfileUpdateModelForm
+    UserProfileUpdateModelForm, UserProfileUpdateModelFormset
 
 
 class UserProfileMixin(object):
@@ -50,25 +50,31 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         user_form = self.get_form(self.form_class)
-        user_profile_form = UserProfileUpdateModelForm(
-            initial=model_to_dict(UserProfile.objects.get(user=self.get_object())))
+        user_profile_form = UserProfileUpdateModelFormset(
+            queryset=UserProfile.objects.filter(user=self.get_object())
+        )
         return self.render_to_response(self.get_context_data(user_form=user_form, user_profile_form=user_profile_form))
 
     def get_object(self, queryset=None):
-        self.object = User.objects.get(userprofile__id=self.request.session.get('user_profile_id'))
-        return self.object
+        return self.request.user
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         user_form = self.get_form(self.form_class)
-        user_profile_form = UserProfileUpdateModelForm(
+        user_profile_form = UserProfileUpdateModelFormset(
             request.POST,
             request.FILES
         )
-        if user_form.is_valid() & user_profile_form.is_valid():
+        if user_form.is_valid():
             user_form.save()
-            user_profile_form.save()
-            return HttpResponseRedirect(reverse_lazy('profile:user-profile'))
+            user_profile_form.save(commit=False)
+            """
+            There is always one and only one formset (one user_profile for every user)
+            hence we only and always save the first formset
+            """
+            user_profile_form[0].instance.user = self.get_object()
+            user_profile_form[0].save()
+            return super(UserProfileUpdateView, self).form_valid(form=user_form)
         else:
             return render(request, self.template_name, {'user_form': user_form, 'user_profile_form': user_profile_form})
 
