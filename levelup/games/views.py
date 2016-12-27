@@ -19,9 +19,15 @@ class GameDetailView(DetailView):
 
 class GameCreateView(LoginRequiredMixin, CreateView):
     fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
+    login_url = reverse_lazy('profile:login')
     model = Game
     template_name = 'game_create_view.html'
     success_url = reverse_lazy('profile:user-profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.userprofile.is_developer():
+            return HttpResponseForbidden()
+        return super(GameCreateView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(GameCreateView, self).get_context_data(**kwargs)
@@ -42,6 +48,7 @@ class GameCreateView(LoginRequiredMixin, CreateView):
 
 
 class GameDeleteView(LoginRequiredMixin, DeleteView):
+    login_url = reverse_lazy('profile:login')
     model = Game
     success_url = reverse_lazy('profile:user-profile')
     template_name = 'game_confirm_delete.html'
@@ -49,7 +56,7 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
     def get_object(self, queryset=None):
         obj = super(GameDeleteView, self).get_object(queryset=queryset)
         if not obj.dev == self.request.user.userprofile:
-            raise HttpResponseForbidden
+            return HttpResponseForbidden()
         return obj
 
     def delete(self, request, *args, **kwargs):

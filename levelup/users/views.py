@@ -43,6 +43,7 @@ class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
 
 class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
     form_class = UserUpdateModelForm
+    login_url = reverse_lazy('profile:login')
     model = User
     success_url = reverse_lazy('profile:user-profile')
     template_name = 'user_profile_update_view.html'
