@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseForbidden
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
@@ -50,3 +51,14 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
         if not obj.dev == self.request.user.userprofile:
             raise HttpResponseForbidden
         return obj
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Calls the delete() method on the fetched object and then
+        redirects to the success URL.
+        """
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.is_published = not self.object.is_published
+        self.object.save()
+        return HttpResponseRedirect(success_url)
