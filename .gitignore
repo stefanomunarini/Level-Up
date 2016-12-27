@@ -99,4 +99,5 @@ migrations/*
 db.sqlite3
 
 *.png
+*.jpg
 *dev_*

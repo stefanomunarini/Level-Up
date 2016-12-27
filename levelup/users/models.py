@@ -1,7 +1,12 @@
 from __future__ import unicode_literals
 
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.db import models
+
+
+def get_upload_path(instance, filename):
+    if isinstance(instance, UserProfile):
+        return "user_{}/profile_pics/{}".format(instance.user.username, filename)
 
 
 class UserProfile(models.Model):
@@ -13,7 +18,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
     deactivated_until = models.DateTimeField(null=True, blank=True)
-    profile_pic = models.ImageField(null=True, blank=True)
+    profile_pic = models.ImageField(null=True, blank=True, upload_to=get_upload_path, max_length=255)
     third_party_login = models.CharField(max_length=32, null=True, blank=True)
 
     # developer fields

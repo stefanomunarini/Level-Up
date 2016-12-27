@@ -28,7 +28,7 @@ class GameCreateView(LoginRequiredMixin, CreateView):
         if not request.user.userprofile.is_developer():
             return HttpResponseForbidden()
         return super(GameCreateView, self).dispatch(request, *args, **kwargs)
-
+    
     def get_context_data(self, **kwargs):
         context = super(GameCreateView, self).get_context_data(**kwargs)
         context['game_screenshot_forms'] = GameScreenshotModelFormSet()
