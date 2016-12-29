@@ -21,6 +21,10 @@ class RegistrationUserProfileModelForm(ModelForm):
     PLAYER_SLUG = 'player'
     DEVELOPER_SLUG = 'developer'
 
+    class Meta:
+        model = UserProfile
+        exclude = ('deactivated_until', 'user', 'third_party_login')
+
     user_type = ChoiceField(choices=((PLAYER_SLUG, 'Player'),
                                      (DEVELOPER_SLUG, 'Developer'),))
 
