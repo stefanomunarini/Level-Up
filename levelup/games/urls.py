@@ -18,7 +18,7 @@ from django.conf.urls import url
 from games.views import GameCreateView, GameDeleteView, GameDetailView
 
 urlpatterns = [
-    url(r'^(?P<pk>[0-9]+)/$', GameDetailView.as_view(), name='detail'),
+    url(r'^detail/(?P<slug>[-\w]+)/$', GameDetailView.as_view(), name='detail'),
     url(r'^create/$', GameCreateView.as_view(), name='create'),
     url(r'^delete/(?P<pk>[0-9]+)/$', GameDeleteView.as_view(), name='delete'),
 ]

@@ -11,7 +11,7 @@
                     <div>
                         <p>
                             <img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>
-                            <a href="{% url 'game:detail' game.pk %}">{{ game.name }}</a>
+                            <a href="{% url 'game:detail' game.slug %}">{{ game.name }}</a>
                             <span>Is published: {{ game.is_published }}</span>
                             <a href="{% url 'game:delete' game.pk %}">
                             {% if game.is_published %}

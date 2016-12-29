@@ -13,7 +13,7 @@ def get_upload_path(instance, filename):
 
 class Game(models.Model):
     name = models.CharField(max_length=64)
-    slug = models.SlugField(null=False, blank=False)
+    slug = models.SlugField(null=False, blank=False, unique=True)
     dev = models.ForeignKey(UserProfile,
                             on_delete=models.CASCADE,
                             limit_choices_to=Q(groups__name='Developers'),
