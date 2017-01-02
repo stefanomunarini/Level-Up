@@ -3,3 +3,4 @@ Pillow
 django-extensions
 ipython
 ipdb
+django-zurb-foundation
