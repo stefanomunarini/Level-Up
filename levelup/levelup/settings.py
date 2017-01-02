@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'foundation',
+    'foundation', # https://pypi.python.org/pypi/django-zurb-foundation
     'users',
     'games',
     'transactions',
