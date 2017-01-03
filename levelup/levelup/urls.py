@@ -29,5 +29,8 @@ urlpatterns = [
     url(r'^game/', include(games_url, namespace='game')),
     url(r'^$', RedirectView.as_view(url=reverse_lazy('profile:login'), permanent=False)),
     
-    url(r'^test-foundation/', include(foundation_urls)),
+    # Lang
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+    
+    url(r'^test-foundation/', include(foundation_urls), name='Foundation'),
 ]
