@@ -1,0 +1,74 @@
+{% comment %}
+An Architecture for Django Templates
+https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
+{% endcomment %}
+
+{% load staticfiles i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!doctype html>
+<html class="no-js" lang="{{ LANGUAGE_CODE }}">
+<head>
+    {% block meta %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% endblock meta %}
+    
+    <title>{% block title %}LevelUp{% endblock title %}</title>
+
+    {% block css %}
+        {% block foundation_css %}
+            <link href="{% static "foundation/css/normalize.css" %}" rel="stylesheet"/>
+            <link href="{% static "foundation/css/foundation.min.css" %}" rel="stylesheet"/>
+        {% endblock foundation_css %}
+        {% block fontawesome_css %}
+            <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet"/>
+        {% endblock fontawesome_css %}
+    {% endblock css %}
+
+    {% block head_js %}
+        {% block foundation_modernizer %}
+            <script src="{% static "foundation/js/vendor/modernizr.js" %}"></script>
+        {% endblock foundation_modernizer %}
+    {% endblock head_js %}
+</head>
+<body {% block body_attr %}{% endblock %}>
+    {% block body %}
+        <header>
+            {% block header %}
+                {% include "_header.html" %}
+            {% endblock header %}
+        </header>
+        <nav>
+            {% block navigation %}
+                {% include "_navigation.html" %}
+            {% endblock navigation %}
+        </nav>
+        <main>
+            {% block main %}
+            {% endblock main %}
+        </main>
+        <footer>
+            {% block footer %}
+                {% include "_footer.html" %}
+            {% endblock footer %}
+        </footer>
+    {% endblock body %}
+
+    {% block body_js %} 
+        {% block foundation_jquery %}
+            <script src="{% static "foundation/js/vendor/jquery.js" %}"></script>
+        {% endblock foundation_jquery %}
+        {% block foundation_js %}
+            <script src="{% static "foundation/js/foundation.min.js" %}"></script>
+        {% endblock foundation_js %}
+    {% endblock body_js %}
+
+    {% block foundation_js_init %}
+    <script>
+        $(document).foundation();
+    </script>
+    {% endblock foundation_js_init %}
+</body>
+</html>
