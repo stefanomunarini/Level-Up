@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
+from django.utils.translation import ugettext_lazy as _
 
 from games.models import Game
 from users.models import UserProfile
@@ -79,6 +80,8 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
         else:
             return render(request, self.template_name, {'user_form': user_form, 'user_profile_form': user_profile_form})
 
+def home(request):
+    return render(request, 'home.html');
 
 def login(request):
     if request.method == 'GET':
@@ -96,7 +99,7 @@ def login(request):
                 request.session['user_profile_id'] = user_profile.id
                 return HttpResponseRedirect(reverse('profile:user-profile'))
             else:
-                return render(request, 'login.html', {'form': form, 'error': 'Incorrect credentials!'})
+                return render(request, 'login.html', {'form': form, 'error': _('Incorrect credentials!')})
         else:
             return render(request, 'login.html', {'form': form})
 

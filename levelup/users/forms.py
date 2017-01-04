@@ -1,16 +1,17 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm, Form, CharField, PasswordInput, EmailField, ChoiceField, modelformset_factory
+from django.utils.translation import ugettext_lazy as _
 
 from users.models import UserProfile
 
 
 class LoginForm(Form):
-    username = CharField(label='Username')
-    password = CharField(label='Password', widget=PasswordInput())
+    username = CharField(label=_('Username'))
+    password = CharField(label=_('Password'), widget=PasswordInput())
 
 
 class RegistrationUserModelForm(ModelForm):
-    confirm_password = CharField(label='Confirm Password', widget=PasswordInput())
+    confirm_password = CharField(label=_('Confirm Password'), widget=PasswordInput())
 
     class Meta:
         model = User

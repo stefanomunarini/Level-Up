@@ -1,44 +1,45 @@
 {% extends "__base.html" %}
+{% load i18n %}
+
+{% trans "Log In" as page_title %}
+
+{% block title %}{{ page_title }} &ndash; {{ block.super }}{% endblock title %}
 
 {% block main %}
 
+{% trans "Your username and password didn’t match. Please try again." as msg %}
+{% trans error as error_msg %}
+
+
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<p>{{ msg }}</p>
 {% endif %}
 {% if error %}
 <p>{{ error }}</p>
 {% endif %}
 
+{% trans "Your account doesn’t have access to this page. To proceed, please login with an account that has access." as msg %}
+{% trans "Please login to see this page." as msg2 %}
 
 {% if next %}
     {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    <p>{{ msg }}</p>
     {% else %}
-    <p>Please login to see this page.</p>
+    <p>{{ msg2 }}</p>
     {% endif %}
 {% endif %}
 
 <form action="{% url 'profile:login' %}" method="post">
 {% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+{{ form }}
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{% url 'profile:user-profile' %}" />
+<input type="submit" value="{% trans 'Log In' %}" />
+<input type="hidden" name="next" value="{% url 'home' %}" />
 </form>
 
 {# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'profile:password_reset' %}">Lost password?</a></p>
-<p><a href="{% url 'profile:register' %}">Signup</a></p>
+<p><a href="{% url 'profile:password_reset' %}">{% trans 'Lost password?' %}</a></p>
+<p><a href="{% url 'profile:register' %}">{% trans 'Sign Up' %}</a></p>
 
 
-{% endblock %}
+{% endblock main %}

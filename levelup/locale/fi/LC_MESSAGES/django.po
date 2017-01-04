@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-03 15:11+0200\n"
-"PO-Revision-Date: 2017-01-03 15:05+0200\n"
+"POT-Creation-Date: 2017-01-04 15:53+0200\n"
+"PO-Revision-Date: 2017-01-04 15:53+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -17,11 +17,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.11\n"
 
+#: levelup/settings.py:128
+msgid "English"
+msgstr "Englanti"
+
+#: levelup/settings.py:129
+msgid "Finnish"
+msgstr "Suomi"
+
 #: levelup/templates/_navigation.html:11
 msgid "Menu"
 msgstr "Valikko"
 
 #: levelup/templates/_navigation.html:20
+#: users/templates/user_profile_detail_view.html:4
 msgid "My Profile"
 msgstr "Profiili"
 
@@ -29,11 +38,12 @@ msgstr "Profiili"
 msgid "Log Out"
 msgstr "Kirjaudu ulos"
 
-#: levelup/templates/_navigation.html:25
+#: levelup/templates/_navigation.html:25 users/templates/login.html:4
+#: users/templates/login.html:36
 msgid "Log In"
 msgstr "Kirjaudu sisään"
 
-#: levelup/templates/_navigation.html:47
+#: levelup/templates/_navigation.html:46
 msgid "Home"
 msgstr "Etusivu"
 
@@ -41,6 +51,50 @@ msgstr "Etusivu"
 msgid "My Games"
 msgstr "Omat pelit"
 
-#: levelup/templates/_navigation.html:49
+#: levelup/templates/_navigation.html:50
 msgid "Store"
 msgstr "Kauppa"
+
+#: levelup/templates/home.html:5
+msgid "Welcome!"
+msgstr "Tervetuloa!"
+
+#: users/forms.py:9
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+#: users/forms.py:10
+msgid "Password"
+msgstr "Salasana"
+
+#: users/forms.py:14
+msgid "Confirm Password"
+msgstr "Vahvista salasana"
+
+#: users/templates/login.html:10
+msgid "Your username and password didn’t match. Please try again."
+msgstr "Käyttäjätunnus ja salasana eivät täsmää. Yritä uudelleen."
+
+#: users/templates/login.html:21
+msgid ""
+"Your account doesn’t have access to this page. To proceed, please login with "
+"an account that has access."
+msgstr ""
+"Tunnuksillasi ei ole pääsyä tälle sivulle. Edetäksesi kirjaudu tunnuksilla, "
+"joilla on pääsy."
+
+#: users/templates/login.html:22
+msgid "Please login to see this page."
+msgstr "Ole hyvä ja kirjaudu nähdäksesi tämän sivun."
+
+#: users/templates/login.html:41
+msgid "Lost password?"
+msgstr "Salasana hukassa?"
+
+#: users/templates/login.html:42
+msgid "Sign Up"
+msgstr "Rekisteröidy"
+
+#: users/views.py:102
+msgid "Incorrect credentials!"
+msgstr "Virheelliset käyttäjätiedot!"
