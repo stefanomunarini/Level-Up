@@ -1,0 +1,21 @@
+{% extends "__base.html" %}
+{% load i18n %}
+
+{% trans "Log In" as page_title %}
+
+{% block title %}{{ page_title }} &ndash; {{ block.super }}{% endblock title %}
+
+{% block main %}
+
+<form action="" method="post">
+{% csrf_token %}
+{{ form }}
+
+<input type="submit" value="{% trans 'Log In' %}" />
+</form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">{% trans 'Lost password?' %}</a></p>
+<p><a href="{% url 'profile:register' %}">{% trans 'Sign Up' %}</a></p>
+
+{% endblock main %}

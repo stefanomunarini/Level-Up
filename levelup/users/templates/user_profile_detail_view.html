@@ -3,47 +3,23 @@
 
 {% block title %}{% trans 'My Profile' %} &ndash; {{ block.super }}{% endblock title %}
 
+
 {% block main %}
-    <div>
-        {% if user_profile.is_developer %}
-            <a href="{% url 'game:create' %}">Add game</a>
-            <div>
-                <h2>Games</h2>
-                    {% for game in games %}
-                        <div>
-                            <p>
-                                <img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>
-                                <a href="{% url 'game:detail' game.slug %}">{{ game.name }}</a>
-                                <span>Is published: {{ game.is_published }}</span>
-                                <a href="{% url 'game:delete' game.pk %}">
-                                {% if game.is_published %}
-                                    Unpublish
-                                {% else %}
-                                    Publish
-                                {% endif %}
-                                </a></p>
-                        </div>
-                    {% empty %}
-                        <p>No games yet.</p>
-                    {% endfor %}
+     {% include '_user_profile_details.html' %}
+    {% trans 'Games' as games_title %}
+    {% if user_profile.is_developer %}
+        <div class="row">
+            <div class="small-12 columns">
+                <h3>
+                    {{ games_title }}
+                    <small><a href="{% url 'game:create' %}">{% trans 'Add game' %}</a></small>
+                </h3>
             </div>
-        {% endif %}
-        <a href="{% url 'profile:logout' %}" >Logout</a>
-        <h3>{{ user_profile.user.username }}</h3>
-        <a href="{% url 'profile:user-profile-update' %}">Update profile</a>
-        <img src="{% get_static_prefix %}images/{{user_profile.profile_pic}}" width="150" height="150"/>
-        <p>First Name: {{ user_profile.user.first_name }}</p>
-        <p>Last Name: {{ user_profile.user.last_name }}</p>
-        <p>Email: {{ user_profile.user.email }}</p>
-        <p>Last login: {{ user_profile.user.last_login }}</p>
-        <p>
-            Groups:
-            {% for group in user_profile.user.groups.all %}
-                <b>{{ group }}</b>
-            {% empty %}
-                <b>No groups</b>
-            {% endfor %}
-        </p>
-        <p>Permissions: {{ user_profile.user.permissions|default:'None' }}</p>
-    </div>
-{% endblock %}
+        </div>
+        <div class="row">
+            <div class="small-12 columns">
+                {% include '_game_grid.html' %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock main %}

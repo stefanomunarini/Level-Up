@@ -1,0 +1,10 @@
+{% if messages %}
+<div class="messages small-12 columns">
+    {% for message in messages %}
+    <div data-alert class="alert-box {{ message.tags }}">
+        {{ message }}
+        <a href="#" class="close">&times;</a>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

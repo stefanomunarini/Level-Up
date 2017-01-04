@@ -15,20 +15,14 @@ Including another URLconf
 """
 import django
 from django.conf.urls import url, include, i18n
-from django.contrib.auth.views import password_reset, logout
 from django.urls import reverse_lazy
 
-from users.views import UserProfileDetailView, UserProfileUpdateView, login, register
+from users.views import UserProfileDetailView, UserProfileUpdateView, register
 
 urlpatterns = [
-
-    # Auth
-    url(r'^login/$', login, name='login'),
-    url(r'^logout/$', logout, {'next_page': reverse_lazy('profile:login')}, name='logout'),
-    url(r'^register/$', register, name='register'),
-    url(r'^login/password_reset/$', password_reset, name='password_reset'),
-
+    
     # Profile
+    url(r'^register/$', register, name='register'),
     url(r'^$', UserProfileDetailView.as_view(), name='user-profile'),
     url(r'^update/$', UserProfileUpdateView.as_view(), name='user-profile-update'),
     
