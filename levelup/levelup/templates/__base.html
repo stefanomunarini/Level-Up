@@ -1,3 +1,4 @@
+{% load i18n %}
 {% comment %}
 An Architecture for Django Templates
 https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
@@ -20,7 +21,7 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
     {% block css %}
         {% block foundation_css %}
             <link href="{% static "foundation/css/normalize.css" %}" rel="stylesheet"/>
-            <link href="{% static "foundation/css/foundation.min.css" %}" rel="stylesheet"/>
+            <link href="{% static "foundation/css/foundation.css" %}" rel="stylesheet"/>
         {% endblock foundation_css %}
         {% block fontawesome_css %}
             <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet"/>
@@ -40,11 +41,9 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
                 {% include "_header.html" %}
             {% endblock header %}
         </header>
-        <nav>
-            {% block navigation %}
-                {% include "_navigation.html" %}
-            {% endblock navigation %}
-        </nav>
+        {% block navigation %}
+            {% include "_navigation.html" %}
+        {% endblock navigation %}
         <main>
             {% block main %}
             {% endblock main %}

@@ -31,4 +31,5 @@ urlpatterns = [
     # Profile
     url(r'^$', UserProfileDetailView.as_view(), name='user-profile'),
     url(r'^update/$', UserProfileUpdateView.as_view(), name='user-profile-update'),
+    
 ]

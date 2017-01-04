@@ -1,12 +1,12 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 {% get_language_info for LANGUAGE_CODE as lang %}
-{# get_available_languages as LANGUAGES #}
+{% get_available_languages as LANGUAGES %}
 {% get_language_info_list for LANGUAGES as langs %}
 <nav class="top-bar" data-topbar role="navigation" data-options="is_hover: false">
     <ul class="title-area">
         <li class="name">
-            <h1><a href="#">LevelUp</a></h1>
+            <h1><a href="{% url 'home' %}">LevelUp</a></h1>
         </li>
         <li class="toggle-topbar menu-icon"><a href="#"><span>{% trans "Menu" %}</span></a></li>
     </ul>
@@ -30,11 +30,10 @@
                 <ul class="dropdown">
                     <form action="{% url 'set_language' %}" method="post">
                         <input name="next" value="/" type="hidden"/>
-                        <button type="submit" name="language" value="fi">Test</button>
                         {% csrf_token %}
                         {% for l in langs %}
                             {% if l.code != lang.code %}
-                            <li><button type="submit" name="language" value="{{ l.code }}">{{ l.name_local }}</button></li>
+                            <li><button class="link-button" type="submit" name="language" value="{{ l.code }}">{{ l.name_local }}</button></li>
                             {% endif %}
                         {% endfor %}
                     </form>
@@ -44,8 +43,10 @@
         </ul>
         <!-- Left Nav Section -->
         <ul class="left">
-            <li><a href="#"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
-            <li><a href="#"><i class="fa fa-gamepad"></i> {% trans "My Games" %}</a></li>
+            <li><a href="{% url 'home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="#"><i class="fa fa-gamepad"></i> {% trans "My Games" %}</a></li>
+            {% endif %}
             <li><a href="#"><i class="fa fa-shopping-basket"></i> {% trans "Store" %}</a></li>
         </ul>
   </section>
