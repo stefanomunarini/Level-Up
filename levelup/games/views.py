@@ -1,15 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseForbidden
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import CreateView, DetailView, DeleteView, TemplateView
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from django.views.generic import DeleteView
-from django.views.generic import DetailView
+from django.utils.translation import ugettext_lazy as _
 
 from games.forms import GameScreenshotModelFormSet
 from games.models import Game
 from users.models import UserProfile
-
 
 class GameDetailView(DetailView):
     model = Game
@@ -69,3 +67,12 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
         self.object.is_published = not self.object.is_published
         self.object.save()
         return HttpResponseRedirect(success_url)
+
+def store(request):
+    games = Game.objects.all();
+    return render(request, 'game_list.html', {'page_title':_('Store'),'games':games});
+
+
+def my_games(request):
+    games = Game.objects.all(); # TODO: find games bought by the user
+    return render(request, 'game_list.html', {'page_title':_('My Games'),'games':games});

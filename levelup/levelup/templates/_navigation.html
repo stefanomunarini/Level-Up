@@ -47,9 +47,9 @@
         <ul class="left">
             <li><a href="{% url 'home' %}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
             {% if user.is_authenticated %}
-                <li><a href="#"><i class="fa fa-gamepad"></i> {% trans "My Games" %}</a></li>
+                <li><a href="{% url 'game:my-games' %}"><i class="fa fa-gamepad"></i> {% trans "My Games" %}</a></li>
             {% endif %}
-            <li><a href="#"><i class="fa fa-shopping-basket"></i> {% trans "Store" %}</a></li>
+            <li><a href="{% url 'game:store' %}"><i class="fa fa-shopping-basket"></i> {% trans "Store" %}</a></li>
         </ul>
   </section>
 </nav>
