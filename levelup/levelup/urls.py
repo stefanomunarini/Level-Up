@@ -33,8 +33,8 @@ urlpatterns = [
     url(r'^$', home, name='home'),
     
     # Auth
+    url(r'^login/$', login, {'template_name':'auth/login.html'}, name='login'),
     url('^', include('django.contrib.auth.urls')),
-    url(r'^login/$', login, {'template_name':'login.html'}, name='login'),
     
     # Set language
     url(r'^i18n/', include('django.conf.urls.i18n')),

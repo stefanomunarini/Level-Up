@@ -1,6 +1,18 @@
 {% extends "__base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Update Profile" %} &ndash; {{ block.super }}{% endblock title %}
 
 {% block main %}
+    <h3>{% trans "Update Profile" %} <small><a href="{% url 'profile:user-profile' %}">{{ user.username }}</a></small></h3>
+    <form action="{% url 'profile:user-profile-update' %}" method="post">
+        {% csrf_token %}
+        {% include "_input_grid.html" with form=user_profile_form.management_form %}
+        {% include "_input_grid.html" with form=user_form %}
+        {% include "_input_grid.html" with form=user_profile_form submit_text=_('Update') %}
+    </form>
+
+
 
 {% for error in user_form.errors %}
 <p>{{ error }}</p>
@@ -14,8 +26,7 @@
 <p>{{ error }}</p>
 {% endif %}
 
-<a href="{% url 'profile:user-profile' %}">Profile</a>
-<p>{{ user_profile.username }}</p>
+
 
 <form action="{% url 'profile:user-profile-update' %}" method="post" enctype="multipart/form-data">
 {% csrf_token %}

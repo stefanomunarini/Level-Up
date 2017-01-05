@@ -103,11 +103,11 @@ def login(request):
             return render(request, 'login.html', {'form': form})
 """
 
-def register(request):
+def registration(request):
     if request.method == 'GET':
         user_form = RegistrationUserModelForm()
         user_profile_form = RegistrationUserProfileModelForm()
-        return render(request, 'register.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
+        return render(request, 'registration.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
     elif request.method == 'POST':
         user_form = RegistrationUserModelForm(request.POST, request.FILES)
         user_profile_form = RegistrationUserProfileModelForm(request.POST)
@@ -131,5 +131,5 @@ def register(request):
                     group = Group.objects.get(pk=2)
                     user.groups.set([group])
                     user.save()
-            return HttpResponseRedirect(reverse('profile:login'))
-        return render(request, 'register.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
+            return HttpResponseRedirect(reverse('login'))
+        return render(request, 'registration.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
