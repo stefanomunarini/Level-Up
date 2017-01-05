@@ -1,0 +1,20 @@
+{% extends "__base.html" %}
+{% load i18n %}
+
+
+{% block title %}{{ page_title }} &ndash; {{ block.super }}{% endblock title %}
+
+{% block main %}
+
+<div class="row">
+    <div class="small-12 columns">
+        <h1>{{ page_title }}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns">
+        <h1>{% include "_game_grid.html" %}</h1>
+    </div>
+</div>
+
+{% endblock main %}

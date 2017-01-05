@@ -29,7 +29,7 @@ from users.views import home
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^profile/', include(users_url, namespace='profile')),
-    url(r'^game/', include(games_url, namespace='game')),
+    url(r'^games/', include(games_url, namespace='game')),
     url(r'^$', home, name='home'),
     
     # Auth
