@@ -1,21 +1,17 @@
 {% extends "__base.html" %}
 {% load i18n %}
 
-{% trans "Log In" as page_title %}
-
-{% block title %}{{ page_title }} &ndash; {{ block.super }}{% endblock title %}
+{% block title %}{% trans "Log In" %} &ndash; {{ block.super }}{% endblock title %}
 
 {% block main %}
 
 <form action="" method="post">
 {% csrf_token %}
-{{ form }}
-
-<input type="submit" value="{% trans 'Log In' %}" />
+{% include "_input_grid.html" with submit_text=_('Log In') %}
 </form>
 
 {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}">{% trans 'Lost password?' %}</a></p>
-<p><a href="{% url 'profile:register' %}">{% trans 'Sign Up' %}</a></p>
+<p><a href="{% url 'profile:registration' %}">{% trans 'Sign Up' %}</a></p>
 
 {% endblock main %}

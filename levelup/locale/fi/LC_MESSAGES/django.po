@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-04 15:53+0200\n"
+"POT-Creation-Date: 2017-01-05 09:51+0200\n"
 "PO-Revision-Date: 2017-01-04 15:53+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,43 +17,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: levelup/settings.py:128
+#: levelup/settings.py:131
 msgid "English"
 msgstr "Englanti"
 
-#: levelup/settings.py:129
+#: levelup/settings.py:132
 msgid "Finnish"
 msgstr "Suomi"
 
-#: levelup/templates/_navigation.html:11
+#: levelup/templates/_navigation.html:6 levelup/templates/_navigation.html:27
+#: levelup/templates/auth/login.html:4 levelup/templates/auth/login.html:14
+msgid "Log In"
+msgstr "Kirjaudu sisään"
+
+#: levelup/templates/_navigation.html:13
 msgid "Menu"
 msgstr "Valikko"
 
-#: levelup/templates/_navigation.html:20
+#: levelup/templates/_navigation.html:22
 #: users/templates/user_profile_detail_view.html:4
 msgid "My Profile"
 msgstr "Profiili"
 
-#: levelup/templates/_navigation.html:21
+#: levelup/templates/_navigation.html:23
 msgid "Log Out"
 msgstr "Kirjaudu ulos"
 
-#: levelup/templates/_navigation.html:25 users/templates/login.html:4
-#: users/templates/login.html:36
-msgid "Log In"
-msgstr "Kirjaudu sisään"
-
-#: levelup/templates/_navigation.html:46
+#: levelup/templates/_navigation.html:48
 msgid "Home"
 msgstr "Etusivu"
 
-#: levelup/templates/_navigation.html:48
+#: levelup/templates/_navigation.html:50
 msgid "My Games"
 msgstr "Omat pelit"
 
-#: levelup/templates/_navigation.html:50
+#: levelup/templates/_navigation.html:52
 msgid "Store"
 msgstr "Kauppa"
+
+#: levelup/templates/auth/login.html:18
+msgid "Lost password?"
+msgstr "Salasana hukassa?"
+
+#: levelup/templates/auth/login.html:19
+msgid "Sign Up"
+msgstr "Rekisteröidy"
 
 #: levelup/templates/home.html:5
 msgid "Welcome!"
@@ -71,30 +79,32 @@ msgstr "Salasana"
 msgid "Confirm Password"
 msgstr "Vahvista salasana"
 
-#: users/templates/login.html:10
-msgid "Your username and password didn’t match. Please try again."
-msgstr "Käyttäjätunnus ja salasana eivät täsmää. Yritä uudelleen."
-
-#: users/templates/login.html:21
-msgid ""
-"Your account doesn’t have access to this page. To proceed, please login with "
-"an account that has access."
+#: users/templates/_user_profile_details.html:12
+msgid "Update profile"
 msgstr ""
-"Tunnuksillasi ei ole pääsyä tälle sivulle. Edetäksesi kirjaudu tunnuksilla, "
-"joilla on pääsy."
 
-#: users/templates/login.html:22
-msgid "Please login to see this page."
-msgstr "Ole hyvä ja kirjaudu nähdäksesi tämän sivun."
+#: users/templates/user_profile_detail_view.html:9
+#, fuzzy
+#| msgid "My Games"
+msgid "Games"
+msgstr "Omat pelit"
 
-#: users/templates/login.html:41
-msgid "Lost password?"
-msgstr "Salasana hukassa?"
+#: users/templates/user_profile_detail_view.html:15
+msgid "Add game"
+msgstr ""
 
-#: users/templates/login.html:42
-msgid "Sign Up"
-msgstr "Rekisteröidy"
+#~ msgid "Your username and password didn’t match. Please try again."
+#~ msgstr "Käyttäjätunnus ja salasana eivät täsmää. Yritä uudelleen."
 
-#: users/views.py:102
-msgid "Incorrect credentials!"
-msgstr "Virheelliset käyttäjätiedot!"
+#~ msgid ""
+#~ "Your account doesn’t have access to this page. To proceed, please login "
+#~ "with an account that has access."
+#~ msgstr ""
+#~ "Tunnuksillasi ei ole pääsyä tälle sivulle. Edetäksesi kirjaudu "
+#~ "tunnuksilla, joilla on pääsy."
+
+#~ msgid "Please login to see this page."
+#~ msgstr "Ole hyvä ja kirjaudu nähdäksesi tämän sivun."
+
+#~ msgid "Incorrect credentials!"
+#~ msgstr "Virheelliset käyttäjätiedot!"

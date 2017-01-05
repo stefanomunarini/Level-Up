@@ -17,12 +17,12 @@ import django
 from django.conf.urls import url, include, i18n
 from django.urls import reverse_lazy
 
-from users.views import UserProfileDetailView, UserProfileUpdateView, register
+from users.views import UserProfileDetailView, UserProfileUpdateView, registration
 
 urlpatterns = [
     
     # Profile
-    url(r'^register/$', register, name='register'),
+    url(r'^signup/$', registration, name='registration'),
     url(r'^$', UserProfileDetailView.as_view(), name='user-profile'),
     url(r'^update/$', UserProfileUpdateView.as_view(), name='user-profile-update'),
     
