@@ -227,7 +227,8 @@ Even though we will not have daily meetings, we will organize face-to-face meeti
 	- Developer functionalities: add, edit, delete game
 - 14.01.2017:
     - Payment, search games, save game state, developer inventory, sale statistics
-    - Sprint 4, weeks 3 & 4
+
+#### Sprint 4, weeks 3 & 4
 - 21.01.2017:
     - Message service
     - 3rd party authentication
