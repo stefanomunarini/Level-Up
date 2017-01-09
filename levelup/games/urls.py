@@ -14,14 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.utils.translation import ugettext_lazy as _
 
-from games.views import my_games, store, GameCreateView, GameDeleteView, GameDetailView
+from games.views import GameBuyView, GameCreateView, GameDeleteView, GameDetailView, GameListView
 
 urlpatterns = [
-    url(r'^$', my_games, name='my-games'),
-    url(r'^store/$', store, name='store'),
+    url(r'^$', GameListView.as_view(bought=True, page_title=_('My Games')), name='my-games'),
+    url(r'^store/$', GameListView.as_view(page_title=_('Store')), name='store'),
     url(r'^add/$', GameCreateView.as_view(), name='add'),
     url(r'^(?P<slug>[-\w]+)/$', GameDetailView.as_view(), name='detail'),
     url(r'^(?P<slug>[-\w]+)/play$', GameDetailView.as_view(), name='play'),
+    url(r'^(?P<slug>[-\w]+)/buy$', GameBuyView.as_view(), name='buy'),
     url(r'^(?P<pk>[0-9]+)/delete$', GameDeleteView.as_view(), name='delete'),
 ]

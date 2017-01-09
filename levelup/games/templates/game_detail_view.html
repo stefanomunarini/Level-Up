@@ -7,7 +7,10 @@
 <a href="{% url 'profile:user-profile' %}">Go back</a>
 <h3>
     {{ game.name }}
-    <small><a href="{% url 'game:play' slug=game.slug %}">{% trans 'Play' %}</a></small>
+    <small>
+        <a href="{% url 'game:play' slug=game.slug %}">{% trans 'Play' %}</a>,
+        <a href="{% url 'game:buy' slug=game.slug %}">{% trans 'Buy' %}</a>
+    </small>
 </h3>
 <img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>
 <p>Added: {{ game.date_added }}</p>

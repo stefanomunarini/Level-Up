@@ -1,14 +1,55 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import CreateView, DetailView, DeleteView, TemplateView
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, TemplateView
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
-from games.forms import GameScreenshotModelFormSet
+from games.forms import GameBuyForm, GameScreenshotModelFormSet
 from games.models import Game
+from transactions.models import Transaction
 from users.models import UserProfile
 from users.views import UserProfileMixin
+
+class GameListView(ListView):
+    context_object_name = 'games'
+    template_name = 'game_list.html'
+    bought = False
+    page_title = _('Games')
+    
+    def get_context_data(self, **kwargs):
+        context = super(GameListView, self).get_context_data(**kwargs)
+        context['page_title'] = self.page_title
+        return context
+    
+    def get_queryset(self):
+        if(self.bought):
+            return Game.objects.filter(
+                id__in=Transaction.objects.filter(
+                    user=self.request.user.profile,
+                    status=Transaction.SUCCESS_STATUS
+                )
+            )
+        else:
+            return Game.objects.all()
+
+class GameBuyView(LoginRequiredMixin, DetailView, FormView): #TODO: Implement payments
+    login_url = reverse_lazy('profile:login')
+    form_class = GameBuyForm
+    model = Game
+    context_object_name = 'game'
+    template_name = 'game_buy.html'
+    success_url = reverse_lazy('home')
+    
+    def form_valid(self, form):
+        self.success_url = reverse_lazy('game:detail', kwargs=self.kwargs)
+        t = Transaction(
+            user=self.request.user.profile,
+            game=self.get_object(),
+            status=Transaction.SUCCESS_STATUS
+        )
+        t.save()
+        return super(GameBuyView, self).form_valid(form)
 
 class GameDetailView(DetailView):
     model = Game
@@ -69,12 +110,3 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
         self.object.is_published = not self.object.is_published
         self.object.save()
         return HttpResponseRedirect(success_url)
-
-def store(request):
-    games = Game.objects.all();
-    return render(request, 'game_list.html', {'page_title':_('Store'),'games':games});
-
-
-def my_games(request):
-    games = Game.objects.all(); # TODO: find games bought by the user
-    return render(request, 'game_list.html', {'page_title':_('My Games'),'games':games});
