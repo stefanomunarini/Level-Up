@@ -24,8 +24,7 @@ class UserProfileMixin(object):
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileMixin, self).get_context_data(**kwargs)
-        self.user_profile = get_object_or_404(UserProfile, user=self.request.user)
-        context['user_profile'] = self.user_profile
+        context['user_profile'] = self.request.user.profile
         return context
 
 
@@ -35,8 +34,8 @@ class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
-        if self.user_profile.is_developer():
-            context['games'] = Game.objects.filter(dev=self.user_profile)
+        if self.request.user.profile.is_developer():
+            context['games'] = Game.objects.filter(dev=self.request.user.profile)
         return context
 
 
@@ -131,5 +130,5 @@ def registration(request):
                     group = Group.objects.get(pk=2)
                     user.groups.set([group])
                     user.save()
-            return HttpResponseRedirect(reverse('login'))
+            return HttpResponseRedirect(reverse('profile:user-profile'))
         return render(request, 'registration.html', {'user_form': user_form, 'user_profile_form': user_profile_form})

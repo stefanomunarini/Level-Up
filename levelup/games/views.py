@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from games.forms import GameScreenshotModelFormSet
 from games.models import Game
 from users.models import UserProfile
+from users.views import UserProfileMixin
 
 class GameDetailView(DetailView):
     model = Game
@@ -23,7 +24,7 @@ class GameCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('profile:user-profile')
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.userprofile.is_developer():
+        if not request.user.profile.is_developer():
             return HttpResponseForbidden()
         return super(GameCreateView, self).dispatch(request, *args, **kwargs)
     
@@ -34,7 +35,7 @@ class GameCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         game = form.instance
-        game.dev = UserProfile.objects.get(id=self.request.session.get('user_profile_id'))
+        game.dev = self.request.user.profile
         game.save()
         game_screenshot_formset = GameScreenshotModelFormSet(self.request.POST,
                                                              self.request.FILES)
@@ -42,6 +43,7 @@ class GameCreateView(LoginRequiredMixin, CreateView):
         for game_screenshot_instance in game_screenshot_instances:
             game_screenshot_instance.game = game
             game_screenshot_instance.save()
+        
         return super(GameCreateView, self).form_valid(form)
 
 
@@ -53,7 +55,7 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_object(self, queryset=None):
         obj = super(GameDeleteView, self).get_object(queryset=queryset)
-        if not obj.dev == self.request.user.userprofile:
+        if not obj.dev == self.request.user.profile:
             return HttpResponseForbidden()
         return obj
 

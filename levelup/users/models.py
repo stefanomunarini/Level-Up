@@ -33,3 +33,5 @@ class UserProfile(models.Model):
         if self.user.groups.filter(name=self.DEVELOPER_GROUP).exists():
             return True
         return False
+
+User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
