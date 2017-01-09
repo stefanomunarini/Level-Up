@@ -1,0 +1,28 @@
+{% extends "__layout_sidebar_left.html" %}
+{% load static i18n %}
+
+{% block col-side %}
+    <img src="{% get_static_prefix %}images/{{user_profile.profile_pic}}" width="150" height="150"/>
+{% endblock col-side %}
+
+{% block col-main %}
+    <div>
+        <h3>
+            {{ user_profile.user.username }}
+            <small><a href="{% url 'profile:user-profile-update' %}">{% trans 'Update profile' %}</a></small>
+        </h3>
+        <p>First Name: {{ user_profile.user.first_name }}</p>
+        <p>Last Name: {{ user_profile.user.last_name }}</p>
+        <p>Email: {{ user_profile.user.email }}</p>
+        <p>Last login: {{ user_profile.user.last_login }}</p>
+        <p>
+            Groups:
+            {% for group in user_profile.user.groups.all %}
+                <b>{{ group }}</b>
+            {% empty %}
+                <b>No groups</b>
+            {% endfor %}
+        </p>
+        <p>Permissions: {{ user_profile.user.permissions|default:'None' }}</p>
+    </div>
+{% endblock col-main %}

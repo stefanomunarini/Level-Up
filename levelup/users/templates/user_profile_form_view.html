@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <div>
-        <h3>{{ user_profile.user.username }}</h3>
-        <form action="{% url 'profile:user-profile-update' pk=user_profile.user.id %}" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit"/>
-        </form>
-    </div>
-</body>
-</html>
+{% extends "__base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Update Profile" %} &ndash; {{ block.super }}{% endblock title %}
+
+{% block main %}
+    <h3>{{ user_profile.user.username }}</h3>
+    <form action="{% url 'profile:user-profile-update' pk=user_profile.user.id %}" method="post">
+        {% csrf_token %}
+        {% include "_input_grid.html" with submit_text=_('Update') %}
+    </form>
+{% endblock %}

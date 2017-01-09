@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from games.views import GameCreateView, GameDeleteView, GameDetailView
+from games.views import my_games, store, GameCreateView, GameDeleteView, GameDetailView
 
 urlpatterns = [
-    url(r'^detail/(?P<slug>[-\w]+)/$', GameDetailView.as_view(), name='detail'),
-    url(r'^create/$', GameCreateView.as_view(), name='create'),
-    url(r'^delete/(?P<pk>[0-9]+)/$', GameDeleteView.as_view(), name='delete'),
+    url(r'^$', my_games, name='my-games'),
+    url(r'^store/$', store, name='store'),
+    url(r'^(?P<slug>[-\w]+)/$', GameDetailView.as_view(), name='detail'),
+    url(r'^add/$', GameCreateView.as_view(), name='add'),
+    url(r'^(?P<pk>[0-9]+)/delete$', GameDeleteView.as_view(), name='delete'),
 ]

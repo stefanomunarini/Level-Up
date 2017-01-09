@@ -1,15 +1,17 @@
-{% extends "base.html" %}
+{% extends "__base.html" %}
+{% load i18n %}
 
-{% block content %}
+{% block title %}{% trans "Add Game" %} &ndash; {{ block.super }}{% endblock title %}
+
+{% block main %}
 <form action="{% url 'game:create' %}" method="post" enctype="multipart/form-data">
 {% csrf_token %}
-{{ form.as_p }}
-{{ game_screenshot_forms.management_form }}
+{% include "_input_grid.html" %}
 {% for game_screenshot_form in game_screenshot_forms %}
-    {{ game_screenshot_form.as_p }}
+    {% include "_input_grid.html" with form=game_screenshot_form %}
 {% endfor %}
+{% include "_input_grid.html" with form=game_screenshot_forms.management_form submit_text=_('Add Game') %}
 
-<input type="submit" value="Crea" />
 </form>
 
-{% endblock %}
+{% endblock main %}

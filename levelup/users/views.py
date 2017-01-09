@@ -1,14 +1,13 @@
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
 from django.forms import model_to_dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
-from django.urls import reverse_lazy
-from django.views.generic import TemplateView
-from django.views.generic import UpdateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import TemplateView, UpdateView
+from django.utils.translation import ugettext_lazy as _
 
 from games.models import Game
 from users.models import UserProfile
@@ -25,13 +24,13 @@ class UserProfileMixin(object):
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileMixin, self).get_context_data(**kwargs)
-        self.user_profile = get_object_or_404(UserProfile, id=self.request.session.get('user_profile_id'))
+        self.user_profile = get_object_or_404(UserProfile, user=self.request.user)
         context['user_profile'] = self.user_profile
         return context
 
 
 class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
-    login_url = reverse_lazy('profile:login')
+    login_url = reverse_lazy('login')
     template_name = 'user_profile_detail_view.html'
 
     def get_context_data(self, **kwargs):
@@ -43,7 +42,7 @@ class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
 
 class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
     form_class = UserUpdateModelForm
-    login_url = reverse_lazy('profile:login')
+    login_url = reverse_lazy('login')
     model = User
     success_url = reverse_lazy('profile:user-profile')
     template_name = 'user_profile_update_view.html'
@@ -79,7 +78,9 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
         else:
             return render(request, self.template_name, {'user_form': user_form, 'user_profile_form': user_profile_form})
 
-
+def home(request):
+    return render(request, 'home.html');
+"""
 def login(request):
     if request.method == 'GET':
         if request.user.is_authenticated():
@@ -94,18 +95,19 @@ def login(request):
                 auth.login(request, user)
                 user_profile = UserProfile.objects.get(user=user)
                 request.session['user_profile_id'] = user_profile.id
-                return HttpResponseRedirect(reverse('profile:user-profile'))
+                return HttpResponseRedirect(request.POST.get('next'))
             else:
-                return render(request, 'login.html', {'form': form, 'error': 'Incorrect credentials!'})
+                messages.add_message(request, messages.ERROR, _('The entered credentials were regrettably incorrect.'))
+                return render(request, 'login.html', {'form': form})
         else:
             return render(request, 'login.html', {'form': form})
+"""
 
-
-def register(request):
+def registration(request):
     if request.method == 'GET':
         user_form = RegistrationUserModelForm()
         user_profile_form = RegistrationUserProfileModelForm()
-        return render(request, 'register.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
+        return render(request, 'registration.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
     elif request.method == 'POST':
         user_form = RegistrationUserModelForm(request.POST, request.FILES)
         user_profile_form = RegistrationUserProfileModelForm(request.POST)
@@ -129,5 +131,5 @@ def register(request):
                     group = Group.objects.get(pk=2)
                     user.groups.set([group])
                     user.save()
-            return HttpResponseRedirect(reverse('profile:login'))
-        return render(request, 'register.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
+            return HttpResponseRedirect(reverse('login'))
+        return render(request, 'registration.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
