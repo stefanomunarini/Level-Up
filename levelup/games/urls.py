@@ -20,7 +20,7 @@ from games.views import my_games, store, GameCreateView, GameDeleteView, GameDet
 urlpatterns = [
     url(r'^$', my_games, name='my-games'),
     url(r'^store/$', store, name='store'),
-    url(r'^(?P<slug>[-\w]+)/$', GameDetailView.as_view(), name='detail'),
     url(r'^add/$', GameCreateView.as_view(), name='add'),
+    url(r'^(?P<slug>[-\w]+)/$', GameDetailView.as_view(), name='detail'),
     url(r'^(?P<pk>[0-9]+)/delete$', GameDeleteView.as_view(), name='delete'),
 ]
