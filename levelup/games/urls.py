@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^store/$', store, name='store'),
     url(r'^add/$', GameCreateView.as_view(), name='add'),
     url(r'^(?P<slug>[-\w]+)/$', GameDetailView.as_view(), name='detail'),
+    url(r'^(?P<slug>[-\w]+)/play$', GameDetailView.as_view(), name='play'),
     url(r'^(?P<pk>[0-9]+)/delete$', GameDeleteView.as_view(), name='delete'),
 ]
