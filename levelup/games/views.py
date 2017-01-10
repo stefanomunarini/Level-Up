@@ -24,12 +24,15 @@ class GameListView(ListView):
     
     def get_queryset(self):
         if(self.bought):
+            return self.request.user.profile.bought_games
+            """
             return Game.objects.filter(
                 id__in=Transaction.objects.filter(
                     user=self.request.user.profile,
                     status=Transaction.SUCCESS_STATUS
                 )
             )
+            """
         else:
             return Game.objects.all()
 

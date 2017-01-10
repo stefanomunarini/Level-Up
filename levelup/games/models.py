@@ -1,8 +1,6 @@
 from django.db import models
 from django.db.models import Q
 
-from users.models import UserProfile
-
 
 def get_upload_path(instance, filename):
     if isinstance(instance, Game):
@@ -14,7 +12,7 @@ def get_upload_path(instance, filename):
 class Game(models.Model):
     name = models.CharField(max_length=64)
     slug = models.SlugField(null=False, blank=False, unique=True)
-    dev = models.ForeignKey(UserProfile,
+    dev = models.ForeignKey('users.UserProfile',
                             on_delete=models.CASCADE,
                             limit_choices_to=Q(groups__name='Developers'),
                             related_name='games')
@@ -36,7 +34,7 @@ class GameScreenshot(models.Model):
 
 
 class GameScore(models.Model):
-    player = models.ForeignKey(UserProfile, related_name='scores')
+    player = models.ForeignKey('users.UserProfile', related_name='scores')
     game = models.ForeignKey(Game, related_name='scores')
     start_time = models.DateTimeField(auto_now_add=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)

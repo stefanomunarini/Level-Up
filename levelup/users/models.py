@@ -1,13 +1,19 @@
 from __future__ import unicode_literals
 
+from django.utils.translation import ugettext_lazy as _
+
 from django.contrib.auth.models import User
 from django.db import models
 
+from games.models import Game
+from transactions.models import Transaction
 
 def get_upload_path(instance, filename):
     if isinstance(instance, UserProfile):
         return "user_{}/profile_pics/{}".format(instance.user.username, filename)
 
+
+User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 class UserProfile(models.Model):
 
@@ -16,15 +22,19 @@ class UserProfile(models.Model):
 
     # Extend django.contrib.auth.models.user
     user = models.OneToOneField(User)
+    
+    # public stuff
+    display_name = models.CharField(_('Display name'), max_length=50, unique=True)
+    profile_picture = models.ImageField(_('Profile picture'), null=True, blank=True, upload_to=get_upload_path, max_length=255)
 
     deactivated_until = models.DateTimeField(null=True, blank=True)
-    profile_pic = models.ImageField(null=True, blank=True, upload_to=get_upload_path, max_length=255)
+    
     third_party_login = models.CharField(max_length=32, null=True, blank=True)
 
     # developer fields
-    dev_slug = models.SlugField(null=True, blank=True)
-    dev_website = models.URLField(null=True, blank=True)
-    dev_email_support = models.EmailField(null=True, blank=True)
+    #dev_name = models.CharField(max_length=50, null=True, blank=True)
+    #dev_website = models.URLField(_('Developer website'), null=True, blank=True)
+    #dev_email_support = models.EmailField(_('Developer support email'), null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -33,5 +43,18 @@ class UserProfile(models.Model):
         if self.user.groups.filter(name=self.DEVELOPER_GROUP).exists():
             return True
         return False
+    
+    def bought_games(self):
+        return Game.objects.filter(
+            id__in=Transaction.objects.filter(
+                user=self,
+                status=Transaction.SUCCESS_STATUS
+            )
+        )
 
-User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+class PlayerProfile(UserProfile): pass
+
+class DeveloperProfile(UserProfile): 
+    url_slug = models.SlugField(_('URL slug'), unique=True)
+    website = models.URLField(_('Developer website'), null=True, blank=True)
+    support_email = models.EmailField(_('Developer support email'), null=True, blank=True)
