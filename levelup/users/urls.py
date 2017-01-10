@@ -13,9 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-import django
-from django.conf.urls import url, include, i18n
-from django.urls import reverse_lazy
+from django.conf.urls import url
 
 from users.views import UserProfileDetailView, UserProfileUpdateView, registration
 

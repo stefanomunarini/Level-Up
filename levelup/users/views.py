@@ -77,31 +77,6 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
         else:
             return render(request, self.template_name, {'user_form': user_form, 'user_profile_form': user_profile_form})
 
-def home(request):
-    return render(request, 'home.html');
-"""
-def login(request):
-    if request.method == 'GET':
-        if request.user.is_authenticated():
-            return HttpResponseRedirect(reverse_lazy('profile:user-profile'))
-        form = LoginForm()
-        return render(request, 'login.html', {'form': form})
-    elif request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
-            if user:
-                auth.login(request, user)
-                user_profile = UserProfile.objects.get(user=user)
-                request.session['user_profile_id'] = user_profile.id
-                return HttpResponseRedirect(request.POST.get('next'))
-            else:
-                messages.add_message(request, messages.ERROR, _('The entered credentials were regrettably incorrect.'))
-                return render(request, 'login.html', {'form': form})
-        else:
-            return render(request, 'login.html', {'form': form})
-"""
-
 
 def registration(request):
     if request.user.is_authenticated():

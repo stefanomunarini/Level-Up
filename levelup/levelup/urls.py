@@ -15,16 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.contrib.auth.views import login, logout, password_reset
-from django.urls import reverse_lazy
-from django.views.generic import RedirectView
-from django.views.i18n import set_language
+from django.contrib.auth.views import login
 
-from foundation import urls as foundation_urls
-
-from users import urls as users_url
 from games import urls as games_url
-from users.views import home
+from users import urls as users_url
+from .views import home
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -33,7 +28,7 @@ urlpatterns = [
     url(r'^$', home, name='home'),
     
     # Auth
-    url(r'^login/$', login, {'template_name':'auth/login.html'}, name='login'),
+    url(r'^login/$', login, {'template_name': 'auth/login.html'}, name='login'),
     url('^', include('django.contrib.auth.urls')),
     
     # Set language
