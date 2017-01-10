@@ -26,15 +26,11 @@ class UserProfile(models.Model):
     # public stuff
     display_name = models.CharField(_('Display name'), max_length=50, unique=True)
     profile_picture = models.ImageField(_('Profile picture'), null=True, blank=True, upload_to=get_upload_path, max_length=255)
-
-    deactivated_until = models.DateTimeField(null=True, blank=True)
     
+    
+    # hidden stuff
+    deactivated_until = models.DateTimeField(null=True, blank=True)
     third_party_login = models.CharField(max_length=32, null=True, blank=True)
-
-    # developer fields
-    #dev_name = models.CharField(max_length=50, null=True, blank=True)
-    #dev_website = models.URLField(_('Developer website'), null=True, blank=True)
-    #dev_email_support = models.EmailField(_('Developer support email'), null=True, blank=True)
 
     def __str__(self):
         return self.user.username
