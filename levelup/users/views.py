@@ -49,30 +49,6 @@ class SignupDeveloperView(AbstractSignupView):
     form_class = SignupDeveloperForm
     success_url = reverse_lazy('profile:user-profile')
 
-class SignupView(FormView, ProcessFormView):
-    is_developer = False
-    template_name = 'signup.html'
-    form_class = SignupPlayerForm
-    
-    def get_context_data(self, **kwargs):
-        context = super(SignupView, self).get_context_data(**kwargs)
-        context['is_developer'] = self.is_developer
-        return context
-    
-    def get(self, request, *args, **kwargs):
-        # Don’t allow signups if the user is logged in
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse_lazy('home'))
-        return super(SignupView, self).get(self, request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        if self.form.is_valid():
-            self.form.save()
-            return HttpResponseRedirect(reverse('profile:user-profile'))
-        else:
-            messages.add_message(request, messages.WARNING, form.errors)
-            return super(UserSignupView, self).get(self, request, *args, **kwargs)
-
 # User Profile
 
 class UserProfileMixin(object):
