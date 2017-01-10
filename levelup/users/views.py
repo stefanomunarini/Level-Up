@@ -1,5 +1,5 @@
 from django.contrib import auth, messages
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
 from django.forms import model_to_dict
@@ -17,7 +17,9 @@ from users.forms import (
     UserUpdateModelForm, UserProfileUpdateModelForm, UserProfileUpdateModelFormset
 )
 
-class AbstractSignupView(ProcessFormView):
+# User Signup
+
+class AbstractSignupView(FormView, ProcessFormView):
     
     def get(self, request, *args, **kwargs):
         # Don’t allow signups if the user is logged in
@@ -28,28 +30,24 @@ class AbstractSignupView(ProcessFormView):
     def post(self, request, *args, **kwargs):
         form = self.form_class(self.request.POST, self.request.FILES)
         if form.is_valid():
-            form.save()
+            new_user = form.save()
+            new_user = authenticate(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password1'],
+            )
+            login(request, new_user)
             return HttpResponseRedirect(reverse('profile:user-profile'))
         else:
-            messages.add_message(request, messages.WARNING, form.errors)
             return super(AbstractSignupView, self).get(self, request, *args, **kwargs)
 
-class SignupPlayerView(FormView, AbstractSignupView):
+class SignupPlayerView(AbstractSignupView):
     template_name = 'signup.html'
-    form_class = SignupPlayerForm
-    success_url = reverse_lazy('profile:user-profile')
-    def form_valid(self, form):
-        form.save()
-        return HttpResponseRedirect(reverse('profile:user-profile'))
-        
+    form_class = SignupPlayerForm        
 
-class SignupDeveloperView(FormView, AbstractSignupView):
+class SignupDeveloperView(AbstractSignupView):
     template_name = 'signup.html'
     form_class = SignupDeveloperForm
     success_url = reverse_lazy('profile:user-profile')
-    def form_valid(self, form):
-        form.save()
-        return HttpResponseRedirect(reverse('profile:user-profile'))
 
 class SignupView(FormView, ProcessFormView):
     is_developer = False
@@ -75,39 +73,7 @@ class SignupView(FormView, ProcessFormView):
             messages.add_message(request, messages.WARNING, form.errors)
             return super(UserSignupView, self).get(self, request, *args, **kwargs)
 
-class UserSignupView(FormView, ProcessFormView):
-    template_name = 'signup.html'
-    form_class = SignupPlayerForm
-    
-    def get(self, request, *args, **kwargs):
-        # Don’t allow signups if the user is logged in
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse_lazy('home'))
-        return super(UserSignupView, self).get(self, request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        form = SignupPlayerForm(request.POST, request.FILES)
-        #form_user = SignupUserForm(request.POST)
-        #form_profile = SignupUserForm(request.POST, request.FILES)
-        if form.is_valid():
-            
-            form.save()
-            """
-            if 'is_developer' in form_profile.cleaned_data:
-                group = Group.objects.get(pk=1)
-            else:
-                group = Group.objects.get(pk=2)
-            user.groups.set([group])
-            """
-            
-            #user.save()
-            #user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-        
-            return HttpResponseRedirect(reverse('profile:user-profile'))
-        else:
-            messages.add_message(request, messages.WARNING, form_user.errors)
-            messages.add_message(request, messages.WARNING, form_profile.errors)
-        return super(UserSignupView, self).get(self, request, *args, **kwargs)
+# User Profile
 
 class UserProfileMixin(object):
     """
@@ -171,8 +137,6 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
         else:
             return render(request, self.template_name, {'user_form': user_form, 'user_profile_form': user_profile_form})
 
-def home(request):
-    return render(request, 'home.html');
 """
 def login(request):
     if request.method == 'GET':
@@ -197,6 +161,8 @@ def login(request):
 
 
 def registration(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse_lazy('home'))
     if request.method == 'GET':
         user_form = RegistrationUserModelForm()
         user_profile_form = RegistrationUserProfileModelForm()
@@ -228,3 +194,38 @@ def registration(request):
         return render(request, 'registration.html', {'user_form': user_form, 'user_profile_form': user_profile_form})
 """
 
+"""
+class UserSignupView(FormView, ProcessFormView):
+    template_name = 'signup.html'
+    form_class = SignupPlayerForm
+    
+    def get(self, request, *args, **kwargs):
+        # Don’t allow signups if the user is logged in
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse_lazy('home'))
+        return super(UserSignupView, self).get(self, request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        form = SignupPlayerForm(request.POST, request.FILES)
+        #form_user = SignupUserForm(request.POST)
+        #form_profile = SignupUserForm(request.POST, request.FILES)
+        if form.is_valid():
+            
+            form.save()
+            
+            if 'is_developer' in form_profile.cleaned_data:
+                group = Group.objects.get(pk=1)
+            else:
+                group = Group.objects.get(pk=2)
+            user.groups.set([group])
+            
+            
+            #user.save()
+            #user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+        
+            return HttpResponseRedirect(reverse('profile:user-profile'))
+        else:
+            messages.add_message(request, messages.WARNING, form_user.errors)
+            messages.add_message(request, messages.WARNING, form_profile.errors)
+        return super(UserSignupView, self).get(self, request, *args, **kwargs)
+"""

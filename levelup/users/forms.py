@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.contrib.auth import password_validation
 from django import forms
@@ -12,6 +12,8 @@ from django.forms.models import model_to_dict, fields_for_model
 from django.utils.translation import ugettext_lazy as _
 
 from users.models import UserProfile, PlayerProfile, DeveloperProfile
+
+# Signup Forms
 
 class SignupUserForm(Form, BaseModelForm):    
     username = UsernameField(label=_('Username'))
@@ -48,6 +50,12 @@ class SignupUserForm(Form, BaseModelForm):
             username=self.cleaned_data['username'],
             password=self.cleaned_data['password1'],
         )
+        if type(self) is SignupDeveloperForm:
+            group = Group.objects.get(pk=1)
+            user.groups.set([group])
+        elif type(self) is SignupPlayerForm:
+            group = Group.objects.get(pk=2)
+            user.groups.set([group])
         user.save()
         self.instance.user = user
         self.instance.user_id = user.id
@@ -65,27 +73,7 @@ class SignupDeveloperForm(ModelForm, SignupUserForm):
     class Meta:
         model = DeveloperProfile
         fields = ('display_name', 'profile_picture', 'url_slug', 'website', 'support_email')
-"""
-class RegistrationUserModelForm(ModelForm):
-    confirm_password = CharField(label=_('Confirm Password'), widget=PasswordInput())
 
-    class Meta:
-        model = User
-        fields = ('username', 'password', 'email', 'first_name', 'last_name')
-
-
-class RegistrationUserProfileModelForm(ModelForm):
-    PLAYER_SLUG = 'player'
-    DEVELOPER_SLUG = 'developer'
-
-    class Meta:
-        model = UserProfile
-        exclude = ('deactivated_until', 'user', 'third_party_login')
-
-    user_type = ChoiceField(choices=((PLAYER_SLUG, 'Player'),
-                                     (DEVELOPER_SLUG, 'Developer'),))
-
-"""
 class UserUpdateModelForm(ModelForm):
 
     class Meta:
@@ -109,6 +97,26 @@ UserProfileUpdateModelFormset = modelformset_factory(
 )
 
 """
+class RegistrationUserModelForm(ModelForm):
+    confirm_password = CharField(label=_('Confirm Password'), widget=PasswordInput())
+
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'email', 'first_name', 'last_name')
+
+
+class RegistrationUserProfileModelForm(ModelForm):
+    PLAYER_SLUG = 'player'
+    DEVELOPER_SLUG = 'developer'
+
+    class Meta:
+        model = UserProfile
+        exclude = ('deactivated_until', 'user', 'third_party_login')
+
+    user_type = ChoiceField(choices=((PLAYER_SLUG, 'Player'),
+                                     (DEVELOPER_SLUG, 'Developer'),))
+
+
 class SignupForm(ModelForm):
     class Meta:
         model = User
@@ -163,8 +171,7 @@ class SignupForm(ModelForm):
         if 'is_developer' in self.data and 'dev_email_support' in self.cleaned_data and val != self.data['dev_email_support']:
             raise forms.ValidationError(_('The developer support emails don’t match.'))
         return val
-"""
-"""
+
 # This class combines User and UserProfile models to create a single form
 # http://stackoverflow.com/a/15892615
 class SignupForm(ModelForm):

@@ -142,8 +142,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "levelup/static/"),
 ]
 
-# Other stuff
+LOGIN_REDIRECT_URL = '/'
 
+# Other stuff
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'secondary',
