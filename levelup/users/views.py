@@ -102,7 +102,10 @@ def login(request):
             return render(request, 'login.html', {'form': form})
 """
 
+
 def registration(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse_lazy('home'))
     if request.method == 'GET':
         user_form = RegistrationUserModelForm()
         user_profile_form = RegistrationUserProfileModelForm()
