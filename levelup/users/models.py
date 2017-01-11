@@ -47,10 +47,7 @@ class UserProfile(models.Model):
     # Return all the games that this user has bought
     def bought_games(self):
         return Game.objects.filter(
-            id__in=Transaction.objects.filter(
-                user=self,
-                status=Transaction.SUCCESS_STATUS
-            )
+            id__in=self.transactions.values_list('id', flat=True)
         )
 
 
