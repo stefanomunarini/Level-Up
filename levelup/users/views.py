@@ -17,42 +17,38 @@ from users.forms import (
     UserUpdateModelForm, UserProfileUpdateModelForm, UserProfileUpdateModelFormset
 )
 
+
 # User Signup
 
+class AbstractSignupView(FormView):
+    """
+        This acts as a generic SignupView that is used by SignupPlayerView and SignupDeveloperView
+        """
+    template_name = 'signup.html'
+    success_url = reverse_lazy('profile:user-profile')
 
-class AbstractSignupView(FormView, ProcessFormView):
-    """
-    This acts as a generic SignupView that is used by SignupPlayerView and SignupDeveloperView
-    """
     def get(self, request, *args, **kwargs):
         # Don’t allow signups if the user is logged in
         if request.user.is_authenticated:
             return HttpResponseRedirect(reverse_lazy('home'))
         return super(AbstractSignupView, self).get(self, request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(self.request.POST, self.request.FILES)
-        if form.is_valid():
-            form.save()
-            new_user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password1'],
-            )
-            login(request, new_user)
-            return HttpResponseRedirect(reverse('profile:user-profile'))
-        else:
-            return super(AbstractSignupView, self).get(self, request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.save()
+        new_user = authenticate(
+            username=form.cleaned_data['username'],
+            password=form.cleaned_data['password1'],
+        )
+        login(self.request, new_user)
+        return super(AbstractSignupView, self).form_valid(self)
 
 
 class SignupPlayerView(AbstractSignupView):
-    template_name = 'signup.html'
-    form_class = SignupPlayerForm        
+    form_class = SignupPlayerForm
 
 
 class SignupDeveloperView(AbstractSignupView):
-    template_name = 'signup.html'
     form_class = SignupDeveloperForm
-    success_url = reverse_lazy('profile:user-profile')
 
 
 # User Profile

@@ -1,18 +1,18 @@
 from django import forms
 from django.contrib.auth.forms import UsernameField
 from django.contrib.auth.models import User, Group
+from django.core.exceptions import ValidationError
 from django.forms import (
-    Form, ModelForm, BaseModelForm,
-    modelformset_factory,
+    ModelForm, modelformset_factory,
 )
 from django.utils.translation import ugettext_lazy as _
+
 from users.models import UserProfile, PlayerProfile, DeveloperProfile
 
 
 # Signup Forms
 
-
-class SignupUserForm(Form, BaseModelForm):    
+class SignupUserForm(ModelForm):
     username = UsernameField(label=_('Username'))
     password1 = forms.CharField(
         label=_("Password"),
@@ -25,7 +25,7 @@ class SignupUserForm(Form, BaseModelForm):
         strip=False,
         help_text=_("Enter the same password as before, for verification."),
     )
-    
+
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
@@ -34,14 +34,14 @@ class SignupUserForm(Form, BaseModelForm):
                 _('The passwords do not match.'),
                 code='password_mismatch',
             )
-        # self.instance.username = self.cleaned_data.get('username')
-        # password_validation.validate_password(self.cleaned_data.get('password2'), self.instance)
         return password2
-    
-    def clean(self):
-        data = super(SignupUserForm, self).clean()
-        return data
-    
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).count() > 0:
+            raise ValidationError('This username is already in use.')
+        return username
+
     def save(self, *args, **kwargs):
         user = User.objects.create_user(
             username=self.cleaned_data['username'],
@@ -56,11 +56,10 @@ class SignupUserForm(Form, BaseModelForm):
         user.save()
         self.instance.user = user
         self.instance.user_id = user.id
-        data = super(SignupUserForm, self).save(*args, **kwargs)
-        return data    
+        return super(SignupUserForm, self).save(*args, **kwargs)
 
 
-class SignupPlayerForm(ModelForm, SignupUserForm):
+class SignupPlayerForm(SignupUserForm):
     field_order = ('username', 'password1', 'password2')
 
     class Meta:
@@ -68,7 +67,7 @@ class SignupPlayerForm(ModelForm, SignupUserForm):
         fields = ('display_name', 'profile_picture')
 
 
-class SignupDeveloperForm(ModelForm, SignupUserForm):
+class SignupDeveloperForm(SignupUserForm):
     field_order = ('username', 'password1', 'password2')
 
     class Meta:
@@ -77,14 +76,12 @@ class SignupDeveloperForm(ModelForm, SignupUserForm):
 
 
 class UserUpdateModelForm(ModelForm):
-
     class Meta:
         model = User
         fields = ('first_name', 'last_name')
 
 
 class UserProfileUpdateModelForm(ModelForm):
-
     class Meta:
         model = UserProfile
         exclude = ('deactivated_until', 'user', 'third_party_login')
@@ -173,111 +170,5 @@ class SignupForm(ModelForm):
         if 'is_developer' in self.data and 'dev_email_support' in self.cleaned_data and val != self.data['dev_email_support']:
             raise forms.ValidationError(_('The developer support emails don’t match.'))
         return val
-
-# This class combines User and UserProfile models to create a single form
-# http://stackoverflow.com/a/15892615
-class SignupForm(ModelForm):
-    
-    confirm_email = EmailField(label=_('Confirm Email'),required=False)
-    confirm_password = CharField(label=_('Confirm Password'),required=False,widget=PasswordInput())
-    is_developer = BooleanField(label=_('I’m a developer!'),required=False)
-    
-    def __init__(self, instance=None, *args, **kwargs):
-        _fields = ('username', 'password', 'email', 'first_name', 'last_name',)
-        #_initial = model_to_dict(instance.user, _fields) if instance is not None else {}
-        _initial = {}
-        super(SignupForm, self).__init__(*args, **kwargs)
-        self.fields.update(fields_for_model(User, _fields))
-        self.order_fields((
-            'profile_pic', 'first_name', 'last_name', 'username',
-            'email', 'confirm_email',
-            'password', 'confirm_password',
-            'is_developer', 'dev_name', 'dev_email_support', 'dev_website',
-        ))
-        self.fields['profile_pic'].required = False
-        self.fields['email'].required = True
-
-    class Meta:
-        model = UserProfile
-        exclude = ('user','deactivated_until','third_party_login')
-
-    def save(self, *args, **kwargs):
-        u = self.instance.user
-        u.username = self.cleaned_data['username']
-        u.password = self.cleaned_data['password']
-        u.email = self.cleaned_data['email']
-        u.first_name = self.cleaned_data['first_name']
-        u.last_name = self.cleaned_data['last_name']
-        u.save()
-        profile = super(SignupForm, self).save(*args,**kwargs)
-        return profile
-    
-    def clean_confirm_email(self):
-        val = self.cleaned_data['confirm_email']
-        # Check if main field is valid and only then check confirmation field
-        if 'email' in self.cleaned_data and val != self.cleaned_data['email']:
-            raise forms.ValidationError(_('The account emails don’t match.'))
-        return val
-    
-    def clean_confirm_password(self):
-        val = self.cleaned_data['confirm_password']
-        # Check if main field is valid and only then check confirmation field
-        if 'password' in self.cleaned_data and val != self.cleaned_data['password']:
-            raise forms.ValidationError(_('The passwords don’t match.'))
-        return val
-
-class SignupUserForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ('username', 'password', 'email', 'first_name', 'last_name')
-
-
-class SignupUserProfileForm(ModelForm):
-    class Meta:
-        model = UserProfile
-        exclude = ('deactivated_until', 'user', 'third_party_login')
-
-
-
-
-
-
-
-class SignupPlayerUserForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ('username', 'password')
-        labels = {'username': _('Email address'),}
-        field_classes = {'username': EmailField,}
-        help_texts = {'username': _(''),}
-        widgets = {'password': PasswordInput(),}
-    
-    def save(self, *args, **kwargs):
-        user = super(SignupForm, self).save(*args,**kwargs)
-        return user
-
-class SignupDevUserForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ('email', 'password', 'username')
-        field_classes = {'username':SlugField,}
-        labels = {'username':_('Developer Slug'),}
-        help_texts = {'username':_('Cannot be changed later'),}
-        widgets = {'password': PasswordInput(),}
-    
-    def save(self, *args, **kwargs):
-        user = super(SignupForm, self).save(*args,**kwargs)
-        return user
-
-class SignupPlayerProfileForm(ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ('display_name','profile_pic',)
-
-class SignupDevProfileForm(ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ('display_name', 'dev_website', 'dev_email_support', 'profile_pic')
-
 
 """
