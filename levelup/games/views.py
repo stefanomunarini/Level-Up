@@ -1,8 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum, Min
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
+
 from games.forms import GameBuyForm, GameScreenshotModelFormSet
 from games.models import Game
 from transactions.models import Transaction
@@ -54,6 +56,15 @@ class GameDetailView(DetailView):
     model = Game
     context_object_name = 'game'
     template_name = 'game_detail_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(GameDetailView, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            user_profile = self.request.user.profile
+            if user_profile.is_developer and user_profile == self.get_object().dev:
+                context['game_stat'] = Transaction.objects.filter(game=self.get_object()) \
+                    .aggregate(amount_earned=Sum('amount'), first_sell=Min('datetime'))
+        return context
 
 
 class GameCreateView(LoginRequiredMixin, CreateView):
