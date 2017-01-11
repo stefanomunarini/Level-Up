@@ -101,3 +101,7 @@ db.sqlite3
 *.png
 *.jpg
 *dev_*
+
+# sass cache
+.sass-cache
+.sass-cache/*
