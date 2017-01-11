@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 from django.contrib import messages
-from django.contrib.messages import constants as message_constants
 from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -41,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'foundation', # https://pypi.python.org/pypi/django-zurb-foundation
+    'foundation',  # https://pypi.python.org/pypi/django-zurb-foundation
     'users',
     'games',
     'transactions',
@@ -142,8 +141,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "levelup/static/"),
 ]
 
-# Other stuff
+LOGIN_REDIRECT_URL = '/'
 
+# Other stuff
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'secondary',

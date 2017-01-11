@@ -1,4 +1,4 @@
-from django.forms import modelformset_factory, ModelForm, HiddenInput
+from django.forms import modelformset_factory, Form, ModelForm, HiddenInput
 
 from games.models import GameScreenshot
 
@@ -22,3 +22,7 @@ GameScreenshotModelFormSet = modelformset_factory(
     min_num=0,
     max_num=3
 )
+
+
+class GameBuyForm(Form):
+    pass

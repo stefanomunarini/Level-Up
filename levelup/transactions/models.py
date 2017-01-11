@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-from users.models import UserProfile
 from games.models import Game
 
 
@@ -15,7 +14,7 @@ class Transaction(models.Model):
                                 (CANCEL_STATUS, 'Cancel'),
                                 (ERROR_STATUS, 'Error'),)
 
-    user = models.ForeignKey(UserProfile, related_name='transactions')
+    user = models.ForeignKey('users.UserProfile', related_name='transactions')
     game = models.ForeignKey(Game, related_name='transactions')
     datetime = models.DateTimeField(auto_now_add=True)
     amount = models.FloatField(null=False, blank=False, default=0.0)
