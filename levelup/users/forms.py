@@ -5,7 +5,7 @@ from django.forms import (
 )
 from django.utils.translation import ugettext_lazy as _
 
-from users.models import UserProfile, PlayerProfile, DeveloperProfile
+from users.models import UserProfile
 
 
 # Signup Forms
@@ -68,7 +68,7 @@ class SignupPlayerForm(AbstractSignupUserForm):
     field_order = ('email', 'password1', 'password2')
 
     class Meta:
-        model = PlayerProfile
+        model = UserProfile
         fields = ('display_name', 'profile_picture')
 
 
@@ -76,7 +76,7 @@ class SignupDeveloperForm(AbstractSignupUserForm):
     field_order = ('email', 'password1', 'password2')
 
     class Meta:
-        model = DeveloperProfile
+        model = UserProfile
         fields = ('display_name', 'profile_picture', 'url_slug', 'website', 'support_email')
 
 

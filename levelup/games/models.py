@@ -4,9 +4,9 @@ from django.db.models import Q
 
 def get_upload_path(instance, filename):
     if isinstance(instance, Game):
-        return "dev_{}/game_{}/{}".format(instance.dev.dev_slug, instance.slug, filename)
+        return "dev_{}/game_{}/{}".format(instance.dev.url_slug, instance.slug, filename)
     if isinstance(instance, GameScreenshot):
-        return "dev_{}/game_{}/screenshots/{}".format(instance.game.dev.dev_slug, instance.game.slug, filename)
+        return "dev_{}/game_{}/screenshots/{}".format(instance.game.dev.url_slug, instance.game.slug, filename)
 
 
 class Game(models.Model):

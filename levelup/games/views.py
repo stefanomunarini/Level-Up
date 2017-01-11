@@ -64,7 +64,7 @@ class GameCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('profile:user-profile')
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and not request.user.profile.is_developer():
+        if request.user.is_authenticated and not request.user.profile.is_developer:
             return HttpResponseForbidden()
         return super(GameCreateView, self).dispatch(request, *args, **kwargs)
 
