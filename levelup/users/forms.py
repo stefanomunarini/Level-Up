@@ -37,7 +37,7 @@ class AbstractSignupUserForm(ModelForm):
     def clean_email(self):
         username = self.cleaned_data.get('email')
         if User.objects.filter(username=username).count() > 0:
-            raise forms.ValidationError('This username is already in use.')
+            raise forms.ValidationError(_('This username is already in use.'))
         return username
 
     def save(self, *args, **kwargs):
