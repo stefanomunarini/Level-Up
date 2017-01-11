@@ -25,8 +25,8 @@ class GameListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        if self.bought :
-            return self.request.user.profile.bought_games
+        if self.bought:
+            return self.request.user.profile.get_bought_games()
         else:
             return Game.objects.all()
 

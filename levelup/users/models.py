@@ -56,7 +56,7 @@ class UserProfile(models.Model):
         return False
 
     # Return all the games that this user has bought
-    def bought_games(self):
+    def get_bought_games(self):
         return Game.objects.filter(
-            id__in=self.transactions.values_list('id', flat=True)
+            id__in=self.transactions.values_list('game', flat=True)
         )
