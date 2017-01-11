@@ -19,8 +19,11 @@ from users.forms import (
 
 # User Signup
 
+
 class AbstractSignupView(FormView, ProcessFormView):
-    
+    """
+    This acts as a generic SignupView that is used by SignupPlayerView and SignupDeveloperView
+    """
     def get(self, request, *args, **kwargs):
         # Don’t allow signups if the user is logged in
         if request.user.is_authenticated:
@@ -30,7 +33,7 @@ class AbstractSignupView(FormView, ProcessFormView):
     def post(self, request, *args, **kwargs):
         form = self.form_class(self.request.POST, self.request.FILES)
         if form.is_valid():
-            new_user = form.save()
+            form.save()
             new_user = authenticate(
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
@@ -40,17 +43,21 @@ class AbstractSignupView(FormView, ProcessFormView):
         else:
             return super(AbstractSignupView, self).get(self, request, *args, **kwargs)
 
+
 class SignupPlayerView(AbstractSignupView):
     template_name = 'signup.html'
     form_class = SignupPlayerForm        
+
 
 class SignupDeveloperView(AbstractSignupView):
     template_name = 'signup.html'
     form_class = SignupDeveloperForm
     success_url = reverse_lazy('profile:user-profile')
 
+
 # User Profile
 
+# TODO: I think this is redundant as request.user.profile exists as well. - Simo
 class UserProfileMixin(object):
     """
     This is a convenient mixin that set the user_profile object as a variable in the context
@@ -112,6 +119,7 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
             return super(UserProfileUpdateView, self).form_valid(form=user_form)
         else:
             return render(request, self.template_name, {'user_form': user_form, 'user_profile_form': user_profile_form})
+
 
 """
 def login(request):

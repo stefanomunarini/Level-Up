@@ -8,12 +8,15 @@ from django.db import models
 from games.models import Game
 from transactions.models import Transaction
 
+
 def get_upload_path(instance, filename):
     if isinstance(instance, UserProfile):
         return "user_{}/profile_pics/{}".format(instance.user.username, filename)
 
 
+# Tie the UserProfile to the built-in User model
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+
 
 class UserProfile(models.Model):
 
@@ -23,13 +26,14 @@ class UserProfile(models.Model):
     # Extend django.contrib.auth.models.user
     user = models.OneToOneField(User)
     
-    # public stuff
+    # Natural language name for the player or the developer, e.g. ‘John Doe’, ‘ZombieSlayer99’ or ‘Samurai Games’
     display_name = models.CharField(_('Display name'), max_length=50, unique=True)
+    # A profile picture for the user or a logo for the developer
     profile_picture = models.ImageField(_('Profile picture'), null=True, blank=True, upload_to=get_upload_path, max_length=255)
-    
-    
-    # hidden stuff
+
+    # End date for limited time bans
     deactivated_until = models.DateTimeField(null=True, blank=True)
+    # A field to tie a 3rd party service to this user
     third_party_login = models.CharField(max_length=32, null=True, blank=True)
 
     def __str__(self):
@@ -39,7 +43,8 @@ class UserProfile(models.Model):
         if self.user.groups.filter(name=self.DEVELOPER_GROUP).exists():
             return True
         return False
-    
+
+    # Return all the games that this user has bought
     def bought_games(self):
         return Game.objects.filter(
             id__in=Transaction.objects.filter(
@@ -48,9 +53,15 @@ class UserProfile(models.Model):
             )
         )
 
-class PlayerProfile(UserProfile): pass
 
-class DeveloperProfile(UserProfile): 
+class PlayerProfile(UserProfile):
+    pass
+
+
+class DeveloperProfile(UserProfile):
+    # A slug to be used in the developer page url
     url_slug = models.SlugField(_('URL slug'), unique=True)
+    # A public link to the developer website for the developer page
     website = models.URLField(_('Developer website'), null=True, blank=True)
-    support_email = models.EmailField(_('Developer support email'), null=True, blank=True)
+    # A support email address that is shown to the players that have bought the developer’s games
+    support_email = models.EmailField(_('Developer support email'), null=True, blank=True)  #

@@ -1,19 +1,16 @@
-from django.contrib.auth.models import User, Group
-from django.contrib.auth.forms import UserCreationForm, UsernameField
-from django.contrib.auth import password_validation
 from django import forms
+from django.contrib.auth.forms import UsernameField
+from django.contrib.auth.models import User, Group
 from django.forms import (
     Form, ModelForm, BaseModelForm,
-    BooleanField, CharField, ChoiceField, EmailField, FileField, URLField, SlugField,
-    PasswordInput,
     modelformset_factory,
 )
-from django.forms.models import model_to_dict, fields_for_model
 from django.utils.translation import ugettext_lazy as _
-
 from users.models import UserProfile, PlayerProfile, DeveloperProfile
 
+
 # Signup Forms
+
 
 class SignupUserForm(Form, BaseModelForm):    
     username = UsernameField(label=_('Username'))
@@ -37,8 +34,8 @@ class SignupUserForm(Form, BaseModelForm):
                 _('The passwords do not match.'),
                 code='password_mismatch',
             )
-        #self.instance.username = self.cleaned_data.get('username')
-        #password_validation.validate_password(self.cleaned_data.get('password2'), self.instance)
+        # self.instance.username = self.cleaned_data.get('username')
+        # password_validation.validate_password(self.cleaned_data.get('password2'), self.instance)
         return password2
     
     def clean(self):
@@ -59,20 +56,25 @@ class SignupUserForm(Form, BaseModelForm):
         user.save()
         self.instance.user = user
         self.instance.user_id = user.id
-        data = super(SignupUserForm, self).save(*args,**kwargs)
+        data = super(SignupUserForm, self).save(*args, **kwargs)
         return data    
+
 
 class SignupPlayerForm(ModelForm, SignupUserForm):
     field_order = ('username', 'password1', 'password2')
+
     class Meta:
         model = PlayerProfile
         fields = ('display_name', 'profile_picture')
 
+
 class SignupDeveloperForm(ModelForm, SignupUserForm):
     field_order = ('username', 'password1', 'password2')
+
     class Meta:
         model = DeveloperProfile
         fields = ('display_name', 'profile_picture', 'url_slug', 'website', 'support_email')
+
 
 class UserUpdateModelForm(ModelForm):
 

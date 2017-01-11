@@ -23,5 +23,6 @@ GameScreenshotModelFormSet = modelformset_factory(
     max_num=3
 )
 
+
 class GameBuyForm(Form):
     pass
