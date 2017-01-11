@@ -1,12 +1,9 @@
 from __future__ import unicode_literals
 
-from django.utils.translation import ugettext_lazy as _
-
 from django.contrib.auth.models import User
 from django.db import models
-
+from django.utils.translation import ugettext_lazy as _
 from games.models import Game
-from transactions.models import Transaction
 
 
 def get_upload_path(instance, filename):
