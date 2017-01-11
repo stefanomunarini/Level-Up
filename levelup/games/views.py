@@ -32,7 +32,7 @@ class GameListView(LoginRequiredMixin, ListView):
 
 
 class GameBuyView(LoginRequiredMixin, DetailView, FormView):  # TODO: Implement payments
-    login_url = reverse_lazy('profile:login')
+    login_url = reverse_lazy('login')
     form_class = GameBuyForm
     model = Game
     context_object_name = 'game'
@@ -58,13 +58,13 @@ class GameDetailView(DetailView):
 
 class GameCreateView(LoginRequiredMixin, CreateView):
     fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
-    login_url = reverse_lazy('profile:login')
+    login_url = reverse_lazy('login')
     model = Game
     template_name = 'game_create_view.html'
     success_url = reverse_lazy('profile:user-profile')
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.profile.is_developer():
+        if request.user.is_authenticated and not request.user.profile.is_developer():
             return HttpResponseForbidden()
         return super(GameCreateView, self).dispatch(request, *args, **kwargs)
 
@@ -88,7 +88,7 @@ class GameCreateView(LoginRequiredMixin, CreateView):
 
 
 class GameDeleteView(LoginRequiredMixin, DeleteView):
-    login_url = reverse_lazy('profile:login')
+    login_url = reverse_lazy('login')
     model = Game
     success_url = reverse_lazy('profile:user-profile')
     template_name = 'game_confirm_delete.html'
