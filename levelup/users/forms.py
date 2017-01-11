@@ -1,7 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UsernameField
 from django.contrib.auth.models import User, Group
-from django.core.exceptions import ValidationError
 from django.forms import (
     ModelForm, modelformset_factory,
 )
@@ -12,8 +10,8 @@ from users.models import UserProfile, PlayerProfile, DeveloperProfile
 
 # Signup Forms
 
-class SignupUserForm(ModelForm):
-    username = UsernameField(label=_('Username'))
+class AbstractSignupUserForm(ModelForm):
+    email = forms.EmailField()
     password1 = forms.CharField(
         label=_("Password"),
         strip=False,
@@ -36,39 +34,46 @@ class SignupUserForm(ModelForm):
             )
         return password2
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
+    def clean_email(self):
+        username = self.cleaned_data.get('email')
         if User.objects.filter(username=username).count() > 0:
-            raise ValidationError('This username is already in use.')
+            raise forms.ValidationError('This username is already in use.')
         return username
 
     def save(self, *args, **kwargs):
-        user = User.objects.create_user(
-            username=self.cleaned_data['username'],
-            password=self.cleaned_data['password1'],
-        )
         if type(self) is SignupDeveloperForm:
             group = Group.objects.get(pk=1)
-            user.groups.set([group])
         elif type(self) is SignupPlayerForm:
             group = Group.objects.get(pk=2)
-            user.groups.set([group])
+        else:
+            raise NotImplementedError()
+
+        """
+        Create the user to be linked to the UserProfile model
+        """
+        email = self.cleaned_data['email']
+        user = User.objects.create_user(
+            username=email,
+            password=self.cleaned_data['password1'],
+            email=email
+        )
+        user.groups.set([group])
         user.save()
         self.instance.user = user
         self.instance.user_id = user.id
-        return super(SignupUserForm, self).save(*args, **kwargs)
+        return super(AbstractSignupUserForm, self).save(*args, **kwargs)
 
 
-class SignupPlayerForm(SignupUserForm):
-    field_order = ('username', 'password1', 'password2')
+class SignupPlayerForm(AbstractSignupUserForm):
+    field_order = ('email', 'password1', 'password2')
 
     class Meta:
         model = PlayerProfile
         fields = ('display_name', 'profile_picture')
 
 
-class SignupDeveloperForm(SignupUserForm):
-    field_order = ('username', 'password1', 'password2')
+class SignupDeveloperForm(AbstractSignupUserForm):
+    field_order = ('email', 'password1', 'password2')
 
     class Meta:
         model = DeveloperProfile

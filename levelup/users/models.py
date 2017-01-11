@@ -39,6 +39,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+    @property
     def is_developer(self):
         if self.user.groups.filter(name=self.DEVELOPER_GROUP).exists():
             return True

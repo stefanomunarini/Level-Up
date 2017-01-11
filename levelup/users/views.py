@@ -36,7 +36,7 @@ class AbstractSignupView(FormView):
     def form_valid(self, form):
         form.save()
         new_user = authenticate(
-            username=form.cleaned_data['username'],
+            username=form.cleaned_data['email'],
             password=form.cleaned_data['password1'],
         )
         login(self.request, new_user)
@@ -73,7 +73,7 @@ class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
-        if self.request.user.profile.is_developer():
+        if self.request.user.profile.is_developer:
             context['games'] = Game.objects.filter(dev=self.request.user.profile)
         return context
 
