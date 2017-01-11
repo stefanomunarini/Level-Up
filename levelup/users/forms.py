@@ -83,13 +83,23 @@ class SignupDeveloperForm(AbstractSignupUserForm):
 class UserUpdateModelForm(ModelForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name')
+        fields = ('first_name', 'last_name', 'email')
+
+    def save(self, commit=True):
+        if not User.objects.filter(username=self.cleaned_data.get('email')).count() > 0:
+            self.instance.username = self.instance.email
+        return self.instance
 
 
 class UserProfileUpdateModelForm(ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ('deactivated_until', 'user', 'third_party_login')
+        exclude = ('deactivated_until', 'user', 'third_party_login', 'url_slug')
+
+    def clean_display_name(self):
+        if UserProfile.objects.filter(display_name=self.cleaned_data.get('display_name')).exclude(id=self.instance.id).count() > 0:
+            self.add_error('display_name', 'The display name you chose is already taken.')
+        return self.cleaned_data.get('display_name')
 
 
 UserProfileUpdateModelFormset = modelformset_factory(
