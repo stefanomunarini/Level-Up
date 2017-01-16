@@ -7,6 +7,7 @@ class GameScreenshotModelForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.game = kwargs.pop('game', None)
+        # self.queryset = GameScreenshot.objects.none()
         super(GameScreenshotModelForm, self).__init__(*args, **kwargs)
 
     class Meta:

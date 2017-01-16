@@ -80,6 +80,7 @@ class GameCreateView(LoginRequiredMixin, CreateView):
         return super(GameCreateView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        import ipdb; ipdb.set_trace()
         context = super(GameCreateView, self).get_context_data(**kwargs)
         context['game_screenshot_forms'] = GameScreenshotModelFormSet()
         return context

@@ -17,9 +17,10 @@ from django.utils.translation import ugettext_lazy as _
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
+# See https://docs.djangoproject.com/ejangon/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '=b)dhg=&ct5^rayyjb#de3cywg)oq)-!6j$h@^bq9kgj!-bf3k'
@@ -133,13 +134,15 @@ LANGUAGES = [
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
-MEDIA_ROOT = "levelup/static/images/"
+# Extra places for collectstatic to find static files.
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "levelup/static/"),
-]
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
+
+MEDIA_ROOT = "levelup/static/images/"
 
 LOGIN_REDIRECT_URL = '/'
 
