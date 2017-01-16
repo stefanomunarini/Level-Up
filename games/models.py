@@ -17,7 +17,7 @@ class Game(models.Model):
                             limit_choices_to=Q(groups__name='Developers'),
                             related_name='games')
     url = models.URLField(null=False, blank=False)
-    icon = models.ImageField(null=True, blank=True, upload_to=get_upload_path, max_length=255)
+    icon = models.URLField(null=True, blank=True)
     description = models.TextField()
     price = models.FloatField(null=False, blank=False)
     is_public = models.BooleanField(default=True)

@@ -25,8 +25,7 @@ class UserProfile(models.Model):
     # Natural language name for the player or the developer, e.g. ‘John Doe’, ‘ZombieSlayer99’ or ‘Samurai Games’
     display_name = models.CharField(_('Display name'), max_length=50, unique=True)
     # A profile picture for the user or a logo for the developer
-    profile_picture = models.ImageField(_('Profile picture'), null=True, blank=True, upload_to=get_upload_path,
-                                        max_length=255)
+    profile_picture = models.URLField(_('Profile picture'), null=True, blank=True)
 
     # End date for limited time bans
     deactivated_until = models.DateTimeField(null=True, blank=True)
