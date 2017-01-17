@@ -5,14 +5,19 @@
 {% block main %}
 
 <h3>
-    {{ game.name }}
+    {{ game.name|title }}
     <small>
-        <a href="{% url 'game:play' slug=game.slug %}">{% trans 'Play' %}</a>,
-        <a href="{% url 'game:buy' slug=game.slug %}">{% trans 'Buy' %}</a>
+        {%  with request.user.profile.get_bought_games as bought_games %}
+            {%  if game in bought_games %}
+                <a href="{% url 'game:play' slug=game.slug %}">{% trans 'Play' %}</a>
+            {%  else %}
+                <a href="{% url 'game:buy' slug=game.slug %}">{% trans 'Buy' %}</a>
+            {%  endif %}
+        {%  endwith %}
     </small>
 </h3>
 <img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>
-<p>Added: {{ game.date_added }}</p>
+<p>Added: {{ game.date_added|date:"Y-m-d" }}</p>
 <p>Slug: {{ game.slug }}</p>
 <p>Dev: {{ game.dev.url_slug }}</p>
 <p>Url: {{ game.url }}</p>
