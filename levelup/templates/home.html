@@ -4,6 +4,16 @@
 {% block main %}
     <h1>{% trans 'Welcome!' %}</h1>
     {%  if not request.user.is_authenticated %}
-        {%  include 'auth/login.html' %}
+        <p>{% trans 'Log In' %}</p>
+        {%  include 'auth/_login_form.html' %}
     {%  endif %}
+
+    <h3>{% trans 'Best Sellers' %}</h3>
+    {%  for game in best_sellers %}
+        <div>
+            <b><a href="{% url 'game:detail' game.slug %}">{{ game.name }}</a></b>
+            <p>Price: {{ game.price }}</p>
+            <p>Downloads: {{ game.downloads }}</p>
+        </div>
+    {%  endfor %}
 {% endblock main %}
