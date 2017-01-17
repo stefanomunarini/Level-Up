@@ -10,12 +10,11 @@ from games.models import Game
 from transactions.models import Transaction
 
 
-class GameListView(LoginRequiredMixin, ListView):
+class GameListView(ListView):
     """
     A view that is used whenever a list of games needs to be shown
     Games to be displayed are controlled by passing attribute values in the url dispatcher
     """
-    login_url = reverse_lazy('login')
     context_object_name = 'games'
     template_name = 'game_list.html'
     bought = False  # Display only games that the user has bought

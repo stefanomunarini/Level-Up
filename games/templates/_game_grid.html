@@ -4,7 +4,8 @@
     {% for game in games %}
     <li>
         <a href="{% url 'game:detail' game.slug %}">
-            <img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>
+{#            <img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>#}
+            <img src="https://screenshotlayer.com/images/assets/placeholder.png">
             <h4>{{ game.name }}</h4>
         </a>
         <span>Is published: {{ game.is_published }}</span>

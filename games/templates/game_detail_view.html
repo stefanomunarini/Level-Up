@@ -16,7 +16,8 @@
         {%  endwith %}
     </small>
 </h3>
-<img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>
+{#<img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>#}
+    <img src="https://screenshotlayer.com/images/assets/placeholder.png">
 <p>Added: {{ game.date_added|date:"Y-m-d" }}</p>
 <p>Slug: {{ game.slug }}</p>
 <p>Dev: {{ game.dev.url_slug }}</p>
@@ -33,7 +34,8 @@
 {% endif %}
 
 {% for screenshot in game.screenshots.all %}
-    <img src="{% get_static_prefix %}images/{{screenshot.image}}" width="150" height="150"/>
+{#    <img src="{% get_static_prefix %}images/{{screenshot.image}}" width="150" height="150"/>#}
+    <img src="https://screenshotlayer.com/images/assets/placeholder.png">
 {% endfor %}
 
 
