@@ -25,3 +25,11 @@ Apply migrations:
 Apply fixtures (load data):
 
 `python manage.py loaddata groups.json`
+
+In development environment, to distinguish how we start the app from the production environment, we need to set an environment variable which tell Django to use a different configuration. For this reason, before starting the server, we need to define a variable that tell Django that we are in a development environment.
+
+`export DJANGO_DEVELOPMENT=true`
+
+Finally, start the server:
+
+`python manage.py runserver`

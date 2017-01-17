@@ -149,10 +149,9 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert',
 }
 
-
 # Override production variables if DJANGO_DEVELOPMENT env variable is set
 if os.environ.get('DJANGO_DEVELOPMENT'):
-    from settings_dev import *
+    from .settings_dev import *
 else:
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

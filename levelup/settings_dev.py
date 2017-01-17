@@ -1,8 +1,10 @@
 import os
 
-from settings import BASE_DIR
+from .settings import BASE_DIR, ALLOWED_HOSTS
 
 DEBUG = True
+
+ALLOWED_HOSTS.append('127.0.0.1')
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
