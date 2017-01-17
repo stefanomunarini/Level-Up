@@ -10,5 +10,5 @@ class HomepageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context['form'] = AuthenticationForm()
-        context['best_sellers'] = services.get_best_sellers()
+        context.update(services.get_homepage_games())
         return context
