@@ -21,13 +21,10 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = False
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/ejangon/1.10/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '=b)dhg=&ct5^rayyjb#de3cywg)oq)-!6j$h@^bq9kgj!-bf3k'
 
-ALLOWED_HOSTS = ['wsd-level-up.herokuapp.com']
+ALLOWED_HOSTS = ['level-up-eu.herokuapp.com']
 
 # Application definition
 
@@ -139,6 +136,13 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
 
+# Override production variables if DJANGO_DEVELOPMENT env variable is set
+if os.environ.get('DJANGO_DEVELOPMENT'):
+    from .settings_dev import *
+else:
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
 MEDIA_ROOT = "levelup/static/images/"
 
 LOGIN_REDIRECT_URL = '/'
@@ -152,10 +156,3 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'alert',
 }
-
-# Override production variables if DJANGO_DEVELOPMENT env variable is set
-if os.environ.get('DJANGO_DEVELOPMENT'):
-    from .settings_dev import *
-else:
-    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
