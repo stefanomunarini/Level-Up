@@ -9,29 +9,24 @@
     {%  endif %}
 
     <h3>{% trans 'Best Sellers' %}</h3>
-    {%  for game in best_sellers %}
-        <div>
-            <b><a href="{% url 'game:detail' game.slug %}">{{ game.name }}</a></b>
-            <p>Price: {{ game.price }}</p>
-            <p>Downloads: {{ game.downloads }}</p>
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>{% include "_game_grid.html" with games=best_sellers %}</h1>
         </div>
-    {%  endfor %}
+    </div>
 
     <h3>{% trans 'Trending this month' %}</h3>
-    {%  for game in trending_this_month %}
-        <div>
-            <b><a href="{% url 'game:detail' game.slug %}">{{ game.name }}</a></b>
-            <p>Price: {{ game.price }}</p>
-            <p>Downloads: {{ game.downloads }}</p>
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>{% include "_game_grid.html" with games=trending_this_month %}</h1>
         </div>
-    {%  endfor %}
+    </div>
 
     <h3>{% trans 'Trending this week' %}</h3>
-    {%  for game in trending_this_week %}
-        <div>
-            <b><a href="{% url 'game:detail' game.slug %}">{{ game.name }}</a></b>
-            <p>Price: {{ game.price }}</p>
-            <p>Downloads: {{ game.downloads }}</p>
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>{% include "_game_grid.html" with games=trending_this_week %}</h1>
         </div>
-    {%  endfor %}
+    </div>
+
 {% endblock main %}

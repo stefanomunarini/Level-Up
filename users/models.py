@@ -56,3 +56,8 @@ class UserProfile(models.Model):
         return Game.objects.filter(
             id__in=self.transactions.values_list('game', flat=True)
         )
+
+    def get_developed_games(self):
+        if self.is_developer:
+            return Game.objects.filter(dev=self)
+        return None

@@ -19,7 +19,7 @@ class GameListView(ListView):
     template_name = 'game_list.html'
     bought = False  # Display only games that the user has bought
     page_title = _('Games')
-    paginate_by = 30
+    paginate_by = 20
     paginate_orphans = 3
 
     def get_context_data(self, **kwargs):
@@ -31,7 +31,7 @@ class GameListView(ListView):
         if self.bought:
             return self.request.user.profile.get_bought_games()
         else:
-            return Game.objects.all()
+            return Game.objects.filter(is_published=True)
 
 
 class GameBuyView(LoginRequiredMixin, DetailView, FormView):  # TODO: Implement payments
