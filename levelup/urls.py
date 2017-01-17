@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login
 
+from . import settings
 from games import urls as games_url
 from users import urls as users_url
 from .views import HomepageView
@@ -34,3 +35,10 @@ urlpatterns = [
     # Set language
     url(r'^i18n/', include('django.conf.urls.i18n')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]

@@ -6,6 +6,9 @@ DEBUG = True
 
 ALLOWED_HOSTS.append('127.0.0.1')
 
+# Django debug toolbar
+INTERNAL_IPS = ['127.0.0.1']
+
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
