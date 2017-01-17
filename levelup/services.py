@@ -17,7 +17,8 @@ def get_homepage_games():
 
 def get_best_sellers(games):
     return games.annotate(downloads=Count('transactions')) \
-        .order_by('-downloads')
+        .order_by('-downloads') \
+        .filter(downloads__gt=0)
 
 
 def get_trending_this_week(games, today):
