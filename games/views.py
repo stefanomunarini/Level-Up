@@ -19,6 +19,8 @@ class GameListView(ListView):
     template_name = 'game_list.html'
     bought = False  # Display only games that the user has bought
     page_title = _('Games')
+    paginate_by = 30
+    paginate_orphans = 3
 
     def get_context_data(self, **kwargs):
         context = super(GameListView, self).get_context_data(**kwargs)
