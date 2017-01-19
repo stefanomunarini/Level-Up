@@ -1,6 +1,7 @@
 {% extends "__base.html" %}
 {% load static %}
 {% load i18n %}
+{% load cloudinary %}
 
 {% block main %}
 
@@ -37,8 +38,7 @@
 {% endif %}
 
 {% for screenshot in game.screenshots.all %}
-{#    <img src="{% get_static_prefix %}images/{{screenshot.image}}" width="150" height="150"/>#}
-    <img src="https://screenshotlayer.com/images/assets/placeholder.png">
+    {% cloudinary screenshot.image format="jpg" width=250 height=250 crop="fill" %}
 {% endfor %}
 
 

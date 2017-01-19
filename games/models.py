@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
@@ -32,7 +33,7 @@ class Game(models.Model):
 
 
 class GameScreenshot(models.Model):
-    image = models.ImageField(null=False, blank=False, upload_to=get_upload_path, max_length=255)
+    image = CloudinaryField('image')
     game = models.ForeignKey(Game, related_name='screenshots')
 
 
