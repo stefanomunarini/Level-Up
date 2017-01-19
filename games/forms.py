@@ -30,5 +30,7 @@ class GameBuyForm(Form):
 
 
 class GameUpdateModelForm(ModelForm):
-    model = Game
-    fields = ('name', 'icon', 'price', 'description', 'url',)
+
+    class Meta:
+        model = Game
+        fields = ('name', 'icon', 'price', 'description', 'url',)

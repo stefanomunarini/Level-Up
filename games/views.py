@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import Sum, Min
 from django.forms import ModelForm
 from django.http import HttpResponseForbidden, HttpResponseRedirect
@@ -107,6 +108,12 @@ class GameUpdateView(LoginRequiredMixin, UpdateView):
     form_class = GameUpdateModelForm
     login_url = reverse_lazy('login')
     template_name = 'game_update.html'
+
+    def get_object(self, queryset=None):
+        self.object = super(GameUpdateView, self).get_object(queryset)
+        if self.object not in self.request.user.profile.get_developed_games():
+            raise PermissionDenied
+        return self.object
 
     def get_success_url(self):
         return reverse_lazy('game:detail', kwargs={'slug':self.object.slug})

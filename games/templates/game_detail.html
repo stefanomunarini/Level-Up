@@ -7,12 +7,15 @@
 <h3>
     {{ game.name|title }}
     <small>
-        {%  with request.user.profile.get_bought_games as bought_games %}
-            {%  if game in bought_games %}
+        {% with request.user.profile.get_bought_games as bought_games %}
+            {% if game in bought_games %}
                 <a href="{% url 'game:play' slug=game.slug %}">{% trans 'Play' %}</a>
-            {%  else %}
+            {% else %}
                 <a href="{% url 'game:buy' slug=game.slug %}">{% trans 'Buy' %}</a>
-            {%  endif %}
+            {% endif %}
+            {%  if game in request.user.profile.get_developed_games %}
+                <a href="{% url 'game:update' slug=game.slug %}">{% trans 'Update' %}</a>
+            {% endif %}
         {%  endwith %}
     </small>
 </h3>
