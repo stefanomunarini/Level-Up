@@ -69,6 +69,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.i18n',
                 'django.contrib.messages.context_processors.messages',
+                'levelup.context_processors.menu_structure',
             ],
         },
     },
@@ -124,6 +125,7 @@ LOCALE_PATHS = [
 LANGUAGES = [
     ('en', _('English')),
     ('fi', _('Finnish')),
+    ('it', _('Italian')),
 ]
 
 # Static files (CSS, JavaScript, Images)
@@ -147,7 +149,7 @@ MEDIA_ROOT = "levelup/static/images/"
 
 LOGIN_REDIRECT_URL = '/'
 
-# Other stuff
+# Class attributes for messages
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'secondary',

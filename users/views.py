@@ -63,7 +63,7 @@ class UserProfileMixin(object):
 
 class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
     login_url = reverse_lazy('login')
-    template_name = 'user_profile_detail_view.html'
+    template_name = 'user_profile_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
@@ -76,7 +76,7 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
     form_class = UserUpdateModelForm
     login_url = reverse_lazy('login')
     success_url = reverse_lazy('profile:user-profile')
-    template_name = 'user_profile_update_view.html'
+    template_name = 'user_profile_update.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

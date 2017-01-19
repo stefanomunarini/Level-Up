@@ -5,6 +5,7 @@ from .settings import BASE_DIR, ALLOWED_HOSTS
 DEBUG = True
 
 ALLOWED_HOSTS.append('127.0.0.1')
+ALLOWED_HOSTS.append('localhost')
 
 # Django debug toolbar
 INTERNAL_IPS = ['127.0.0.1']

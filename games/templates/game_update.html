@@ -1,0 +1,13 @@
+{% extends "__base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Update Game Details" %} &ndash; {{ block.super }}{% endblock title %}
+
+{% block main %}
+    <h1>Update some game details</h1>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include "_input_grid.html" with submit_text=_('Update') %}
+    </form>
+{% endblock main %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q
+from django.utils.translation import ugettext_lazy as _
 
 
 def get_upload_path(instance, filename):
@@ -10,13 +11,15 @@ def get_upload_path(instance, filename):
 
 
 class Game(models.Model):
-    name = models.CharField(max_length=64)
-    slug = models.SlugField(null=False, blank=False, unique=True)
+    name = models.CharField(_('Game name'), max_length=64)
+    slug = models.SlugField(_('Game URL slug'),
+                            help_text=_('Part of the game page address on LevelUp, cannot be changed later'),
+                            null=False, blank=False, unique=True)
     dev = models.ForeignKey('users.UserProfile',
                             on_delete=models.CASCADE,
                             limit_choices_to=Q(groups__name='Developers'),
                             related_name='games')
-    url = models.URLField(null=False, blank=False)
+    url = models.URLField(_('Source URL'), help_text=_('Where is the game hosted?'), null=False, blank=False)
     icon = models.URLField(null=True, blank=True)
     description = models.TextField()
     price = models.FloatField(null=False, blank=False)

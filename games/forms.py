@@ -1,6 +1,6 @@
 from django.forms import modelformset_factory, Form, ModelForm, HiddenInput
 
-from games.models import GameScreenshot
+from games.models import GameScreenshot, Game
 
 
 class GameScreenshotModelForm(ModelForm):
@@ -27,3 +27,8 @@ GameScreenshotModelFormSet = modelformset_factory(
 
 class GameBuyForm(Form):
     pass
+
+
+class GameUpdateModelForm(ModelForm):
+    model = Game
+    fields = ('name', 'icon', 'price', 'description', 'url',)

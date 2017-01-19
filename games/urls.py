@@ -16,7 +16,10 @@ Including another URLconf
 from django.conf.urls import url
 from django.utils.translation import ugettext_lazy as _
 
-from games.views import GameBuyView, GameCreateView, GameDeleteView, GameDetailView, GameListView
+from games.views import (
+    GameDetailView, GameListView,
+    GameBuyView, GameCreateView, GameDeleteView, GameUpdateView,
+)
 
 urlpatterns = [
     url(r'^$', GameListView.as_view(bought=True, page_title=_('My Games')), name='my-games'),
@@ -25,5 +28,6 @@ urlpatterns = [
     url(r'^(?P<slug>[-\w]+)/$', GameDetailView.as_view(), name='detail'),
     url(r'^(?P<slug>[-\w]+)/play$', GameDetailView.as_view(), name='play'),
     url(r'^(?P<slug>[-\w]+)/buy$', GameBuyView.as_view(), name='buy'),
+    url(r'^(?P<slug>[-\w]+)/update$', GameUpdateView.as_view(), name='update'),
     url(r'^(?P<pk>[0-9]+)/delete$', GameDeleteView.as_view(), name='delete'),
 ]

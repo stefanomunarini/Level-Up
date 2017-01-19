@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, Min
+from django.forms import ModelForm
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
+from django.views.generic import UpdateView
 
-from games.forms import GameBuyForm, GameScreenshotModelFormSet
+from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
 from games.models import Game
 from transactions.models import Transaction
 
@@ -56,7 +58,7 @@ class GameBuyView(LoginRequiredMixin, DetailView, FormView):  # TODO: Implement 
 class GameDetailView(DetailView):
     model = Game
     context_object_name = 'game'
-    template_name = 'game_detail_view.html'
+    template_name = 'game_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(GameDetailView, self).get_context_data(**kwargs)
@@ -72,7 +74,7 @@ class GameCreateView(LoginRequiredMixin, CreateView):
     fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
     login_url = reverse_lazy('login')
     model = Game
-    template_name = 'game_create_view.html'
+    template_name = 'game_create.html'
     success_url = reverse_lazy('profile:user-profile')
 
     def dispatch(self, request, *args, **kwargs):
@@ -97,6 +99,17 @@ class GameCreateView(LoginRequiredMixin, CreateView):
             game_screenshot_instance.save()
 
         return super(GameCreateView, self).form_valid(form)
+
+
+class GameUpdateView(LoginRequiredMixin, UpdateView):
+    model = Game
+    context_object_name = 'game'
+    form_class = GameUpdateModelForm
+    login_url = reverse_lazy('login')
+    template_name = 'game_update.html'
+
+    def get_success_url(self):
+        return reverse_lazy('game:detail', kwargs={'slug':self.object.slug})
 
 
 class GameDeleteView(LoginRequiredMixin, DeleteView):
