@@ -98,8 +98,6 @@ migrations/*
 # Django database
 db.sqlite3
 
-*.png
-*.jpg
 *dev_*
 
 # sass cache

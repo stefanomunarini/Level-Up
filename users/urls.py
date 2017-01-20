@@ -16,15 +16,16 @@ Including another URLconf
 from django.conf.urls import url
 
 from users.views import (
-    SignupPlayerView, SignupDeveloperView,
+    SignupUserGroupSelectionView, SignupPlayerView, SignupDeveloperView,
     UserProfileDetailView, UserProfileUpdateView,
 )
 
 urlpatterns = [
     
     # Profile
-    url(r'^signup/$', SignupPlayerView.as_view(), name='registration'),
-    url(r'^signup/dev$', SignupDeveloperView.as_view(), name='registration-dev'),
+    url(r'^signup/$', SignupUserGroupSelectionView.as_view(), name='signup'),
+    url(r'^signup/player$', SignupPlayerView.as_view(), name='signup-player'),
+    url(r'^signup/developer$', SignupDeveloperView.as_view(), name='signup-developer'),
     url(r'^$', UserProfileDetailView.as_view(), name='user-profile'),
     url(r'^update/$', UserProfileUpdateView.as_view(), name='user-profile-update'),
     

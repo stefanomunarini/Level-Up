@@ -14,11 +14,13 @@ from users.models import UserProfile
 
 # User Signup
 
+class SignupUserGroupSelectionView(TemplateView):
+    template_name = 'signup_user_group_selection.html'
+
 class AbstractSignupView(FormView):
     """
     This acts as a generic SignupView that is used by SignupPlayerView and SignupDeveloperView
     """
-    template_name = 'signup.html'
     success_url = reverse_lazy('profile:user-profile')
 
     def get(self, request, *args, **kwargs):
@@ -39,10 +41,12 @@ class AbstractSignupView(FormView):
 
 class SignupPlayerView(AbstractSignupView):
     form_class = SignupPlayerForm
+    template_name = 'signup_player.html'
 
 
 class SignupDeveloperView(AbstractSignupView):
     form_class = SignupDeveloperForm
+    template_name = 'signup_developer.html'
 
 
 # User Profile
