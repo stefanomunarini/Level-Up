@@ -32,8 +32,13 @@ def get_trending_this_month(games, today):
     return _annotate_downloads(games.filter(transactions__datetime__gte=one_month_ago))
 
 
-def _annotate_downloads(queryset):
+def _annotate_downloads(queryset, only_positive_downloads=True):
+    if only_positive_downloads:
+        return queryset.annotate(downloads=Count(Case(
+            When(transactions__status=Transaction.SUCCESS_STATUS, then=1),
+            output_field=IntegerField(),
+        ))).order_by('-downloads').filter(downloads__gt=0)
     return queryset.annotate(downloads=Count(Case(
-        When(transactions__status=Transaction.SUCCESS_STATUS, then=1),
-        output_field=IntegerField(),
-    ))).order_by('-downloads').filter(downloads__gt=0)
+            When(transactions__status=Transaction.SUCCESS_STATUS, then=1),
+            output_field=IntegerField(),
+        ))).order_by('-downloads')

@@ -40,7 +40,7 @@ class GameListView(ListView):
         if self.bought:
             return self.request.user.profile.get_bought_games()
         else:
-            return _annotate_downloads(Game.objects.filter(is_published=True))
+            return _annotate_downloads(Game.objects.filter(is_published=True), only_positive_downloads=False)
 
 
 class GameBuyView(LoginRequiredMixin, DetailView):
