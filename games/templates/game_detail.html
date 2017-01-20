@@ -29,9 +29,11 @@
 <p>Description: {{ game.description }}</p>
 <p>Price: {{ game.price }}</p>
 
-<h4>Developer stats:</h4>
-<p>Earning: {{ game_stats.amount_earned }}</p>
-<p>First sell: {{ game_stats.first_sell }}</p>
+{%  if game in request.user.profile.get_developed_games %}
+    <h4>Developer stats:</h4>
+    <p>Earning: {{ game_stats.amount_earned }}</p>
+    <p>First sell: {{ game_stats.first_sell }}</p>
+{%  endif %}
 
 {% if game.screenshots.all %}
     <p>Screenshots:</p>
