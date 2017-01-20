@@ -96,7 +96,8 @@ class GameDetailView(DetailView):
         if self.request.user.is_authenticated:
             user_profile = self.request.user.profile
             if user_profile.is_developer and user_profile == self.get_object().dev:
-                context['game_stat'] = Transaction.objects.filter(game=self.get_object()) \
+                context['game_stats'] = Transaction.objects.filter(game=self.get_object(),
+                                                                  status=Transaction.SUCCESS_STATUS) \
                     .aggregate(amount_earned=Sum('amount'), first_sell=Min('datetime'))
         return context
 
