@@ -26,7 +26,8 @@ DEBUG = False
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '=b)dhg=&ct5^rayyjb#de3cywg)oq)-!6j$h@^bq9kgj!-bf3k'
 
-ALLOWED_HOSTS = ['level-up-eu.herokuapp.com']
+HEROKU_HOST = 'level-up-eu.herokuapp.com'
+ALLOWED_HOSTS = [HEROKU_HOST, 'payments.webcourse.niksula.hut.fi']
 
 # Application definition
 

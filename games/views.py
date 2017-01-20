@@ -14,7 +14,7 @@ from django.views.generic import UpdateView
 
 from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
 from games.models import Game
-from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
+from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, DEBUG, HEROKU_HOST
 from transactions.models import Transaction
 
 
@@ -55,7 +55,7 @@ class GameBuyView(LoginRequiredMixin, DetailView):
                                       game=game).exists():
             return HttpResponseRedirect(
                 reverse_lazy('game:detail', kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}))
-        super(GameBuyView, self).dispatch(request, *args, **kwargs)
+        return super(GameBuyView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(GameBuyView, self).get_context_data(**kwargs)
@@ -69,7 +69,13 @@ class GameBuyView(LoginRequiredMixin, DetailView):
         m = md5(checksumstr.encode("ascii"))
         checksum = m.hexdigest()
 
-        webapp_url = 'http://' + self.request.META['HTTP_HOST']
+        if DEBUG:
+            webapp_url = 'http://'
+        else:
+            webapp_url = 'https://'
+
+        webapp_url += self.request.META['HTTP_HOST']
+        # webapp_url
 
         context['pid'] = pid
         context['sid'] = sid
