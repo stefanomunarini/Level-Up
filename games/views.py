@@ -15,6 +15,7 @@ from django.views.generic import UpdateView
 from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
 from games.models import Game
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, DEBUG, HEROKU_HOST
+from levelup.services import _annotate_downloads
 from transactions.models import Transaction
 
 
@@ -39,7 +40,7 @@ class GameListView(ListView):
         if self.bought:
             return self.request.user.profile.get_bought_games()
         else:
-            return Game.objects.filter(is_published=True)
+            return _annotate_downloads(Game.objects.filter(is_published=True))
 
 
 class GameBuyView(LoginRequiredMixin, DetailView):
@@ -52,7 +53,8 @@ class GameBuyView(LoginRequiredMixin, DetailView):
     def dispatch(self, request, *args, **kwargs):
         game = get_object_or_404(Game, slug=kwargs.get(self.slug_url_kwarg))
         if Transaction.objects.filter(user=self.request.user.profile,
-                                      game=game).exists():
+                                      game=game,
+                                      status=Transaction.SUCCESS_STATUS).exists():
             return HttpResponseRedirect(
                 reverse_lazy('game:detail', kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}))
         return super(GameBuyView, self).dispatch(request, *args, **kwargs)
