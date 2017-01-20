@@ -1,4 +1,6 @@
-To collaborate in the development of this project, work on a separate branch from master. When the piece of work you're working at is completed (or it is not completed but you need help to move forward), push the branch and create a new Pull Request (PR) (called Merge Request in Niksula).
+To collaborate in the development of this project, work on a separate branch from master. When the piece of work you're
+working at is completed (or it is not completed but you need help to move forward), push the branch and create a new
+Pull Request (PR) (called Merge Request in Niksula).
 
 Before creating a new branch, always switch to the master branch:
 
@@ -19,4 +21,34 @@ Before creating the PR, get the latest updates from master and merge them in you
 
 and solve eventual conflicts.
 
-Then go to Niksula and open a new Merge Request that points to master and assign it to the other team members so that it can be reviewed and, eventually, merged.
+Then go to Niksula and open a new Merge Request that points to master and assign it to the other team members so that it
+can be reviewed and, eventually, merged.
+
+
+
+
+A better way to work is to create a Fork of the repo. A fork is another repository, which will be created in your Git
+account To create a fork, go to the project page in Niksula and click the fork button on the top right corner. After
+that, open the terminal and cd into where you want to clone your project (don't create a project folder yet, git clone
+will automatically create one for you).
+
+Not clone the project:
+
+`git clone YOUR_PROJECT_URL`
+
+Set the upstream to be on the main repository:
+
+`git remote add upstream git@git.niksula.hut.fi:munaris1/wsd_project.git`
+
+Now you are up and running!
+
+When you want to fetch the latest updates from the main repository:
+
+`git fetch upstream master`
+
+and to merge them in your branch
+
+`git rebase upstream/master`
+
+When you are ready to merge your updates with the master branch, push your commits to your repository and then go to the
+main repository and create a new Merge Request.
