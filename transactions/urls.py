@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from transactions.views import PaymentResultTemplateView
+from transactions.views import PaymentResultRedirectView
 
 urlpatterns = [
-    url(r'^result/$', PaymentResultTemplateView.as_view(), name='result'),
+    url(r'^result/$', PaymentResultRedirectView.as_view(), name='result'),
 ]
