@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+
+import cloudinary
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 
@@ -36,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'cloudinary',
     'django_extensions',
     'foundation',  # https://pypi.python.org/pypi/django-zurb-foundation
     'users',
@@ -158,3 +161,9 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'alert',
 }
+
+cloudinary.config(
+    cloud_name="dwtzeje5s",
+    api_key="332167819138434",
+    api_secret="0zj5ZvaKyLP_57MZyhkWdlI8_bw"
+)
