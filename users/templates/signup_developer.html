@@ -1,0 +1,27 @@
+{% extends "__base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign Up" %} &ndash; {{ block.super }}{% endblock title %}
+
+{% block main %}
+
+
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>{% trans "Sign up as a developer" %}
+                <small>
+                    <a href="{% url 'profile:signup-player' %}">{% trans "Signup as a player" %}</a>
+                </small>
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include "_input_grid.html" with submit_text=_('Sign Up') %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
