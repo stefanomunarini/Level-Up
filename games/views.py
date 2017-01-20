@@ -1,8 +1,12 @@
+import uuid
+from _md5 import md5
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum, Min
-from django.forms import ModelForm
 from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
@@ -10,6 +14,7 @@ from django.views.generic import UpdateView
 
 from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
 from games.models import Game
+from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.models import Transaction
 
 
@@ -37,23 +42,44 @@ class GameListView(ListView):
             return Game.objects.filter(is_published=True)
 
 
-class GameBuyView(LoginRequiredMixin, DetailView, FormView):  # TODO: Implement payments
+class GameBuyView(LoginRequiredMixin, DetailView):
     login_url = reverse_lazy('login')
     form_class = GameBuyForm
     model = Game
     context_object_name = 'game'
     template_name = 'game_buy.html'
-    success_url = reverse_lazy('home')
 
-    def form_valid(self, form):
-        self.success_url = reverse_lazy('game:detail', kwargs=self.kwargs)
-        t = Transaction(
-            user=self.request.user.profile,
-            game=self.get_object(),
-            status=Transaction.SUCCESS_STATUS
-        )
-        t.save()
-        return super(GameBuyView, self).form_valid(form)
+    def dispatch(self, request, *args, **kwargs):
+        game = get_object_or_404(Game, slug=kwargs.get(self.slug_url_kwarg))
+        if Transaction.objects.filter(user=self.request.user.profile,
+                                      game=game).exists():
+            return HttpResponseRedirect(
+                reverse_lazy('game:detail', kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}))
+        super(GameBuyView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(GameBuyView, self).get_context_data(**kwargs)
+
+        pid = self.object.slug
+        sid = PAYMENT_SERVICE_SELLER_ID
+        amount = self.object.price
+        secret_key = PAYMENT_SERVICE_SECRET_KEY
+        checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+
+        m = md5(checksumstr.encode("ascii"))
+        checksum = m.hexdigest()
+
+        webapp_url = 'http://' + self.request.META['HTTP_HOST']
+
+        context['pid'] = pid
+        context['sid'] = sid
+        context['amount'] = amount
+        context['checksum'] = checksum
+        context['success_url'] = webapp_url + reverse('transactions:success')
+        context['cancel_url'] = webapp_url + reverse('transactions:cancel')
+        context['error_url'] = webapp_url + reverse('transactions:error')
+
+        return context
 
 
 class GameDetailView(DetailView):
@@ -116,7 +142,7 @@ class GameUpdateView(LoginRequiredMixin, UpdateView):
         return self.object
 
     def get_success_url(self):
-        return reverse_lazy('game:detail', kwargs={'slug':self.object.slug})
+        return reverse_lazy('game:detail', kwargs={'slug': self.object.slug})
 
 
 class GameDeleteView(LoginRequiredMixin, DeleteView):

@@ -171,3 +171,7 @@ cloudinary.config(
     api_key="332167819138434",
     api_secret="0zj5ZvaKyLP_57MZyhkWdlI8_bw"
 )
+
+# Payment service seller_id and Secret Key
+PAYMENT_SERVICE_SELLER_ID = 'WSDProjectLevelUp2017'
+PAYMENT_SERVICE_SECRET_KEY = '0aef063aa5876a77623b466e4800af19'

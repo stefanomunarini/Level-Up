@@ -18,14 +18,16 @@ from django.contrib import admin
 from django.contrib.auth.views import login
 
 from . import settings
-from games import urls as games_url
-from users import urls as users_url
 from .views import HomepageView
+from games import urls as games_url
+from transactions import urls as transactions_url
+from users import urls as users_url
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^profile/', include(users_url, namespace='profile')),
     url(r'^games/', include(games_url, namespace='game')),
+    url(r'^transactions/', include(transactions_url, namespace='transactions')),
     url(r'^$', HomepageView.as_view(), name='home'),
     
     # Auth

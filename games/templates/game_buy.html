@@ -5,9 +5,21 @@
 
 {% block main %}
 
-<form action="" method="post">{% csrf_token %}
-    <p>Are you sure you want to buy {{ game }}? {{ game.price }} will be charged on your preferred payment method.</p>
-    <input type="submit" value="{% trans 'Confirm' %}" />
+<form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
+    <input type="hidden" name="pid" value={{ pid }} />
+    <input type="hidden" name="sid" value={{ sid }} />
+    <input type="hidden" name="success_url"
+            value={{ success_url }} />
+    <input type="hidden" name="cancel_url"
+            value={{ cancel_url }} />
+    <input type="hidden" name="error_url"
+            value={{ error_url }} />
+    <input type="hidden" name="checksum"
+            value={{ checksum }} />
+
+    <label for="id_amount">Amount</label>
+    <input type="text" id="id_amount" name="amount" value={{ amount }} />
+    <input type="submit" value="Accept Payment"/>
 </form>
 
 {% endblock main %}
