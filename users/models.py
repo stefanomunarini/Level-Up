@@ -5,6 +5,7 @@ from django.core import validators
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from games.models import Game
+from transactions.models import Transaction
 
 
 def get_upload_path(instance, filename):
@@ -56,7 +57,7 @@ class UserProfile(models.Model):
     # Return all the games that this user has bought
     def get_bought_games(self):
         return Game.objects.filter(
-            id__in=self.transactions.values_list('game', flat=True)
+            id__in=self.transactions.filter(status=Transaction.SUCCESS_STATUS).values_list('game', flat=True)
         )
 
     def get_developed_games(self):
