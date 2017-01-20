@@ -15,14 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from transactions.views import (
-    SuccessTemplateView, CancelTemplateView, ErrorTemplateView
-)
+from transactions.views import PaymentResultTemplateView
 
 urlpatterns = [
-    
-    # Profile
-    url(r'^success/$', SuccessTemplateView.as_view(), name='success'),
-    url(r'^cancel/$', CancelTemplateView.as_view(), name='cancel'),
-    url(r'^error/$', ErrorTemplateView.as_view(), name='error'),
+    url(r'^result/$', PaymentResultTemplateView.as_view(), name='result'),
 ]

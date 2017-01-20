@@ -11,11 +11,9 @@ from levelup.settings import PAYMENT_SERVICE_SECRET_KEY
 from transactions.models import Transaction
 
 
-class SuccessTemplateView(RedirectView):
-    template_name = 'success.html'
+class PaymentResultTemplateView(RedirectView):
 
     def dispatch(self, request, *args, **kwargs):
-
         pid = self.request.GET.get('pid')
         payment_ref = self.request.GET.get('ref')
         result = self.request.GET.get('result')
@@ -38,7 +36,7 @@ class SuccessTemplateView(RedirectView):
         transaction.amount = game.price
         transaction.save()
 
-        return super(SuccessTemplateView, self).dispatch(request, *args, **kwargs)
+        return super(PaymentResultTemplateView, self).dispatch(request, *args, **kwargs)
 
     def get_redirect_url(self, *args, **kwargs):
         return reverse_lazy('game:detail', kwargs={'slug': self.request.GET.get('pid')})

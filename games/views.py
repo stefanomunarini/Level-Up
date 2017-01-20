@@ -69,21 +69,19 @@ class GameBuyView(LoginRequiredMixin, DetailView):
         m = md5(checksumstr.encode("ascii"))
         checksum = m.hexdigest()
 
-        if DEBUG:
-            webapp_url = 'http://'
-        else:
-            webapp_url = 'https://'
-
+        # dinamically build the url so it works for both dev and prod
+        webapp_url = self.request.is_secure() and 'https://' or 'http://'
         webapp_url += self.request.META['HTTP_HOST']
-        # webapp_url
+
+        redirect_url = webapp_url + reverse('transactions:result')
 
         context['pid'] = pid
         context['sid'] = sid
         context['amount'] = amount
         context['checksum'] = checksum
-        context['success_url'] = webapp_url + reverse('transactions:success')
-        context['cancel_url'] = webapp_url + reverse('transactions:cancel')
-        context['error_url'] = webapp_url + reverse('transactions:error')
+        context['success_url'] = redirect_url
+        context['cancel_url'] = redirect_url
+        context['error_url'] = redirect_url
 
         return context
 
