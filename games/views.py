@@ -1,6 +1,7 @@
 import uuid
 from _md5 import md5
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum, Min
@@ -8,8 +9,10 @@ from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
+from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
 from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
@@ -43,13 +46,13 @@ class GameListView(ListView):
             return _annotate_downloads(Game.objects.filter(is_published=True), only_positive_downloads=False)
 
 
-class GameBuyView(LoginRequiredMixin, DetailView):
-    login_url = reverse_lazy('login')
+class GameBuyView(DetailView):
     form_class = GameBuyForm
     model = Game
     context_object_name = 'game'
     template_name = 'game_buy.html'
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         game = get_object_or_404(Game, slug=kwargs.get(self.slug_url_kwarg))
         if Transaction.objects.filter(user=self.request.user.profile,
@@ -99,18 +102,18 @@ class GameDetailView(DetailView):
             user_profile = self.request.user.profile
             if user_profile.is_developer and user_profile == self.get_object().dev:
                 context['game_stats'] = Transaction.objects.filter(game=self.get_object(),
-                                                                  status=Transaction.SUCCESS_STATUS) \
+                                                                   status=Transaction.SUCCESS_STATUS) \
                     .aggregate(amount_earned=Sum('amount'), first_sell=Min('datetime'))
         return context
 
 
-class GameCreateView(LoginRequiredMixin, CreateView):
+class GameCreateView(CreateView):
     fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
-    login_url = reverse_lazy('login')
     model = Game
     template_name = 'game_create.html'
     success_url = reverse_lazy('profile:user-profile')
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated and not request.user.profile.is_developer:
             return HttpResponseForbidden()
@@ -139,7 +142,6 @@ class GameUpdateView(LoginRequiredMixin, UpdateView):
     model = Game
     context_object_name = 'game'
     form_class = GameUpdateModelForm
-    login_url = reverse_lazy('login')
     template_name = 'game_update.html'
 
     def get_object(self, queryset=None):
@@ -153,7 +155,6 @@ class GameUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class GameDeleteView(LoginRequiredMixin, DeleteView):
-    login_url = reverse_lazy('login')
     model = Game
     success_url = reverse_lazy('profile:user-profile')
     template_name = 'game_confirm_delete.html'
@@ -174,3 +175,7 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
         self.object.is_published = not self.object.is_published
         self.object.save()
         return HttpResponseRedirect(success_url)
+
+
+class GamePlayView(LoginRequiredMixin, GameDetailView):
+    template_name = 'game_play.html'
