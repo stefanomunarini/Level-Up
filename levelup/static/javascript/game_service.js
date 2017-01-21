@@ -26,7 +26,13 @@ $(document).ready(function() {
                         gameState: game_state
                     };
                     var game_frame = document.getElementById("game_frame").contentWindow;
-                    game_frame.postMessage(message, '*')
+                    game_frame.postMessage(message, '*');
+                case SAVE_MESSAGE:
+                    var game_state = data.gameState
+
+
+                    
+
                 default:
                     console.log('nothing here')
             }

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum, Min
+from django.http import HttpResponse
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -193,3 +194,13 @@ class GameStateView(SingleObjectMixin, View):
     model = Game
     context_object_name = 'game'
 
+    def dispatch(self, request, *args, **kwargs):
+        super(GameStateView, self).dispatch(request, *args, **kwargs)
+
+        game_state = GameState()
+        game_state.user = request.user.profile
+        game_state.game = self.get_object()
+        game_state.state = request.POST.get('game_state')
+        game_state.save()
+
+        return HttpResponse(status=200)
