@@ -32,6 +32,13 @@
 <p>Url: {{ game.url }}</p>
 <p>Description: {{ game.description }}</p>
 <p>Price: {{ game.price }}</p>
+<p id="test"></p>
+
+<input type="hidden" id="game_slug" name="game_slug" value="{{ game.slug }}" readonly>
+<input type="hidden" id="user_id" name="user_id" value="{{ request.user.profile.id }}" readonly>
+<input type="hidden" id="game_state_url" name="variable" value="{%  url 'game:game-state' slug=game.slug %}" readonly>
+<input type="hidden" id="game_state" name="variable" value="{{ game_state.state }}" readonly>
+
 
 <iframe id="game_frame" src="http://webcourse.cs.hut.fi/example_game.html"></iframe>
 

@@ -11,12 +11,14 @@ from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.views import View
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
+from django.views.generic.detail import SingleObjectMixin
 
 from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
-from games.models import Game
+from games.models import Game, GameState
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, DEBUG, HEROKU_HOST
 from levelup.services import _annotate_downloads
 from transactions.models import Transaction
@@ -179,3 +181,15 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
 
 class GamePlayView(LoginRequiredMixin, GameDetailView):
     template_name = 'game_play.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(GamePlayView, self).get_context_data(**kwargs)
+        context['game_state'] = GameState.objects.filter(game=self.object,
+                                                         user=self.request.user.profile).last()
+        return context
+
+
+class GameStateView(SingleObjectMixin, View):
+    model = Game
+    context_object_name = 'game'
+
