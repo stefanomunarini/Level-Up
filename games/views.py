@@ -133,7 +133,7 @@ class GameDetailView(DetailView):
         return context
 
 
-class GamePlayView(GameOwnershipRequiredMixin, LoginRequiredMixin, GameDetailView):
+class GamePlayView(GameOwnershipRequiredMixin, GameDetailView):
     results_to_show = 10
     template_name = 'game_play.html'
 

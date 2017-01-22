@@ -1,0 +1,5 @@
+<ol>
+    {% for score in scores %}
+        <li>{% if score.player == request.user.profile %}<b>{% endif %}{{ score.player }}{% if score.player == request.user.profile %}</b>{% endif %} {{ score.score }}</li>
+    {% endfor %}
+</ol>

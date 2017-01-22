@@ -87,7 +87,7 @@ function loadPreviousGame(){
             info: "No previous saved game found."
         };
     }
-    
+
     var game_frame = document.getElementById("game_frame").contentWindow;
     game_frame.postMessage(message, '*');
 
@@ -120,7 +120,7 @@ function saveGameState( data ){
     });
 }
 
-function saveGameScore(data) {
+function saveGameScore( data ) {
     var game_score_url = $("#game_score_url").val();
     $.ajax({
         url: game_score_url,

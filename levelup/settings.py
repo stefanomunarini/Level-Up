@@ -159,6 +159,8 @@ MEDIA_ROOT = "levelup/static/images/"
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = reverse_lazy('login')
 
+LOGOUT_REDIRECT_URL = reverse_lazy('home')
+
 # Class attributes for messages
 
 MESSAGE_TAGS = {

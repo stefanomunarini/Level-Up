@@ -16,27 +16,19 @@
     <div id="game_play">
         <iframe id="game_frame" src="http://webcourse.cs.hut.fi/example_game.html" {% if game_state.state %}style="filter: blur(5px)"{% endif %}></iframe>
         <p>
-            <input type="submit" id="game_resume" class="button" value="Resume" style="display: none;">
             <input type="submit" id="game_new" class="button" value="New Game" style="display: none;">
+            <input type="submit" id="game_resume" class="button" value="Resume" style="display: none;">
         </p>
     </div>
 
     <div class="row" id="scores">
         <div class="small-6 large-6 columns" id="my_scores">
             <h4>Your Scores:</h4>
-            <ol>
-                {% for score in my_scores %}
-                    <li>{{ score.score }} - {{ score.start_time }}</li>
-                {% endfor %}
-            </ol>
+            {% include '_results_list.html' with scores=my_scores %}
         </div>
         <div class="small-6 large-6 columns">
             <h4>Global Scores:</h4>
-            <ol>
-                {% for score in global_scores %}
-                    <li>{% if score.player == request.user.profile %}<b>{% endif %}{{ score.score }} - {{ score.start_time }}{% if score.player == request.user.profile %}</b>{% endif %}</li>
-                {% endfor %}
-            </ol>
+            {% include '_results_list.html' with scores=my_scores %}
         </div>
     </div>
 
