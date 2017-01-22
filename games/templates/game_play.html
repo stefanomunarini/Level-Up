@@ -5,46 +5,45 @@
 
 {%  block head_script %}
     {{ block.super }}
-    <script type="text/javascript" src={% static "javascript/game_service.js" %}></script>
+    <script type="text/javascript" src={% static "javascript/game_services.js" %}></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.min.js"></script>
 {% endblock %}
 
 {% block main %}
 
-<h3>
-    {{ game.name|title }}
-    <small>
-        {% with request.user.profile.get_bought_games as bought_games %}
-            {% if game in bought_games %}
-                <a href="{% url 'game:play' slug=game.slug %}">{% trans 'Play' %}</a>
-            {% else %}
-                <a href="{% url 'game:buy' slug=game.slug %}">{% trans 'Buy' %}</a>
-            {% endif %}
-            {%  if game in request.user.profile.get_developed_games %}
-                <a href="{% url 'game:update' slug=game.slug %}">{% trans 'Update' %}</a>
-            {% endif %}
-        {%  endwith %}
-    </small>
-</h3>
-{#<img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>#}
-    <img src="https://screenshotlayer.com/images/assets/placeholder.png">
-<p>Added: {{ game.date_added|date:"Y-m-d" }}</p>
-<p>Slug: {{ game.slug }}</p>
-<p>Dev: {{ game.dev.url_slug }}</p>
-<p>Url: {{ game.url }}</p>
-<p>Description: {{ game.description }}</p>
-<p>Price: {{ game.price }}</p>
-<p id="test"></p>
+    <h3>{{ game.name|title }}</h3>
 
-<input type="hidden" id="game_slug" value="{{ game.slug }}" readonly>
-<input type="hidden" id="user_id" value="{{ request.user.profile.id }}" readonly>
-<input type="hidden" id="game_state" value="{{ game_state.state }}" readonly>
-<input type="hidden" id="game_state_url" value="{%  url 'game:game-state' slug=game.slug %}" readonly>
-<input type="hidden" id="game_score_url" value="{%  url 'game:game-score' slug=game.slug %}" readonly>
-
-<div id="game_play">
+    <div id="game_play">
         <iframe id="game_frame" src="http://webcourse.cs.hut.fi/example_game.html" {% if game_state.state %}style="filter: blur(5px)"{% endif %}></iframe>
-        <input type="submit" id="game_resume" class="button" value="Resume" style="display: none;">
-        <input type="submit" id="game_new" class="button" value="New Game" style="display: none;">
-</div>
+        <p>
+            <input type="submit" id="game_resume" class="button" value="Resume" style="display: none;">
+            <input type="submit" id="game_new" class="button" value="New Game" style="display: none;">
+        </p>
+    </div>
+
+    <div class="row" id="scores">
+        <div class="small-6 large-6 columns" id="my_scores">
+            <h4>Your Scores:</h4>
+            <ol>
+                {% for score in my_scores %}
+                    <li>{{ score.score }} - {{ score.start_time }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+        <div class="small-6 large-6 columns">
+            <h4>Global Scores:</h4>
+            <ol>
+                {% for score in global_scores %}
+                    <li>{% if score.player == request.user.profile %}<b>{% endif %}{{ score.score }} - {{ score.start_time }}{% if score.player == request.user.profile %}</b>{% endif %}</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+    <input type="hidden" id="game_slug" value="{{ game.slug }}" readonly>
+    <input type="hidden" id="user_id" value="{{ request.user.profile.id }}" readonly>
+    <input type="hidden" id="game_state" value="{{ game_state.state }}" readonly>
+    <input type="hidden" id="game_state_url" value="{%  url 'game:game-state' slug=game.slug %}" readonly>
+    <input type="hidden" id="game_score_url" value="{%  url 'game:game-score' slug=game.slug %}" readonly>
+    <input type="hidden" id="new_game_url" value="{%  url 'game:new-game' slug=game.slug %}" readonly>
 {% endblock main %}

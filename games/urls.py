@@ -19,7 +19,7 @@ from django.utils.translation import ugettext_lazy as _
 from games.views import (
     GameDetailView, GameListView, GamePlayView, GameStateView,
     GameBuyView, GameCreateView, GameDeleteView, GameUpdateView,
-    GameScoreView,
+    GameScoreView, NewGameView
 )
 
 urlpatterns = [
@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/delete$', GameDeleteView.as_view(), name='delete'),
     url(r'^(?P<slug>[-\w]+)/game-state', GameStateView.as_view(), name='game-state'),
     url(r'^(?P<slug>[-\w]+)/game-score', GameScoreView.as_view(), name='game-score'),
+    url(r'^(?P<slug>[-\w]+)/new-game', NewGameView.as_view(), name='new-game'),
 ]

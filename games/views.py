@@ -111,12 +111,18 @@ class GameDetailView(DetailView):
 
 
 class GamePlayView(GameOwnershipRequiredMixin, LoginRequiredMixin, GameDetailView):
+    results_to_show = 10
     template_name = 'game_play.html'
 
     def get_context_data(self, **kwargs):
         context = super(GamePlayView, self).get_context_data(**kwargs)
         context['game_state'] = GameState.objects.filter(game=self.object,
                                                          user=self.request.user.profile).last()
+        context['my_scores'] = GameScore.objects.filter(game=self.object,
+                                                        player=self.request.user.profile)\
+                                        .order_by('-score', '-start_time')[:self.results_to_show]
+        context['global_scores'] = GameScore.objects.filter(game=self.object)\
+                                            .order_by('-score', '-start_time')[:self.results_to_show]
         return context
 
 
@@ -166,6 +172,7 @@ class NewGameView(GameOwnershipRequiredMixin, SingleObjectMixin, View):
     This view simply reset the GameState in order to start a new game. Its only function is to remove the previous
     saved GameState for a particular Game and UserProfile.
     """
+    http_method_names = ('GET',)
     model = Game
 
     def dispatch(self, request, *args, **kwargs):
@@ -173,6 +180,7 @@ class NewGameView(GameOwnershipRequiredMixin, SingleObjectMixin, View):
         if isinstance(dispatcher, HttpResponseRedirect):
             return dispatcher
         GameState.objects.filter(game=self.get_object(), user=request.user.profile).delete()
+        dispatcher.status_code = 200
         return dispatcher
 
 

@@ -7,16 +7,17 @@ var SAVE_MESSAGE = 'SAVE';
 
 var ACCEPTED_MESSAGES = [SETTING_MESSAGE, LOAD_REQUEST_MESSAGE, LOAD_MESSAGE, ERROR_MESSAGE, SCORE_MESSAGE, SAVE_MESSAGE]
 
+var game_state = null;
 $(document).ready(function() {
 
     ajaxSetup();
+
+    game_state = $("#game_state").val();
 
     $(window).on('message', function(evt) {
 
         var data = evt.originalEvent.data;
         var message = data.messageType;
-
-        console.log(message);
 
         if ($.inArray(message, ACCEPTED_MESSAGES) != -1){
             switch (message){
@@ -50,33 +51,31 @@ function resizeGameFrame( data ){
     game_frame.width = data.options.width;
     game_frame.height = data.options.height;
 
-    $('#game_resume').show();
+    if (game_state){
+        $('#game_resume').show();
+    }
     $('#game_new').show();
 }
 
 function loadPreviousGame(){
-    var game_state = $("#game_state").val();
     var message = null;
 
     /*
-    CASE 0: the user loads the page and there is a previous saved game -> load the game state (var game_state) with the
-            data saved in the database
     CASE 1: the user loads the page, plays and then saves a game. Then he/she does not reload the page and resume the game
             -> load the saved game state (var game_state_global) from the current session
+    CASE 2: the user loads the page and there is a previous saved game -> load the game state (var game_state) with the
+            data saved in the database
      */
     if (game_state_global){
         // the user has a saved game which was saved during this session
-        game_state_global = formatGameState(game_state_global);
-        console.log('game_state_global', game_state_global)
+        // game_state_global = formatGameState(game_state_global);
         message = {
             messageType: "LOAD",
             gameState: game_state_global
         };
     } else if (game_state){
         // there is a previously saved game in the database (the user just arrived in the page)
-        game_state = formatGameState(game_state);
-        console.log('game_state', game_state)
-        // game_state = JSON.parse(game_state);
+        // state = formatGameState(game_state);
         message = {
             messageType: "LOAD",
             gameState: game_state
@@ -99,11 +98,9 @@ function loadPreviousGame(){
 
 var game_state_global = null;
 function saveGameState( data ){
-    var game_state = data.gameState;
-    game_state = JSON.stringify(game_state);
-    game_state_global = game_state;
-
-    console.log('save game_state_global', game_state_global)
+    var state = data.gameState;
+    state = JSON.stringify(state);
+    game_state_global = state;
 
     var game_state_url = $("#game_state_url").val();
 
@@ -111,7 +108,7 @@ function saveGameState( data ){
         url: game_state_url,
         type: 'POST',
         data: {
-            'game_state': game_state
+            'game_state': state
         },
         success: function( data ){
             $("iframe").css("filter","blur(5px)");
@@ -141,27 +138,24 @@ function saveGameScore(data) {
 }
 
 function startNewGame(){
-    if (game_state_global){
+    var new_game_url = $("#new_game_url").val();
+    $.get(new_game_url, function ( data ) {
         location.reload();
-    } else {
-        $("iframe").css("filter","none");
-        $('#game_resume').hide();
-        $('#game_new').hide();
-    }
+    });
 }
 
-function formatGameState(game_state){
-    if (game_state.constructor == String) {
-        game_state = JSON.parse(game_state);
-    }
-    if (!('score' in game_state)){
-        game_state.points = 0;
-    }
-    if (!('playerItems' in game_state)){
-        game_state.playerItems = [];
-    }
-    return game_state
-}
+// function formatGameState(state){
+//     if (state.constructor == String) {
+//         state = JSON.parse(state);
+//     }
+//     if (!('score' in state)){
+//         state.points = 0;
+//     }
+//     if (!('playerItems' in state)){
+//         state.playerItems = [];
+//     }
+//     return JSON.stringify(state);
+// }
 
 function ajaxSetup(){
     var csrftoken = Cookies.get('csrftoken');
