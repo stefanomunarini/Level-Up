@@ -19,7 +19,7 @@ from django.views.generic import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
 from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
-from games.models import Game, GameState
+from games.models import Game, GameState, GameScore
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, DEBUG, HEROKU_HOST
 from levelup.services import _annotate_downloads
 from transactions.models import Transaction
@@ -192,7 +192,6 @@ class GamePlayView(LoginRequiredMixin, GameDetailView):
 
 class GameStateView(SingleObjectMixin, View):
     model = Game
-    context_object_name = 'game'
 
     def dispatch(self, request, *args, **kwargs):
         super(GameStateView, self).dispatch(request, *args, **kwargs)
@@ -203,4 +202,23 @@ class GameStateView(SingleObjectMixin, View):
         game_state.state = request.POST.get('game_state')
         game_state.save()
 
+        return HttpResponse(status=200)
+
+
+class GameScoreView(SingleObjectMixin, View):
+    model = Game
+
+    def dispatch(self, request, *args, **kwargs):
+        super(GameScoreView, self).dispatch(request, *args, **kwargs)
+
+        game = self.get_object()
+        user = request.user.profile
+
+        game_score = GameScore()
+        game_score.player = user
+        game_score.game = game
+        game_score.score = request.POST.get('game_score')
+        game_score.save()
+
+        GameState.objects.filter(game=game, user=user).delete()
         return HttpResponse(status=200)

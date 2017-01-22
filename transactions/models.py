@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from django.db import models
@@ -17,7 +19,7 @@ class Transaction(models.Model):
 
     user = models.ForeignKey('users.UserProfile', related_name='transactions')
     game = models.ForeignKey(Game, related_name='transactions')
-    datetime = models.DateTimeField(auto_now_add=True)
+    datetime = models.DateTimeField(default=timezone.now)
     amount = models.FloatField(null=False, blank=False, default=0.0)
     status = models.CharField(max_length=16, choices=PAYMENT_STATUSES_CHOICES)
 
