@@ -43,12 +43,8 @@
 <input type="hidden" id="game_score_url" value="{%  url 'game:game-score' slug=game.slug %}" readonly>
 
 <div id="game_play">
-    {% if game_state.state %}
-        <iframe id="game_frame" src="http://webcourse.cs.hut.fi/example_game.html" style="filter: blur(5px)"></iframe>
-        <input type="submit" id="game_resume" class="button" value="Resume">
-    {% else %}
-        <iframe id="game_frame" src="http://webcourse.cs.hut.fi/example_game.html"></iframe>
+        <iframe id="game_frame" src="http://webcourse.cs.hut.fi/example_game.html" {% if game_state.state %}style="filter: blur(5px)"{% endif %}></iframe>
         <input type="submit" id="game_resume" class="button" value="Resume" style="display: none;">
-    {% endif %}
+        <input type="submit" id="game_new" class="button" value="New Game" style="display: none;">
 </div>
 {% endblock main %}

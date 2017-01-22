@@ -38,13 +38,20 @@ $(document).ready(function() {
 
     $('#game_resume').click(function () {
         loadPreviousGame();
-    })
+    });
+
+    $('#game_new').click(function () {
+        startNewGame();
+    });
 });
 
 function resizeGameFrame( data ){
     var game_frame = document.getElementById("game_frame");
     game_frame.width = data.options.width;
     game_frame.height = data.options.height;
+
+    $('#game_resume').show();
+    $('#game_new').show();
 }
 
 function loadPreviousGame(){
@@ -58,20 +65,24 @@ function loadPreviousGame(){
             -> load the saved game state (var game_state_global) from the current session
      */
     if (game_state_global){
-        game_state_global = JSON.parse(game_state_global);
+        // the user has a saved game which was saved during this session
+        game_state_global = formatGameState(game_state_global);
+        console.log('game_state_global', game_state_global)
         message = {
             messageType: "LOAD",
             gameState: game_state_global
         };
-        // message.gameState = game_state_global;
-        // message.messageType = "LOAD";
     } else if (game_state){
-        game_state = JSON.parse(game_state);
+        // there is a previously saved game in the database (the user just arrived in the page)
+        game_state = formatGameState(game_state);
+        console.log('game_state', game_state)
+        // game_state = JSON.parse(game_state);
         message = {
             messageType: "LOAD",
             gameState: game_state
         };
     } else {
+        // there is no previously saved game
         message =  {
             messageType: "ERROR",
             info: "No previous saved game found."
@@ -92,6 +103,8 @@ function saveGameState( data ){
     game_state = JSON.stringify(game_state);
     game_state_global = game_state;
 
+    console.log('save game_state_global', game_state_global)
+
     var game_state_url = $("#game_state_url").val();
 
     $.ajax({
@@ -101,7 +114,6 @@ function saveGameState( data ){
             'game_state': game_state
         },
         success: function( data ){
-            console.log('success');
             $("iframe").css("filter","blur(5px)");
             $('#game_resume').show();
         },
@@ -113,8 +125,6 @@ function saveGameState( data ){
 
 function saveGameScore(data) {
     var game_score_url = $("#game_score_url").val();
-    console.log(data)
-    console.log(data.score);
     $.ajax({
         url: game_score_url,
         type: 'POST',
@@ -130,8 +140,27 @@ function saveGameScore(data) {
     });
 }
 
-function sendErrorMessage(message){
+function startNewGame(){
+    if (game_state_global){
+        location.reload();
+    } else {
+        $("iframe").css("filter","none");
+        $('#game_resume').hide();
+        $('#game_new').hide();
+    }
+}
 
+function formatGameState(game_state){
+    if (game_state.constructor == String) {
+        game_state = JSON.parse(game_state);
+    }
+    if (!('score' in game_state)){
+        game_state.points = 0;
+    }
+    if (!('playerItems' in game_state)){
+        game_state.playerItems = [];
+    }
+    return game_state
 }
 
 function ajaxSetup(){
