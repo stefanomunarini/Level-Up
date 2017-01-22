@@ -71,14 +71,14 @@ function loadPreviousGame(){
         // game_state_global = formatGameState(game_state_global);
         message = {
             messageType: "LOAD",
-            gameState: game_state_global
+            gameState: JSON.parse(game_state_global)
         };
     } else if (game_state){
         // there is a previously saved game in the database (the user just arrived in the page)
         // state = formatGameState(game_state);
         message = {
             messageType: "LOAD",
-            gameState: game_state
+            gameState: JSON.parse(game_state)
         };
     } else {
         // there is no previously saved game
@@ -87,7 +87,7 @@ function loadPreviousGame(){
             info: "No previous saved game found."
         };
     }
-
+    
     var game_frame = document.getElementById("game_frame").contentWindow;
     game_frame.postMessage(message, '*');
 
