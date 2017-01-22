@@ -1,4 +1,3 @@
-import uuid
 from _md5 import md5
 
 from django.contrib.auth.decorators import login_required
@@ -13,15 +12,14 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
-from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
-from django.views.generic import TemplateView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from django.views.generic import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
 from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
 from games.models import Game, GameState, GameScore
-from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, DEBUG, HEROKU_HOST
 from levelup.services import _annotate_downloads
+from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.models import Transaction
 
 
