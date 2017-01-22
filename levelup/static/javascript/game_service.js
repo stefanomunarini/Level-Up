@@ -49,9 +49,7 @@ function resizeGameFrame( data ){
 
 function loadPreviousGame(){
     var game_state = $("#game_state").val();
-    var message = {
-        messageType: "LOAD"
-    };
+    var message = null;
 
     /*
     CASE 0: the user loads the page and there is a previous saved game -> load the game state (var game_state) with the
@@ -61,10 +59,23 @@ function loadPreviousGame(){
      */
     if (game_state_global){
         game_state_global = JSON.parse(game_state_global);
-        message.gameState = game_state_global;
+        message = {
+            messageType: "LOAD",
+            gameState: game_state_global
+        };
+        // message.gameState = game_state_global;
+        // message.messageType = "LOAD";
     } else if (game_state){
         game_state = JSON.parse(game_state);
-        message.gameState = game_state;
+        message = {
+            messageType: "LOAD",
+            gameState: game_state
+        };
+    } else {
+        message =  {
+            messageType: "ERROR",
+            info: "No previous saved game found."
+        };
     }
 
     var game_frame = document.getElementById("game_frame").contentWindow;
@@ -117,6 +128,10 @@ function saveGameScore(data) {
             console.log("Request failed: " + textStatus );
         }
     });
+}
+
+function sendErrorMessage(message){
+
 }
 
 function ajaxSetup(){

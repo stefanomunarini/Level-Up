@@ -1,5 +1,6 @@
 from _md5 import md5
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -181,6 +182,14 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
 class GamePlayView(LoginRequiredMixin, GameDetailView):
     template_name = 'game_play.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object not in request.user.profile.get_bought_games():
+            messages.error(request,
+                           'Hey {}, you must buy the game before being able to play!'.format(request.user.profile))
+            return HttpResponseRedirect(reverse_lazy('game:buy', kwargs={'slug': self.object.slug}))
+        return super(GamePlayView, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(GamePlayView, self).get_context_data(**kwargs)
         context['game_state'] = GameState.objects.filter(game=self.object,
@@ -219,4 +228,5 @@ class GameScoreView(SingleObjectMixin, View):
         game_score.save()
 
         GameState.objects.filter(game=game, user=user).delete()
+
         return HttpResponse(status=200)
