@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView, UpdateView
+
 from games.models import Game
 from users.forms import (
     SignupPlayerForm, SignupDeveloperForm,

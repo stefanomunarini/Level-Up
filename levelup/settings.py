@@ -14,6 +14,7 @@ import os
 
 import cloudinary
 from django.contrib import messages
+from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -156,6 +157,7 @@ else:
 MEDIA_ROOT = "levelup/static/images/"
 
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = reverse_lazy('login')
 
 # Class attributes for messages
 

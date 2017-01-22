@@ -4,7 +4,6 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import RedirectView
-from django.views.generic import TemplateView
 
 from games.models import Game
 from levelup.settings import PAYMENT_SERVICE_SECRET_KEY

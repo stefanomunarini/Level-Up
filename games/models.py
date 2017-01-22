@@ -1,6 +1,7 @@
 from cloudinary.models import CloudinaryField
 from django.db import models
 from django.db.models import Q
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -26,7 +27,7 @@ class Game(models.Model):
     price = models.FloatField(null=False, blank=False)
     is_public = models.BooleanField(default=True)
     is_published = models.BooleanField(default=True)
-    date_added = models.DateTimeField(auto_now_add=True, blank=True)
+    date_added = models.DateTimeField(default=timezone.now, blank=True)
 
     def __str__(self):
         return self.name
@@ -40,6 +41,13 @@ class GameScreenshot(models.Model):
 class GameScore(models.Model):
     player = models.ForeignKey('users.UserProfile', related_name='scores')
     game = models.ForeignKey(Game, related_name='scores')
-    start_time = models.DateTimeField(auto_now_add=True, blank=True)
+    start_time = models.DateTimeField(default=timezone.now, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     score = models.IntegerField(null=True, blank=True)
+
+
+class GameState(models.Model):
+    user = models.ForeignKey('users.UserProfile', on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    datetime = models.DateTimeField(default=timezone.now, blank=True)
+    state = models.CharField(max_length=256)

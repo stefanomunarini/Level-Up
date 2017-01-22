@@ -31,7 +31,9 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
         {% block foundation_modernizer %}
             <script src="{% static "foundation/js/vendor/modernizr.js" %}"></script>
         {% endblock foundation_modernizer %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     {% endblock head_js %}
+
 </head>
 <body {% block body_attr %}{% endblock %}>
     {% block body %}

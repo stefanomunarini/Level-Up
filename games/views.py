@@ -1,21 +1,27 @@
-import uuid
 from _md5 import md5
 
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum, Min
+from django.http import HttpResponse
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
+from django.views import View
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from django.views.generic import UpdateView
+from django.views.generic.detail import SingleObjectMixin
 
 from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
-from games.models import Game
-from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, DEBUG, HEROKU_HOST
+from games.models import Game, GameState, GameScore
+from games.utils import GameOwnershipRequiredMixin
 from levelup.services import _annotate_downloads
+from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.models import Transaction
 
 
@@ -43,13 +49,13 @@ class GameListView(ListView):
             return _annotate_downloads(Game.objects.filter(is_published=True), only_positive_downloads=False)
 
 
-class GameBuyView(LoginRequiredMixin, DetailView):
-    login_url = reverse_lazy('login')
+class GameBuyView(DetailView):
     form_class = GameBuyForm
     model = Game
     context_object_name = 'game'
     template_name = 'game_buy.html'
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         game = get_object_or_404(Game, slug=kwargs.get(self.slug_url_kwarg))
         if Transaction.objects.filter(user=self.request.user.profile,
@@ -99,18 +105,97 @@ class GameDetailView(DetailView):
             user_profile = self.request.user.profile
             if user_profile.is_developer and user_profile == self.get_object().dev:
                 context['game_stats'] = Transaction.objects.filter(game=self.get_object(),
-                                                                  status=Transaction.SUCCESS_STATUS) \
+                                                                   status=Transaction.SUCCESS_STATUS) \
                     .aggregate(amount_earned=Sum('amount'), first_sell=Min('datetime'))
         return context
 
 
-class GameCreateView(LoginRequiredMixin, CreateView):
+class GamePlayView(GameOwnershipRequiredMixin, LoginRequiredMixin, GameDetailView):
+    results_to_show = 10
+    template_name = 'game_play.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(GamePlayView, self).get_context_data(**kwargs)
+        context['game_state'] = GameState.objects.filter(game=self.object,
+                                                         user=self.request.user.profile).last()
+        context['my_scores'] = GameScore.objects.filter(game=self.object,
+                                                        player=self.request.user.profile)\
+                                        .order_by('-score', '-start_time')[:self.results_to_show]
+        context['global_scores'] = GameScore.objects.filter(game=self.object)\
+                                            .order_by('-score', '-start_time')[:self.results_to_show]
+        return context
+
+
+class GameStateView(GameOwnershipRequiredMixin, SingleObjectMixin, View):
+    model = Game
+
+    def dispatch(self, request, *args, **kwargs):
+        dispatcher = super(GameStateView, self).dispatch(request, *args, **kwargs)
+        if isinstance(dispatcher, HttpResponseRedirect):
+            return dispatcher
+
+        game_state = GameState()
+        game_state.user = request.user.profile
+        game_state.game = self.get_object()
+        game_state.state = request.POST.get('game_state')
+        game_state.save()
+
+        dispatcher.status_code = 200
+        return dispatcher
+
+
+class GameScoreView(GameOwnershipRequiredMixin, SingleObjectMixin, View):
+    model = Game
+
+    def dispatch(self, request, *args, **kwargs):
+        dispatcher = super(GameScoreView, self).dispatch(request, *args, **kwargs)
+        if isinstance(dispatcher, HttpResponseRedirect):
+            return dispatcher
+
+        game = self.get_object()
+        user = request.user.profile
+
+        game_score = GameScore()
+        game_score.player = user
+        game_score.game = game
+        game_score.score = request.POST.get('game_score')
+        game_score.save()
+
+        GameState.objects.filter(game=game, user=user).delete()
+
+        dispatcher.status_code = 200
+        return dispatcher
+
+
+class NewGameView(GameOwnershipRequiredMixin, SingleObjectMixin, View):
+    """
+    This view simply reset the GameState in order to start a new game. Its only function is to remove the previous
+    saved GameState for a particular Game and UserProfile.
+    """
+    http_method_names = ('GET',)
+    model = Game
+
+    def dispatch(self, request, *args, **kwargs):
+        dispatcher = super(NewGameView, self).dispatch(request, *args, **kwargs)
+        if isinstance(dispatcher, HttpResponseRedirect):
+            return dispatcher
+        GameState.objects.filter(game=self.get_object(), user=request.user.profile).delete()
+        dispatcher.status_code = 200
+        return dispatcher
+
+
+"""
+DEVELOPERS VIEWS
+"""
+
+
+class GameCreateView(CreateView):
     fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
-    login_url = reverse_lazy('login')
     model = Game
     template_name = 'game_create.html'
     success_url = reverse_lazy('profile:user-profile')
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated and not request.user.profile.is_developer:
             return HttpResponseForbidden()
@@ -139,7 +224,6 @@ class GameUpdateView(LoginRequiredMixin, UpdateView):
     model = Game
     context_object_name = 'game'
     form_class = GameUpdateModelForm
-    login_url = reverse_lazy('login')
     template_name = 'game_update.html'
 
     def get_object(self, queryset=None):
@@ -153,7 +237,6 @@ class GameUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class GameDeleteView(LoginRequiredMixin, DeleteView):
-    login_url = reverse_lazy('login')
     model = Game
     success_url = reverse_lazy('profile:user-profile')
     template_name = 'game_confirm_delete.html'

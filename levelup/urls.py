@@ -17,11 +17,11 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login
 
-from . import settings
-from .views import HomepageView
 from games import urls as games_url
 from transactions import urls as transactions_url
 from users import urls as users_url
+from . import settings
+from .views import HomepageView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
