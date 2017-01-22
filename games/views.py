@@ -12,11 +12,12 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
 from django.views.generic import UpdateView
 
-from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
+from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
 from games.models import Game
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, DEBUG, HEROKU_HOST
 from levelup.services import _annotate_downloads
 from transactions.models import Transaction
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 
 
 class GameListView(ListView):
@@ -34,10 +35,18 @@ class GameListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(GameListView, self).get_context_data(**kwargs)
         context['page_title'] = self.page_title
+        context['game_search'] = GameSearchForm()
         return context
 
     def get_queryset(self):
-        if self.bought:
+        search = self.request.GET.get('query')
+        if search:
+            # vector = SearchVector('name', 'description', 'url')
+            # query = SearchQuery(search)
+            return Game.objects.annotate(
+                search=SearchVector('name', 'description', 'url'),
+            ).filter(search=search)
+        elif self.bought:
             return self.request.user.profile.get_bought_games()
         else:
             return _annotate_downloads(Game.objects.filter(is_published=True), only_positive_downloads=False)

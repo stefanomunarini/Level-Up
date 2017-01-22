@@ -43,3 +43,9 @@ class GameScore(models.Model):
     start_time = models.DateTimeField(auto_now_add=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     score = models.IntegerField(null=True, blank=True)
+
+
+class GameSearch(models.Model):
+    query = models.CharField(max_length=200)
+
+

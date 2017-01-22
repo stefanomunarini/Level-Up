@@ -1,6 +1,6 @@
 from django.forms import modelformset_factory, Form, ModelForm, HiddenInput
 
-from games.models import GameScreenshot, Game
+from games.models import GameScreenshot, Game, GameSearch
 
 
 class GameScreenshotModelForm(ModelForm):
@@ -34,3 +34,9 @@ class GameUpdateModelForm(ModelForm):
     class Meta:
         model = Game
         fields = ('name', 'icon', 'price', 'description', 'url',)
+
+
+class GameSearchForm(ModelForm):
+    class Meta:
+        model = GameSearch
+        fields = ('query',)
