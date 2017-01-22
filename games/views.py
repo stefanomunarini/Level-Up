@@ -19,6 +19,7 @@ from django.views.generic.detail import SingleObjectMixin
 
 from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
 from games.models import Game, GameState, GameScore
+from games.utils import GameOwnershipRequiredMixin
 from levelup.services import _annotate_downloads
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.models import Transaction
@@ -109,6 +110,77 @@ class GameDetailView(DetailView):
         return context
 
 
+class GamePlayView(GameOwnershipRequiredMixin, LoginRequiredMixin, GameDetailView):
+    template_name = 'game_play.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(GamePlayView, self).get_context_data(**kwargs)
+        context['game_state'] = GameState.objects.filter(game=self.object,
+                                                         user=self.request.user.profile).last()
+        return context
+
+
+class GameStateView(GameOwnershipRequiredMixin, SingleObjectMixin, View):
+    model = Game
+
+    def dispatch(self, request, *args, **kwargs):
+        dispatcher = super(GameStateView, self).dispatch(request, *args, **kwargs)
+        if isinstance(dispatcher, HttpResponseRedirect):
+            return dispatcher
+
+        game_state = GameState()
+        game_state.user = request.user.profile
+        game_state.game = self.get_object()
+        game_state.state = request.POST.get('game_state')
+        game_state.save()
+
+        dispatcher.status_code = 200
+        return dispatcher
+
+
+class GameScoreView(GameOwnershipRequiredMixin, SingleObjectMixin, View):
+    model = Game
+
+    def dispatch(self, request, *args, **kwargs):
+        dispatcher = super(GameScoreView, self).dispatch(request, *args, **kwargs)
+        if isinstance(dispatcher, HttpResponseRedirect):
+            return dispatcher
+
+        game = self.get_object()
+        user = request.user.profile
+
+        game_score = GameScore()
+        game_score.player = user
+        game_score.game = game
+        game_score.score = request.POST.get('game_score')
+        game_score.save()
+
+        GameState.objects.filter(game=game, user=user).delete()
+
+        dispatcher.status_code = 200
+        return dispatcher
+
+
+class NewGameView(GameOwnershipRequiredMixin, SingleObjectMixin, View):
+    """
+    This view simply reset the GameState in order to start a new game. Its only function is to remove the previous
+    saved GameState for a particular Game and UserProfile.
+    """
+    model = Game
+
+    def dispatch(self, request, *args, **kwargs):
+        dispatcher = super(NewGameView, self).dispatch(request, *args, **kwargs)
+        if isinstance(dispatcher, HttpResponseRedirect):
+            return dispatcher
+        GameState.objects.filter(game=self.get_object(), user=request.user.profile).delete()
+        return dispatcher
+
+
+"""
+DEVELOPERS VIEWS
+"""
+
+
 class GameCreateView(CreateView):
     fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
     model = Game
@@ -177,56 +249,3 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
         self.object.is_published = not self.object.is_published
         self.object.save()
         return HttpResponseRedirect(success_url)
-
-
-class GamePlayView(LoginRequiredMixin, GameDetailView):
-    template_name = 'game_play.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object not in request.user.profile.get_bought_games():
-            messages.error(request,
-                           'Hey {}, you must buy the game before being able to play!'.format(request.user.profile))
-            return HttpResponseRedirect(reverse_lazy('game:buy', kwargs={'slug': self.object.slug}))
-        return super(GamePlayView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(GamePlayView, self).get_context_data(**kwargs)
-        context['game_state'] = GameState.objects.filter(game=self.object,
-                                                         user=self.request.user.profile).last()
-        return context
-
-
-class GameStateView(SingleObjectMixin, View):
-    model = Game
-
-    def dispatch(self, request, *args, **kwargs):
-        super(GameStateView, self).dispatch(request, *args, **kwargs)
-
-        game_state = GameState()
-        game_state.user = request.user.profile
-        game_state.game = self.get_object()
-        game_state.state = request.POST.get('game_state')
-        game_state.save()
-
-        return HttpResponse(status=200)
-
-
-class GameScoreView(SingleObjectMixin, View):
-    model = Game
-
-    def dispatch(self, request, *args, **kwargs):
-        super(GameScoreView, self).dispatch(request, *args, **kwargs)
-
-        game = self.get_object()
-        user = request.user.profile
-
-        game_score = GameScore()
-        game_score.player = user
-        game_score.game = game
-        game_score.score = request.POST.get('game_score')
-        game_score.save()
-
-        GameState.objects.filter(game=game, user=user).delete()
-
-        return HttpResponse(status=200)
