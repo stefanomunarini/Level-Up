@@ -17,12 +17,13 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from django.views.generic import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
-from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm
 from games.models import Game, GameState, GameScore
 from games.utils import GameOwnershipRequiredMixin
+from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
+from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, DEBUG, HEROKU_HOST
 from levelup.services import _annotate_downloads
-from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.models import Transaction
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 
 class GameListView(ListView):
@@ -40,11 +41,33 @@ class GameListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(GameListView, self).get_context_data(**kwargs)
         context['page_title'] = self.page_title
+        context['game_search'] = GameSearchForm()
         return context
 
     def get_queryset(self):
+        search = self.request.GET.get('query')
+        vector = SearchVector('name', 'description', 'url')
+        query = None
+        if search:
+            words = search.split()
+            for word in words:
+                if not query:
+                    query = SearchQuery(word)
+                else:
+                    query = query | SearchQuery(word)
+
         if self.bought:
-            return self.request.user.profile.get_bought_games()
+            if search:
+                return self.request.user.profile.get_bought_games().annotate(
+                    search=SearchVector('name') + SearchVector('description'),
+                ).filter(search=query)
+            else:
+                return self.request.user.profile.get_bought_games()
+        elif search:
+            return Game.objects.annotate(
+                search=SearchVector('name') + SearchVector('description'),
+            ).filter(search=query)
+
         else:
             return _annotate_downloads(Game.objects.filter(is_published=True), only_positive_downloads=False)
 

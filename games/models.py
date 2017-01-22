@@ -51,3 +51,7 @@ class GameState(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     datetime = models.DateTimeField(default=timezone.now, blank=True)
     state = models.CharField(max_length=256)
+
+
+class GameSearch(models.Model):
+    query = models.CharField(max_length=200)
