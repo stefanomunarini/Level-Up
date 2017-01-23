@@ -1,6 +1,8 @@
-from django.forms import modelformset_factory, Form, ModelForm, HiddenInput
+from django.forms import modelformset_factory, Form, ModelForm, HiddenInput, CharField
 
-from games.models import GameScreenshot, Game, GameSearch
+from django.utils.translation import ugettext_lazy as _
+
+from games.models import GameScreenshot, Game
 
 
 class GameScreenshotModelForm(ModelForm):
@@ -36,7 +38,5 @@ class GameUpdateModelForm(ModelForm):
         fields = ('name', 'icon', 'price', 'description', 'url',)
 
 
-class GameSearchForm(ModelForm):
-    class Meta:
-        model = GameSearch
-        fields = ('query',)
+class GameSearchForm(Form):
+    q = CharField(label=_('Search'),max_length=200)

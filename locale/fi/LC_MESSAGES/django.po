@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-05 09:51+0200\n"
-"PO-Revision-Date: 2017-01-04 15:53+0200\n"
+"POT-Creation-Date: 2017-01-23 12:09+0000\n"
+"PO-Revision-Date: 2017-01-23 14:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -17,81 +17,261 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: levelup/settings.py:131
-msgid "English"
+#: games/models.py:16
+msgid "Game name"
+msgstr ""
+
+#: games/models.py:17
+msgid "Game URL slug"
+msgstr ""
+
+#: games/models.py:18
+msgid "Part of the game page address on LevelUp, cannot be changed later"
+msgstr ""
+
+#: games/models.py:24
+msgid "Source URL"
+msgstr ""
+
+#: games/models.py:24
+msgid "Where is the game hosted?"
+msgstr ""
+
+#: games/templates/_game_grid.html:13 games/templates/game_detail.html:13
+msgid "Play"
+msgstr ""
+
+#: games/templates/_game_grid.html:15
+msgid "Price"
+msgstr ""
+
+#: games/templates/_game_grid.html:16
+msgid "Downloads"
+msgstr ""
+
+#: games/templates/_game_grid.html:20
+#, fuzzy
+#| msgid "English"
+msgid "Unpublish"
 msgstr "Englanti"
 
-#: levelup/settings.py:132
-msgid "Finnish"
-msgstr "Suomi"
+#: games/templates/_game_grid.html:22
+msgid "Publish"
+msgstr ""
 
-#: levelup/templates/_navigation.html:6 levelup/templates/_navigation.html:27
-#: levelup/templates/auth/login.html:4 levelup/templates/auth/login.html:14
-msgid "Log In"
-msgstr "Kirjaudu sisään"
+#: games/templates/game_create.html:4 games/templates/game_create.html:13
+#, fuzzy
+#| msgid "My Games"
+msgid "Add Game"
+msgstr "Omat pelit"
 
-#: levelup/templates/_navigation.html:13
-msgid "Menu"
-msgstr "Valikko"
+#: games/templates/game_detail.html:15
+msgid "Buy"
+msgstr ""
 
-#: levelup/templates/_navigation.html:22
-#: users/templates/user_profile_detail_view.html:4
-msgid "My Profile"
-msgstr "Profiili"
+#: games/templates/game_detail.html:18 games/templates/game_update.html:11
+#: users/templates/user_profile_update.html:12
+msgid "Update"
+msgstr ""
 
-#: levelup/templates/_navigation.html:23
-msgid "Log Out"
-msgstr "Kirjaudu ulos"
+#: games/templates/game_list.html:17 games/views.py:48
+msgctxt "Query variable name"
+msgid "search"
+msgstr "hae"
 
-#: levelup/templates/_navigation.html:48
-msgid "Home"
-msgstr "Etusivu"
+#: games/templates/game_list.html:18
+msgid "Search"
+msgstr ""
 
-#: levelup/templates/_navigation.html:50
+#: games/templates/game_update.html:4
+msgid "Update Game Details"
+msgstr ""
+
+#: games/urls.py:26 levelup/context_processors.py:9
 msgid "My Games"
 msgstr "Omat pelit"
 
-#: levelup/templates/_navigation.html:52
+#: games/urls.py:27 levelup/context_processors.py:10
 msgid "Store"
 msgstr "Kauppa"
 
-#: levelup/templates/auth/login.html:18
-msgid "Lost password?"
-msgstr "Salasana hukassa?"
-
-#: levelup/templates/auth/login.html:19
-msgid "Sign Up"
-msgstr "Rekisteröidy"
-
-#: levelup/templates/home.html:5
-msgid "Welcome!"
-msgstr "Tervetuloa!"
-
-#: users/forms.py:9
-msgid "Username"
-msgstr "Käyttäjätunnus"
-
-#: users/forms.py:10
-msgid "Password"
-msgstr "Salasana"
-
-#: users/forms.py:14
-msgid "Confirm Password"
-msgstr "Vahvista salasana"
-
-#: users/templates/_user_profile_details.html:12
-msgid "Update profile"
-msgstr ""
-
-#: users/templates/user_profile_detail_view.html:9
+#: games/views.py:38 users/templates/user_profile_detail.html:9
 #, fuzzy
 #| msgid "My Games"
 msgid "Games"
 msgstr "Omat pelit"
 
-#: users/templates/user_profile_detail_view.html:15
+#: levelup/context_processors.py:8
+msgid "Home"
+msgstr "Etusivu"
+
+#: levelup/settings.py:135
+msgid "English"
+msgstr "Englanti"
+
+#: levelup/settings.py:136
+msgid "Finnish"
+msgstr "Suomi"
+
+#: levelup/settings.py:137
+msgid "Italian"
+msgstr ""
+
+#: levelup/templates/_navigation.html:12
+msgid "Menu"
+msgstr "Valikko"
+
+#: levelup/templates/_navigation.html:21
+#: users/templates/user_profile_detail.html:4
+msgid "My Profile"
+msgstr "Profiili"
+
+#: levelup/templates/_navigation.html:22
+msgid "Log Out"
+msgstr "Kirjaudu ulos"
+
+#: levelup/templates/_navigation.html:27
+#: levelup/templates/auth/_login_form.html:5
+#: levelup/templates/auth/login.html:4 levelup/templates/home.html:7
+msgid "Log In"
+msgstr "Kirjaudu sisään"
+
+#: levelup/templates/_navigation.html:29
+#: levelup/templates/auth/_login_form.html:9
+#: users/templates/signup_developer.html:4
+#: users/templates/signup_developer.html:22
+#: users/templates/signup_player.html:4 users/templates/signup_player.html:22
+#: users/templates/signup_user_group_selection.html:4
+#: users/templates/signup_user_group_selection.html:9
+msgid "Sign Up"
+msgstr "Rekisteröidy"
+
+#: levelup/templates/auth/_login_form.html:8
+msgid "Lost password?"
+msgstr "Salasana hukassa?"
+
+#: levelup/templates/home.html:5
+msgid "Welcome!"
+msgstr "Tervetuloa!"
+
+#: levelup/templates/home.html:11
+msgid "Best Sellers"
+msgstr ""
+
+#: levelup/templates/home.html:18
+msgid "Trending this month"
+msgstr ""
+
+#: levelup/templates/home.html:25
+msgid "Trending this week"
+msgstr ""
+
+#: transactions/models.py:15
+msgid "Success"
+msgstr ""
+
+#: transactions/models.py:16
+msgid "Cancel"
+msgstr ""
+
+#: transactions/models.py:17
+msgid "Error"
+msgstr ""
+
+#: users/forms.py:16
+msgid "Password"
+msgstr "Salasana"
+
+#: users/forms.py:21
+msgid "Password confirmation"
+msgstr ""
+
+#: users/forms.py:24
+msgid "Enter the same password as before, for verification."
+msgstr ""
+
+#: users/forms.py:32
+msgid "The passwords do not match."
+msgstr ""
+
+#: users/forms.py:40
+msgid "This username is already in use."
+msgstr ""
+
+#: users/models.py:25
+msgid "Name"
+msgstr ""
+
+#: users/models.py:27
+msgid "Profile picture"
+msgstr ""
+
+#: users/models.py:38
+msgid "URL slug"
+msgstr ""
+
+#: users/models.py:41
+msgid ""
+"This will be a part of the address of your public "
+"page                                     and cannot be changed later."
+msgstr ""
+
+#: users/models.py:44
+msgid "Developer website"
+msgstr ""
+
+#: users/models.py:46
+msgid "Developer support email"
+msgstr ""
+
+#: users/models.py:47
+msgid "Visible to those users that have bought your games"
+msgstr ""
+
+#: users/templates/_user_profile_details.html:15
+msgid "Update profile"
+msgstr ""
+
+#: users/templates/signup_developer.html:11
+msgid "Sign up as a developer"
+msgstr ""
+
+#: users/templates/signup_developer.html:13
+msgid "Signup as a player"
+msgstr ""
+
+#: users/templates/signup_player.html:11
+msgid "Sign up as a player"
+msgstr ""
+
+#: users/templates/signup_player.html:13
+msgid "Signup as a developer"
+msgstr ""
+
+#: users/templates/signup_user_group_selection.html:16
+msgid "I’m a player!"
+msgstr ""
+
+#: users/templates/signup_user_group_selection.html:23
+msgid "I’m a developer!"
+msgstr ""
+
+#: users/templates/user_profile_detail.html:15
 msgid "Add game"
 msgstr ""
+
+#: users/templates/user_profile_update.html:4
+#: users/templates/user_profile_update.html:7
+#, fuzzy
+#| msgid "My Profile"
+msgid "Update Profile"
+msgstr "Profiili"
+
+#~ msgid "Username"
+#~ msgstr "Käyttäjätunnus"
+
+#~ msgid "Confirm Password"
+#~ msgstr "Vahvista salasana"
 
 #~ msgid "Your username and password didn’t match. Please try again."
 #~ msgstr "Käyttäjätunnus ja salasana eivät täsmää. Yritä uudelleen."

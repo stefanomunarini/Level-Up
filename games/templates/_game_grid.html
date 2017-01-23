@@ -1,29 +1,54 @@
 {% load static %}
-{% load i18n %}
+{% load i18n cloudinary %}
 
-{%  with request.user.profile.get_developed_games as developed_games %}
+{% with request.user.profile.get_developed_games as developed_games %}
 {% with request.user.profile.get_bought_games as bought_games %}
-<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4 game-grid">
+<ul class="small-block-grid-2 large-block-grid-3 game-grid">
     {% for game in games %}
-    <li>
-        <a href="{% url 'game:detail' game.slug %}">
-{#            <img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>#}
-            <img src="https://screenshotlayer.com/images/assets/placeholder.png">
-            <h4>{{ game.name }}</h4>
-            {% if game in bought_games %}<a href="{% url 'game:play' slug=game.slug %}">{% trans 'Play' %}</a>{% endif %}
-        </a>
-        <p>{% trans 'Price' %}: {{ game.price }}</p>
-        <p>{% trans 'Downloads' %}: {{ game.downloads }}</p>
-        <p>{% trans 'Played' %}: {{ game.plays }}</p>
-        {%  if game in developed_games %}
-            <a href="{% url 'game:delete' game.pk %}">
-            {% if game.is_published %}
-                {% trans 'Unpublish' %}
-            {% else %}
-                {% trans 'Publish' %}
-            {% endif %}
-            </a>
-        {%  endif %}
+    <li class="small-text-center">
+        <div class="row">
+            <div class="small-12 columns">
+                <a href="{% url 'game:detail' game.slug %}">
+                    {% if game.icon %}
+                        {% cloudinary game.icon format="jpg" width=250 height=250 crop="fill" %}
+                    {% else %}
+                        <img src="https://screenshotlayer.com/images/assets/placeholder.png">
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 columns">
+                <h2><a href="{% url 'game:detail' game.slug %}"><small>{{ game.name }}</small></a></h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 columns">
+                {% if game in bought_games %}
+                    <a href="{% url 'game:play' game.slug %}" class="button radius tiny success split">{% trans "Play" %}<span data-dropdown="social-drop-{{ game.slug }}"></span></a>
+                {% else %}
+                    <a href="{% url 'game:buy' game.slug %}" class="button radius tiny split">{% trans "Buy" %}: {{ game.price }} &euro;<span data-dropdown="social-drop-{{ game.slug }}"></span></a>
+                {% endif %}
+                {% if game in developed_games %}
+                    <a href="{% url 'game:update' game.slug %}" class="button radius tiny secondary split">{% trans "Edit" %}<span data-dropdown="dev-drop-{{ game.slug }}"></span></a>
+                    <br>
+                    <ul id="dev-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
+                        <li><a href="{% url 'game:delete' game.pk %}">
+                            {% if game.is_published %}
+                                {% trans "Remove from store" %}
+                            {% else %}
+                                {% trans 'Publish' %}
+                            {% endif %}
+                        </a></li>
+                    </ul>
+                {% endif %}
+                <ul id="social-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
+                    <li><a href="#">{% trans "Share on Facebook or something!" %}</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <p>{% trans 'Downloads' %}: {{ game.downloads }}, {% trans 'Played' %}: {{ game.plays }}</p>
     </li>
     {% endfor %}
 </ul>
