@@ -4,8 +4,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from games.models import Game
-
 
 class Transaction(models.Model):
 
@@ -17,7 +15,7 @@ class Transaction(models.Model):
                                 (ERROR_STATUS, _('Error')),)
 
     user = models.ForeignKey('users.UserProfile', related_name='transactions')
-    game = models.ForeignKey(Game, related_name='transactions')
+    game = models.ForeignKey('games.Game', related_name='transactions')
     datetime = models.DateTimeField(default=timezone.now)
     amount = models.FloatField(null=False, blank=False, default=0.0)
     status = models.CharField(max_length=16, choices=PAYMENT_STATUSES_CHOICES)

@@ -14,6 +14,7 @@
         </a>
         <p>{% trans 'Price' %}: {{ game.price }}</p>
         <p>{% trans 'Downloads' %}: {{ game.downloads }}</p>
+        <p>{% trans 'Played' %}: {{ game.plays }}</p>
         {%  if game in developed_games %}
             <a href="{% url 'game:delete' game.pk %}">
             {% if game.is_published %}

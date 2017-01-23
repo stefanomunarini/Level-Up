@@ -1,11 +1,10 @@
 from _md5 import md5
 
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.postgres.search import SearchVector, SearchQuery
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum, Min
-from django.http import HttpResponse
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -17,13 +16,11 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from django.views.generic import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
+from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
 from games.models import Game, GameState, GameScore
 from games.utils import GameOwnershipRequiredMixin
-from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
-from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, DEBUG, HEROKU_HOST
-from levelup.services import _annotate_downloads
+from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.models import Transaction
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 
 class GameListView(ListView):
@@ -69,7 +66,7 @@ class GameListView(ListView):
             ).filter(search=query)
 
         else:
-            return _annotate_downloads(Game.objects.filter(is_published=True), only_positive_downloads=False)
+            return Game.objects.filter(is_published=True)
 
 
 class GameBuyView(DetailView):

@@ -1,8 +1,10 @@
 from cloudinary.models import CloudinaryField
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+
+from transactions.models import Transaction
 
 
 def get_upload_path(instance, filename):
@@ -10,6 +12,13 @@ def get_upload_path(instance, filename):
         return "dev_{}/game_{}/{}".format(instance.dev.url_slug, instance.slug, filename)
     if isinstance(instance, GameScreenshot):
         return "dev_{}/game_{}/screenshots/{}".format(instance.game.dev.url_slug, instance.game.slug, filename)
+
+
+class GameManager(models.Manager):
+    def get_queryset(self):
+        return super(GameManager, self).get_queryset() \
+            .annotate(downloads=Count('transactions', distinct=True)) \
+            .annotate(plays=Count('scores', distinct=True))
 
 
 class Game(models.Model):
@@ -28,6 +37,13 @@ class Game(models.Model):
     is_public = models.BooleanField(default=True)
     is_published = models.BooleanField(default=True)
     date_added = models.DateTimeField(default=timezone.now, blank=True)
+
+    """
+    Override default manager so that the default queryset include two extre attributes:
+    - downloads: the number of download for a particular game (which is the number of Transactions)
+    - plays: the number of times the game has been played (which is the number of GameScores)
+    """
+    objects = GameManager()
 
     def __str__(self):
         return self.name
