@@ -13,12 +13,9 @@
 
 <div class="row">
     <form action="" method="get">
-{#        {% csrf_token %}#}
-        {{ game_search.non_field_errors }}
         <div class="fieldWrapper">
-            {{ game_search.query.errors }}
-            {{ game_search.query }}
-            <button type="submit">Search</button>
+            {{ game_search.q }}
+            <button type="submit">{% trans "Search" %}</button>
         </div>
     </form>
 {#    {% include "_input_grid.html" with form=game_search %}#}

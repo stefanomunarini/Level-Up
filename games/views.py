@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import pgettext_lazy
 from django.views import View
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from django.views.generic import UpdateView
@@ -42,7 +43,7 @@ class GameListView(ListView):
         return context
 
     def get_queryset(self):
-        search = self.request.GET.get('query')
+        search = self.request.GET.get('q')
         vector = SearchVector('name', 'description', 'url')
         query = None
         if search:
@@ -97,7 +98,7 @@ class GameBuyView(DetailView):
         m = md5(checksumstr.encode("ascii"))
         checksum = m.hexdigest()
 
-        # dinamically build the url so it works for both dev and prod
+        # dynamically build the url so it works for both dev and prod
         webapp_url = self.request.is_secure() and 'https://' or 'http://'
         webapp_url += self.request.META['HTTP_HOST']
 
