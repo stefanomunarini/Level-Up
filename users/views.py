@@ -77,7 +77,6 @@ class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
         if self.request.user.profile.is_developer:
             context['games'] = Game.objects.filter(dev=self.request.user.profile)
-            context['api_tokens'] = ApiToken.objects.filter(developer=self.request.user.profile)
         return context
 
 
@@ -127,7 +126,6 @@ class NewApiKeyView(FormView):
 
     def form_valid(self, form):
         form.save(commit=False)
-        import ipdb; ipdb.set_trace()
         form.instance.developer = self.request.user.profile
         form.instance.developer_id = self.request.user.profile.id
         form.instance.token = str(uuid.uuid4())

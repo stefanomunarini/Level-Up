@@ -27,7 +27,7 @@
         <p>Permissions: {{ user_profile.user.permissions|default:'None' }}</p>
         {%  if request.user.profile.is_developer %}
             <ul>
-            {% for api_token in api_tokens %}
+            {% for api_token in request.user.profile.api_tokens.all %}
                 <li><b>{{ api_token.token }}</b> - {{ api_token.website_url }}</li>
             {% endfor %}
             </ul>
