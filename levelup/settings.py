@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'users',
     'games',
     'transactions',
+    'api',
 ]
 
 MIDDLEWARE = [

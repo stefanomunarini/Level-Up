@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login
 
+from api import urls as api_urls
 from games import urls as games_url
 from transactions import urls as transactions_url
 from users import urls as users_url
@@ -36,6 +37,9 @@ urlpatterns = [
     
     # Set language
     url(r'^i18n/', include('django.conf.urls.i18n')),
+
+    # APIs v1
+    url(r'^api/v1/', include(api_urls, namespace='api')),
 ]
 
 if settings.DEBUG:
