@@ -11,9 +11,8 @@ from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import pgettext_lazy
 from django.views import View
-from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
 from django.views.generic import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
@@ -22,30 +21,45 @@ from games.models import Game, GameState, GameScore
 from games.utils import GameOwnershipRequiredMixin
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.models import Transaction
+from transactions.forms import TransactionForm
 
 
-class GameListView(ListView):
+class GameListView(ListView, FormView):
     """
     A view that is used whenever a list of games needs to be shown
     Games to be displayed are controlled by passing attribute values in the url dispatcher
     """
     context_object_name = 'games'
+    form_class = GameSearchForm
     template_name = 'game_list.html'
-    bought = False  # Display only games that the user has bought
     page_title = _('Games')
     paginate_by = 20
     paginate_orphans = 3
+    # a member that can be used in the url dispatcher to customize the view
+    show_games_that_are = ''
 
     def get_context_data(self, **kwargs):
         context = super(GameListView, self).get_context_data(**kwargs)
         context['page_title'] = self.page_title
-        context['game_search'] = GameSearchForm()
         return context
 
+    def get_initial(self):
+        initial = super(GameListView, self).get_initial()
+        initial['q'] = self.request.GET.get('q')
+        return initial
+
     def get_queryset(self):
+        queryset = Game.objects
+
+        if self.show_games_that_are == 'bought-by-the-user':
+            queryset = self.request.user.profile.get_bought_games()
+        elif self.show_games_that_are == 'developed-by-the-user':
+            queryset = self.request.user.profile.get_developed_games()
+
         search = self.request.GET.get('q')
         vector = SearchVector('name', 'description', 'url')
         query = None
+
         if search:
             words = search.split()
             for word in words:
@@ -53,30 +67,19 @@ class GameListView(ListView):
                     query = SearchQuery(word)
                 else:
                     query = query | SearchQuery(word)
-
-        if self.bought:
-            if search:
-                return self.request.user.profile.get_bought_games().annotate(
-                    search=SearchVector('name') + SearchVector('description'),
-                ).filter(search=query)
-            else:
-                return self.request.user.profile.get_bought_games()
-        elif search:
-            return Game.objects.annotate(
+            queryset = queryset.annotate(
                 search=SearchVector('name') + SearchVector('description'),
             ).filter(search=query)
 
-        else:
-            return Game.objects.filter(is_published=True)
+        return queryset.filter(is_published=True)
 
 
-class GameBuyView(DetailView):
-    form_class = GameBuyForm
+class GameBuyView(DetailView, FormView, LoginRequiredMixin):
+    form_class = TransactionForm
     model = Game
     context_object_name = 'game'
     template_name = 'game_buy.html'
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         game = get_object_or_404(Game, slug=kwargs.get(self.slug_url_kwarg))
         if Transaction.objects.filter(user=self.request.user.profile,
@@ -86,17 +89,17 @@ class GameBuyView(DetailView):
                 reverse_lazy('game:detail', kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}))
         return super(GameBuyView, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super(GameBuyView, self).get_context_data(**kwargs)
+    def get_initial(self):
+        # Fill in the transaction form
+        initial = super(GameBuyView, self).get_initial()
 
         pid = self.object.slug
         sid = PAYMENT_SERVICE_SELLER_ID
         amount = self.object.price
-        secret_key = PAYMENT_SERVICE_SECRET_KEY
-        checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
 
-        m = md5(checksumstr.encode("ascii"))
-        checksum = m.hexdigest()
+        secret_key = PAYMENT_SERVICE_SECRET_KEY
+        checksum_str = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+        checksum = md5(checksum_str.encode("ascii")).hexdigest()
 
         # dynamically build the url so it works for both dev and prod
         webapp_url = self.request.is_secure() and 'https://' or 'http://'
@@ -104,15 +107,15 @@ class GameBuyView(DetailView):
 
         redirect_url = webapp_url + reverse('transactions:result')
 
-        context['pid'] = pid
-        context['sid'] = sid
-        context['amount'] = amount
-        context['checksum'] = checksum
-        context['success_url'] = redirect_url
-        context['cancel_url'] = redirect_url
-        context['error_url'] = redirect_url
+        initial['pid'] = pid
+        initial['sid'] = sid
+        initial['amount'] = amount
+        initial['checksum'] = checksum
+        initial['success_url'] = redirect_url
+        initial['cancel_url'] = redirect_url
+        initial['error_url'] = redirect_url
 
-        return context
+        return initial
 
 
 class GameDetailView(DetailView):

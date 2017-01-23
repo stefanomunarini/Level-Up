@@ -4,7 +4,7 @@
 {% block title %}{% trans "Update Game Details" %} &ndash; {{ block.super }}{% endblock title %}
 
 {% block main %}
-    <h1>Update some game details</h1>
+    <h1>{% blocktrans with name=game.name %}Update {{ name }} details{% endblocktrans %}</h1>
 
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}

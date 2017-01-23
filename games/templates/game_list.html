@@ -5,32 +5,36 @@
 
 {% block main %}
 
-<div class="row">
-    <div class="small-12 columns">
-        <h1>{{ page_title }}</h1>
-    </div>
-</div>
-
-<div class="row">
-    <form action="" method="get">
-        <div class="fieldWrapper">
-            {{ game_search.q }}
-            <button type="submit">{% trans "Search" %}</button>
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>{{ page_title }}</h1>
         </div>
-    </form>
-{#    {% include "_input_grid.html" with form=game_search %}#}
-</div>
-
-<div class="row">
-    <div class="small-12 columns">
-        <h1>{% include "_game_grid.html" with games=games %}</h1>
     </div>
-</div>
-
-<div class="row">
-    <div class="small-12 columns">
-        {% include "_paginator.html" %}
+    <div class="row center">
+        <div class="small-12 medium-6 medium-centered columns">
+            <form action="" method="get">
+                <div class="row collapse">
+                    <div class="small-8 columns">
+                        {{ form.q }}
+                    </div>
+                    <div class="small-4 columns">
+                        <input class="button postfix" type="submit" value="{% trans "Search" %}">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <h1>{% include "_game_grid.html" with games=games %}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 pagination-centered columns">
+            {% include "_pagination.html" %}
+        </div>
+    </div>
 
 {% endblock main %}

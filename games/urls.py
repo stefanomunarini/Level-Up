@@ -23,7 +23,7 @@ from games.views import (
 )
 
 urlpatterns = [
-    url(r'^$', GameListView.as_view(bought=True, page_title=_('My Games')), name='my-games'),
+    url(r'^$', GameListView.as_view(show_games_that_are='bought-by-the-user', page_title=_('My Games')), name='my-games'),
     url(r'^store/$', GameListView.as_view(page_title=_('Store')), name='store'),
     url(r'^add/$', GameCreateView.as_view(), name='add'),
     url(r'^(?P<slug>[-\w]+)/$', GameDetailView.as_view(), name='detail'),

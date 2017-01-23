@@ -20,8 +20,11 @@
         {%  endwith %}
     </small>
 </h3>
-{#<img src="{% get_static_prefix %}images/{{game.icon}}" width="150" height="150"/>#}
+{% if game.icon %}
+    {% cloudinary game.icon format="jpg" width=250 height=250 crop="fill" %}
+{% else %}
     <img src="https://screenshotlayer.com/images/assets/placeholder.png">
+{% endif %}
 <p>Added: {{ game.date_added|date:"Y-m-d" }}</p>
 <p>Slug: {{ game.slug }}</p>
 <p>Dev: {{ game.dev.url_slug }}</p>
