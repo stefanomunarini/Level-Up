@@ -17,7 +17,7 @@ from django.conf.urls import url
 
 from users.views import (
     SignupUserGroupSelectionView, SignupPlayerView, SignupDeveloperView,
-    UserProfileDetailView, UserProfileUpdateView,
+    UserProfileDetailView, UserProfileUpdateView, NewApiKeyView
 )
 
 urlpatterns = [
@@ -28,5 +28,7 @@ urlpatterns = [
     url(r'^signup/developer$', SignupDeveloperView.as_view(), name='signup-developer'),
     url(r'^$', UserProfileDetailView.as_view(), name='user-profile'),
     url(r'^update/$', UserProfileUpdateView.as_view(), name='user-profile-update'),
+
+    url(r'^create-api-key/$', NewApiKeyView.as_view(), name='create-api-key'),
     
 ]

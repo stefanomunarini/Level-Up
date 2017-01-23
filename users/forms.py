@@ -5,7 +5,7 @@ from django.forms import (
 )
 from django.utils.translation import ugettext_lazy as _
 
-from users.models import UserProfile
+from users.models import UserProfile, ApiToken
 
 
 # Signup Forms
@@ -109,3 +109,9 @@ UserProfileUpdateModelFormset = modelformset_factory(
     min_num=1,
     max_num=1
 )
+
+
+class ApiKeyForm(ModelForm):
+    class Meta:
+        model = ApiToken
+        fields = ('website_url',)

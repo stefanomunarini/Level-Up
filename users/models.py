@@ -44,7 +44,7 @@ class UserProfile(models.Model):
     website = models.URLField(_('Developer website'), null=True, blank=True)
     # A support email address that is shown to the players that have bought the developer’s games
     support_email = models.EmailField(_('Developer support email'), null=True, blank=True,
-                                      help_text = _('Visible to those users that have bought your games'))
+                                      help_text=_('Visible to those users that have bought your games'))
 
     def __str__(self):
         return self.display_name
@@ -65,3 +65,9 @@ class UserProfile(models.Model):
         if self.is_developer:
             return Game.objects.filter(dev=self)
         return None
+
+
+class ApiToken(models.Model):
+    developer = models.ForeignKey(UserProfile, related_name='api_tokens', on_delete=models.CASCADE)
+    token = models.CharField(max_length=36, unique=True, null=False)
+    website_url = models.URLField(_('The website in where you will use this token'), null=False, blank=False)

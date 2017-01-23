@@ -25,5 +25,13 @@
             {% endfor %}
         </p>
         <p>Permissions: {{ user_profile.user.permissions|default:'None' }}</p>
+        {%  if request.user.profile.is_developer %}
+            <ul>
+            {% for api_token in api_tokens %}
+                <li><b>{{ api_token.token }}</b> - {{ api_token.website_url }}</li>
+            {% endfor %}
+            </ul>
+            <a id="game_new" href="{% url 'profile:create-api-key' %}" class="button">New API Key</a>
+        {% endif %}
     </div>
 {% endblock col-main %}

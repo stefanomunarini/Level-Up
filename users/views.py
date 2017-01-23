@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
@@ -8,15 +10,16 @@ from django.views.generic import FormView, TemplateView, UpdateView
 from games.models import Game
 from users.forms import (
     SignupPlayerForm, SignupDeveloperForm,
-    UserUpdateModelForm, UserProfileUpdateModelFormset
-)
-from users.models import UserProfile
+    UserUpdateModelForm, UserProfileUpdateModelFormset,
+    ApiKeyForm)
+from users.models import UserProfile, ApiToken
 
 
 # User Signup
 
 class SignupUserGroupSelectionView(TemplateView):
     template_name = 'signup_user_group_selection.html'
+
 
 class AbstractSignupView(FormView):
     """
@@ -74,6 +77,7 @@ class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
         if self.request.user.profile.is_developer:
             context['games'] = Game.objects.filter(dev=self.request.user.profile)
+            context['api_tokens'] = ApiToken.objects.filter(developer=self.request.user.profile)
         return context
 
 
@@ -114,3 +118,18 @@ class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
                 user_form.save()
                 return super(UserProfileUpdateView, self).form_valid(form=user_form)
         return render(request, self.template_name, {'user_form': user_form, 'user_profile_form': user_profile_form})
+
+
+class NewApiKeyView(FormView):
+    form_class = ApiKeyForm
+    success_url = reverse_lazy('profile:user-profile')
+    template_name = 'new_api_key.html'
+
+    def form_valid(self, form):
+        form.save(commit=False)
+        import ipdb; ipdb.set_trace()
+        form.instance.developer = self.request.user.profile
+        form.instance.developer_id = self.request.user.profile.id
+        form.instance.token = str(uuid.uuid4())
+        form.save()
+        return super(NewApiKeyView, self).form_valid(self)

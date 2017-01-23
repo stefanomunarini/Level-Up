@@ -6,12 +6,11 @@
 
 {% block main %}
     {% include '_user_profile_details.html' %}
-    {% trans 'Games' as games_title %}
     {% if user_profile.is_developer %}
         <div class="row">
             <div class="small-12 columns">
                 <h3>
-                    {{ games_title }}
+                    {% trans 'Games' %}
                     <small><a href="{% url 'game:add' %}">{% trans 'Add game' %}</a></small>
                 </h3>
             </div>
