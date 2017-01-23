@@ -209,7 +209,7 @@
     "name": "game_100",
     "slug": "game_100",
     "dev": 3314,
-    "url": "www.game0.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -222,7 +222,7 @@
     "name": "game_101",
     "slug": "game_101",
     "dev": 3314,
-    "url": "www.game1.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -235,7 +235,7 @@
     "name": "game_102",
     "slug": "game_102",
     "dev": 3314,
-    "url": "www.game2.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -248,7 +248,7 @@
     "name": "game_103",
     "slug": "game_103",
     "dev": 3314,
-    "url": "www.game3.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -261,7 +261,7 @@
     "name": "game_104",
     "slug": "game_104",
     "dev": 3314,
-    "url": "www.game4.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -274,7 +274,7 @@
     "name": "game_105",
     "slug": "game_105",
     "dev": 3314,
-    "url": "www.game5.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -287,7 +287,7 @@
     "name": "game_106",
     "slug": "game_106",
     "dev": 3314,
-    "url": "www.game6.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -300,7 +300,7 @@
     "name": "game_107",
     "slug": "game_107",
     "dev": 3314,
-    "url": "www.game7.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -313,7 +313,7 @@
     "name": "game_108",
     "slug": "game_108",
     "dev": 3314,
-    "url": "www.game8.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -326,7 +326,7 @@
     "name": "game_109",
     "slug": "game_109",
     "dev": 3314,
-    "url": "www.game9.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -339,7 +339,7 @@
     "name": "game_1010",
     "slug": "game_1010",
     "dev": 3314,
-    "url": "www.game10.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -352,7 +352,7 @@
     "name": "game_1011",
     "slug": "game_1011",
     "dev": 3314,
-    "url": "www.game11.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -365,7 +365,7 @@
     "name": "game_1012",
     "slug": "game_1012",
     "dev": 3314,
-    "url": "www.game12.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -378,7 +378,7 @@
     "name": "game_1013",
     "slug": "game_1013",
     "dev": 3314,
-    "url": "www.game13.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -391,7 +391,7 @@
     "name": "game_1014",
     "slug": "game_1014",
     "dev": 3314,
-    "url": "www.game14.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -404,7 +404,7 @@
     "name": "game_1015",
     "slug": "game_1015",
     "dev": 3314,
-    "url": "www.game15.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -417,7 +417,7 @@
     "name": "game_1016",
     "slug": "game_1016",
     "dev": 3314,
-    "url": "www.game16.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -430,7 +430,7 @@
     "name": "game_1017",
     "slug": "game_1017",
     "dev": 3314,
-    "url": "www.game17.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -443,7 +443,7 @@
     "name": "game_1018",
     "slug": "game_1018",
     "dev": 3314,
-    "url": "www.game18.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -456,7 +456,7 @@
     "name": "game_1019",
     "slug": "game_1019",
     "dev": 3314,
-    "url": "www.game19.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -469,7 +469,7 @@
     "name": "game_1020",
     "slug": "game_1020",
     "dev": 3314,
-    "url": "www.game20.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -482,7 +482,7 @@
     "name": "game_1021",
     "slug": "game_1021",
     "dev": 3314,
-    "url": "www.game21.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -495,7 +495,7 @@
     "name": "game_1022",
     "slug": "game_1022",
     "dev": 3314,
-    "url": "www.game22.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -508,7 +508,7 @@
     "name": "game_1023",
     "slug": "game_1023",
     "dev": 3314,
-    "url": "www.game23.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -521,7 +521,7 @@
     "name": "game_1024",
     "slug": "game_1024",
     "dev": 3314,
-    "url": "www.game24.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -534,7 +534,7 @@
     "name": "game_1025",
     "slug": "game_1025",
     "dev": 3314,
-    "url": "www.game25.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -547,7 +547,7 @@
     "name": "game_1026",
     "slug": "game_1026",
     "dev": 3314,
-    "url": "www.game26.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -560,7 +560,7 @@
     "name": "game_1027",
     "slug": "game_1027",
     "dev": 3314,
-    "url": "www.game27.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -573,7 +573,7 @@
     "name": "game_1028",
     "slug": "game_1028",
     "dev": 3314,
-    "url": "www.game28.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -586,7 +586,7 @@
     "name": "game_1029",
     "slug": "game_1029",
     "dev": 3314,
-    "url": "www.game29.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -599,7 +599,7 @@
     "name": "game_1030",
     "slug": "game_1030",
     "dev": 3314,
-    "url": "www.game30.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -612,7 +612,7 @@
     "name": "game_1031",
     "slug": "game_1031",
     "dev": 3314,
-    "url": "www.game31.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -625,7 +625,7 @@
     "name": "game_1032",
     "slug": "game_1032",
     "dev": 3314,
-    "url": "www.game32.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -638,7 +638,7 @@
     "name": "game_1033",
     "slug": "game_1033",
     "dev": 3315,
-    "url": "www.game33.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -651,7 +651,7 @@
     "name": "game_1034",
     "slug": "game_1034",
     "dev": 3315,
-    "url": "www.game34.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -664,7 +664,7 @@
     "name": "game_1035",
     "slug": "game_1035",
     "dev": 3315,
-    "url": "www.game35.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -677,7 +677,7 @@
     "name": "game_1036",
     "slug": "game_1036",
     "dev": 3315,
-    "url": "www.game36.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -690,7 +690,7 @@
     "name": "game_1037",
     "slug": "game_1037",
     "dev": 3315,
-    "url": "www.game37.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -703,7 +703,7 @@
     "name": "game_1038",
     "slug": "game_1038",
     "dev": 3315,
-    "url": "www.game38.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -716,7 +716,7 @@
     "name": "game_1039",
     "slug": "game_1039",
     "dev": 3315,
-    "url": "www.game39.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -729,7 +729,7 @@
     "name": "game_1040",
     "slug": "game_1040",
     "dev": 3315,
-    "url": "www.game40.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -742,7 +742,7 @@
     "name": "game_1041",
     "slug": "game_1041",
     "dev": 3315,
-    "url": "www.game41.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -755,7 +755,7 @@
     "name": "game_1042",
     "slug": "game_1042",
     "dev": 3315,
-    "url": "www.game42.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -768,7 +768,7 @@
     "name": "game_1043",
     "slug": "game_1043",
     "dev": 3315,
-    "url": "www.game43.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -781,7 +781,7 @@
     "name": "game_1044",
     "slug": "game_1044",
     "dev": 3315,
-    "url": "www.game44.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -794,7 +794,7 @@
     "name": "game_1045",
     "slug": "game_1045",
     "dev": 3315,
-    "url": "www.game45.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -807,7 +807,7 @@
     "name": "game_1046",
     "slug": "game_1046",
     "dev": 3315,
-    "url": "www.game46.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -820,7 +820,7 @@
     "name": "game_1047",
     "slug": "game_1047",
     "dev": 3315,
-    "url": "www.game47.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -833,7 +833,7 @@
     "name": "game_1048",
     "slug": "game_1048",
     "dev": 3315,
-    "url": "www.game48.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -846,7 +846,7 @@
     "name": "game_1049",
     "slug": "game_1049",
     "dev": 3315,
-    "url": "www.game49.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -859,7 +859,7 @@
     "name": "game_1050",
     "slug": "game_1050",
     "dev": 3315,
-    "url": "www.game50.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -872,7 +872,7 @@
     "name": "game_1051",
     "slug": "game_1051",
     "dev": 3315,
-    "url": "www.game51.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -885,7 +885,7 @@
     "name": "game_1052",
     "slug": "game_1052",
     "dev": 3315,
-    "url": "www.game52.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -898,7 +898,7 @@
     "name": "game_1053",
     "slug": "game_1053",
     "dev": 3315,
-    "url": "www.game53.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -911,7 +911,7 @@
     "name": "game_1054",
     "slug": "game_1054",
     "dev": 3315,
-    "url": "www.game54.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -924,7 +924,7 @@
     "name": "game_1055",
     "slug": "game_1055",
     "dev": 3315,
-    "url": "www.game55.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -937,7 +937,7 @@
     "name": "game_1056",
     "slug": "game_1056",
     "dev": 3315,
-    "url": "www.game56.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -950,7 +950,7 @@
     "name": "game_1057",
     "slug": "game_1057",
     "dev": 3315,
-    "url": "www.game57.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -963,7 +963,7 @@
     "name": "game_1058",
     "slug": "game_1058",
     "dev": 3315,
-    "url": "www.game58.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -976,7 +976,7 @@
     "name": "game_1059",
     "slug": "game_1059",
     "dev": 3315,
-    "url": "www.game59.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -989,7 +989,7 @@
     "name": "game_1060",
     "slug": "game_1060",
     "dev": 3315,
-    "url": "www.game60.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1002,7 +1002,7 @@
     "name": "game_1061",
     "slug": "game_1061",
     "dev": 3315,
-    "url": "www.game61.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1015,7 +1015,7 @@
     "name": "game_1062",
     "slug": "game_1062",
     "dev": 3315,
-    "url": "www.game62.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1028,7 +1028,7 @@
     "name": "game_1063",
     "slug": "game_1063",
     "dev": 3315,
-    "url": "www.game63.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1041,7 +1041,7 @@
     "name": "game_1064",
     "slug": "game_1064",
     "dev": 3315,
-    "url": "www.game64.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1054,7 +1054,7 @@
     "name": "game_1065",
     "slug": "game_1065",
     "dev": 3315,
-    "url": "www.game65.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1067,7 +1067,7 @@
     "name": "game_1066",
     "slug": "game_1066",
     "dev": 3315,
-    "url": "www.game66.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1080,7 +1080,7 @@
     "name": "game_1067",
     "slug": "game_1067",
     "dev": 3315,
-    "url": "www.game67.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1093,7 +1093,7 @@
     "name": "game_1068",
     "slug": "game_1068",
     "dev": 3315,
-    "url": "www.game68.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1106,7 +1106,7 @@
     "name": "game_1069",
     "slug": "game_1069",
     "dev": 3315,
-    "url": "www.game69.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1119,7 +1119,7 @@
     "name": "game_1070",
     "slug": "game_1070",
     "dev": 3315,
-    "url": "www.game70.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1132,7 +1132,7 @@
     "name": "game_1071",
     "slug": "game_1071",
     "dev": 3316,
-    "url": "www.game71.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1145,7 +1145,7 @@
     "name": "game_1072",
     "slug": "game_1072",
     "dev": 3316,
-    "url": "www.game72.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1158,7 +1158,7 @@
     "name": "game_1073",
     "slug": "game_1073",
     "dev": 3316,
-    "url": "www.game73.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1171,7 +1171,7 @@
     "name": "game_1074",
     "slug": "game_1074",
     "dev": 3316,
-    "url": "www.game74.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1184,7 +1184,7 @@
     "name": "game_1075",
     "slug": "game_1075",
     "dev": 3316,
-    "url": "www.game75.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1197,7 +1197,7 @@
     "name": "game_1076",
     "slug": "game_1076",
     "dev": 3316,
-    "url": "www.game76.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1210,7 +1210,7 @@
     "name": "game_1077",
     "slug": "game_1077",
     "dev": 3316,
-    "url": "www.game77.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1223,7 +1223,7 @@
     "name": "game_1078",
     "slug": "game_1078",
     "dev": 3316,
-    "url": "www.game78.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1236,7 +1236,7 @@
     "name": "game_1079",
     "slug": "game_1079",
     "dev": 3316,
-    "url": "www.game79.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1249,7 +1249,7 @@
     "name": "game_1080",
     "slug": "game_1080",
     "dev": 3316,
-    "url": "www.game80.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1262,7 +1262,7 @@
     "name": "game_1081",
     "slug": "game_1081",
     "dev": 3316,
-    "url": "www.game81.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1275,7 +1275,7 @@
     "name": "game_1082",
     "slug": "game_1082",
     "dev": 3316,
-    "url": "www.game82.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1288,7 +1288,7 @@
     "name": "game_1083",
     "slug": "game_1083",
     "dev": 3316,
-    "url": "www.game83.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1301,7 +1301,7 @@
     "name": "game_1084",
     "slug": "game_1084",
     "dev": 3316,
-    "url": "www.game84.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1314,7 +1314,7 @@
     "name": "game_1085",
     "slug": "game_1085",
     "dev": 3316,
-    "url": "www.game85.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1327,7 +1327,7 @@
     "name": "game_1086",
     "slug": "game_1086",
     "dev": 3316,
-    "url": "www.game86.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1340,7 +1340,7 @@
     "name": "game_1087",
     "slug": "game_1087",
     "dev": 3316,
-    "url": "www.game87.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1353,7 +1353,7 @@
     "name": "game_1088",
     "slug": "game_1088",
     "dev": 3316,
-    "url": "www.game88.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1366,7 +1366,7 @@
     "name": "game_1089",
     "slug": "game_1089",
     "dev": 3316,
-    "url": "www.game89.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1379,7 +1379,7 @@
     "name": "game_1090",
     "slug": "game_1090",
     "dev": 3316,
-    "url": "www.game90.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1392,7 +1392,7 @@
     "name": "game_1091",
     "slug": "game_1091",
     "dev": 3316,
-    "url": "www.game91.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1405,7 +1405,7 @@
     "name": "game_1092",
     "slug": "game_1092",
     "dev": 3316,
-    "url": "www.game92.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1418,7 +1418,7 @@
     "name": "game_1093",
     "slug": "game_1093",
     "dev": 3316,
-    "url": "www.game93.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1431,7 +1431,7 @@
     "name": "game_1094",
     "slug": "game_1094",
     "dev": 3316,
-    "url": "www.game94.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1444,7 +1444,7 @@
     "name": "game_1095",
     "slug": "game_1095",
     "dev": 3316,
-    "url": "www.game95.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1457,7 +1457,7 @@
     "name": "game_1096",
     "slug": "game_1096",
     "dev": 3316,
-    "url": "www.game96.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1470,7 +1470,7 @@
     "name": "game_1097",
     "slug": "game_1097",
     "dev": 3316,
-    "url": "www.game97.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1483,7 +1483,7 @@
     "name": "game_1098",
     "slug": "game_1098",
     "dev": 3316,
-    "url": "www.game98.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"
@@ -1496,7 +1496,7 @@
     "name": "game_1099",
     "slug": "game_1099",
     "dev": 3316,
-    "url": "www.game99.com",
+    "url": "http://webcourse.cs.hut.fi/example_game.html",
     "description": "game_1",
     "price": 1,
     "date_added": "2017-01-16 20:22:51.261537+00"

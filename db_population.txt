@@ -1,0 +1,20 @@
+Flush the database:
+
+./manage.py sqlflush | ./manage.py dbshell
+
+Load group fixture
+
+./manage.py loaddata groups
+
+Load users, user profiles and games
+
+./manage.py loaddata testdata
+
+There will be six users. Three players and three developers.
+Their usernames and passwords are
+‘q@mail.com’ / ’q’
+‘w@mail.com’ / ’w’
+‘e@mail.com’ / ’e’
+‘a@mail.com’ / ’a’
+‘s@mail.com’ / ’s’
+‘d@mail.com’ / ’d’
