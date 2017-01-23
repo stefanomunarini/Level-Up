@@ -1,11 +1,10 @@
 {% extends "__layout_sidebar_left.html" %}
 {% load static %}
 {% load i18n %}
-
+{% load cloudinary %}
 
 {% block col-side %}
-{#    <img src="{% get_static_prefix %}images/{{ user_profile.profile_picture }}" width="150" height="150"/>#}
-    <img src="https://screenshotlayer.com/images/assets/placeholder.png">
+    {% cloudinary user_profile.profile_picture format="jpg" width=250 height=250 crop="fill" %}
 {% endblock col-side %}
 
 {% block col-main %}

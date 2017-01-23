@@ -31,7 +31,7 @@ class Game(models.Model):
                             limit_choices_to=Q(groups__name='Developers'),
                             related_name='games')
     url = models.URLField(_('Source URL'), help_text=_('Where is the game hosted?'), null=False, blank=False)
-    icon = models.URLField(null=True, blank=True)
+    icon = CloudinaryField(_('Game icon'), default='image/upload/v1485195482/default/thug.jpg')
     description = models.TextField()
     price = models.FloatField(null=False, blank=False)
     is_public = models.BooleanField(default=True)
@@ -50,7 +50,7 @@ class Game(models.Model):
 
 
 class GameScreenshot(models.Model):
-    image = CloudinaryField('image')
+    image = CloudinaryField(_('Screen shot'))
     game = models.ForeignKey(Game, related_name='screenshots')
 
 

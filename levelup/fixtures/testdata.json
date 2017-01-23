@@ -125,7 +125,6 @@
     "fields": {
         "user": 3311,
         "display_name": "Player with password 'a'",
-        "profile_picture": "",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": null,
@@ -139,7 +138,6 @@
     "fields": {
         "user": 3312,
         "display_name": "Player with password 's'",
-        "profile_picture": "",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": null,
@@ -153,7 +151,6 @@
     "fields": {
         "user": 3313,
         "display_name": "Player with password 'd'",
-        "profile_picture": "",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": null,
@@ -167,7 +164,6 @@
     "fields": {
         "user": 3314,
         "display_name": "Dev with password 'q'",
-        "profile_picture": "",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": "dq",
@@ -181,7 +177,6 @@
     "fields": {
         "user": 3315,
         "display_name": "Dev with password 'w'",
-        "profile_picture": "",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": "dw",
@@ -195,7 +190,6 @@
     "fields": {
         "user": 3316,
         "display_name": "Dev with password 'e'",
-        "profile_picture": "",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": "de",
