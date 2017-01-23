@@ -29,7 +29,7 @@ def get_trending_this_month(games, today):
 
 
 def get_most_played(queryset):
-    return _order_and_filter(queryset, only_positive_downloads=True)
+    return _order_and_filter(queryset, order_by='-plays', only_positive_downloads=True)
 
 
 def _order_and_filter(queryset, order_by='-downloads', only_positive_downloads=False):

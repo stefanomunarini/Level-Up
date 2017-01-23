@@ -20,7 +20,7 @@
         </small>
     </h3>
 
-    {% cloudinary game.icon format="jpg" width=200 height=200 crop="fill" %}
+    {% cloudinary game.icon format="jpg" width=250 height=250 crop="fill" %}
 
     <p>Added: {{ game.date_added|date:"Y-m-d" }}</p>
     <p>Slug: {{ game.slug }}</p>
@@ -28,6 +28,8 @@
     <p>Url: {{ game.url }}</p>
     <p>Description: {{ game.description }}</p>
     <p>Price: {{ game.price }}</p>
+    <p>Downloads: {{ game.downloads }}</p>
+    <p>Played: {{ game.plays }}</p>
 
     {%  if game in request.user.profile.get_developed_games %}
         <h4>Developer stats:</h4>

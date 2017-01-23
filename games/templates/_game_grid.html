@@ -1,6 +1,5 @@
 {% load static %}
-{% load i18n %}
-{% load cloudinary %}
+{% load i18n cloudinary %}
 
 {% with request.user.profile.get_developed_games as developed_games %}
 {% with request.user.profile.get_bought_games as bought_games %}
