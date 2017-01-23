@@ -181,3 +181,19 @@ cloudinary.config(
 # Payment service seller_id and Secret Key
 PAYMENT_SERVICE_SELLER_ID = 'WSDProjectLevelUp2017'
 PAYMENT_SERVICE_SECRET_KEY = '0aef063aa5876a77623b466e4800af19'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+        },
+    },
+}

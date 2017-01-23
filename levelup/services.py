@@ -4,7 +4,7 @@ from games.models import Game
 
 
 def get_homepage_games(elements_to_show):
-    games = Game.objects.all().prefetch_related('transactions', 'transactions__game', 'scores')
+    games = _order_and_filter(Game.objects.all(), only_positive_downloads=True)
     today = date.today()
     return {
         'best_sellers': get_best_sellers(games)[:elements_to_show],
@@ -15,17 +15,17 @@ def get_homepage_games(elements_to_show):
 
 
 def get_best_sellers(games):
-    return _order_and_filter(games, only_positive_downloads=True)
+    return games
 
 
 def get_trending_this_week(games, today):
     one_week_ago = today - timedelta(7)
-    return _order_and_filter(games.filter(transactions__datetime__gte=one_week_ago), only_positive_downloads=True)
+    return games.filter(transactions__datetime__gte=one_week_ago)
 
 
 def get_trending_this_month(games, today):
     one_month_ago = today - timedelta(31)
-    return _order_and_filter(games.filter(transactions__datetime__gte=one_month_ago), only_positive_downloads=True)
+    return games.filter(transactions__datetime__gte=one_month_ago)
 
 
 def get_most_played(queryset):

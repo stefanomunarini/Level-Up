@@ -12,7 +12,7 @@ from users.forms import (
     SignupPlayerForm, SignupDeveloperForm,
     UserUpdateModelForm, UserProfileUpdateModelFormset,
     ApiKeyForm)
-from users.models import UserProfile, ApiToken
+from users.models import UserProfile
 
 
 # User Signup

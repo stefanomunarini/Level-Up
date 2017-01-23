@@ -3,38 +3,49 @@ from django.utils.translation import ugettext_lazy as _
 from django.views import View
 
 from api import services
-from users.models import ApiToken
+from api.forms import ApiBaseForm
 
 
 class ApiBaseView(View):
+    form_class = ApiBaseForm
     http_method_names = ('GET',)
 
-    NO_TOKEN_MESSAGE = _('Unauthorized! You need to provide a valid Bearer token to use the APIs.')
-    INVALID_TOKEN_MESSAGE = _('Unauthorized! The token you are trying to use is invalid. Format should be: Bearer TOKEN')
+    INVALID_TOKEN_MESSAGE = _(
+        'Unauthorized! The token you are trying to use is invalid. Format should be: Bearer <TOKEN>')
 
     def dispatch(self, request, *args, **kwargs):
+        # the parameter is only 'TOKEN' but it is automatically attached with 'HTTP_', hence 'HTTP_TOKEN'
         token = request.META.get('HTTP_TOKEN')
-        if not token:
-            return JsonResponse(data={'error': self.NO_TOKEN_MESSAGE}, status=401)
-        if not len(token.split(' ')) == 2 or 'Bearer' not in token:
+        if not token or not len(token.split(' ')) == 2 or 'Bearer' not in token:
             return JsonResponse(data={'error': self.INVALID_TOKEN_MESSAGE}, status=401)
-        token_value = token.split(' ')[1]
-        request_origin = self.request.is_secure() and 'https://' or 'http://' + self.request.META['HTTP_HOST']
-        self.api_token_obj = ApiToken.objects.filter(token=token_value)
-                                                     # website_url=request_origin)
-        if not self.api_token_obj.exists():
-            return JsonResponse(data={'error': 'Unauthorized'}, status=401)
-        return super(ApiBaseView, self).dispatch(request, *args, **kwargs)
+        self.form = self.form_class({
+            'token': token.split(' ')[1],
+            'website_url': self.request.is_secure() and 'https://' or 'http://' + self.request.META['HTTP_HOST']
+        })
+        if self.form.is_valid():
+            self.api_token_obj = self.form.instance
+            return self.request_valid()
+        else:
+            return self.request_invalid()
+
+    def request_valid(self):
+        raise NotImplementedError('You must implement this function, which is responsible for returning the response.')
+
+    def request_invalid(self):
+        return JsonResponse(data={'error': self.form.errors}, status=401)
 
 
 class MyDevelopedGames(ApiBaseView):
-
-    def dispatch(self, request, *args, **kwargs):
-        dispatcher = super(MyDevelopedGames, self).dispatch(request, *args, **kwargs)
-        if isinstance(dispatcher, JsonResponse):
-            if dispatcher.status_code != 200:
-                return dispatcher
+    def request_valid(self):
         response = {
             'games': services.get_developed_games(self.api_token_obj)
+        }
+        return JsonResponse(data=response, status=200)
+
+
+class SaleStatistics(ApiBaseView):
+    def request_valid(self):
+        response = {
+            'stats': services.get_sale_stats(self.api_token_obj)
         }
         return JsonResponse(data=response, status=200)

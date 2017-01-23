@@ -5,7 +5,8 @@ from django.forms import (
 )
 from django.utils.translation import ugettext_lazy as _
 
-from users.models import UserProfile, ApiToken
+from api.models import ApiToken
+from users.models import UserProfile
 
 
 # Signup Forms
