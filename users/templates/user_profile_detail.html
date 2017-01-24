@@ -10,8 +10,83 @@
         <div class="row">
             <h3>My Games</h3>
             <div class="small-12 columns">
-                {% include '_game_grid.html' with games=request.user.profile.get_developed_games %}
+                <ul class="tabs" data-tab data-options="deep_linking:true">
+                    <li class="tab-title active"><a href="#games">{% trans 'Games' %}</a></li>
+                    <li class="tab-title"><a href="#stats">{% trans 'Statistics' %}</a></li>
+                </ul>
+                <div class="tabs-content">
+                    <div class="content active" id="games">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <h3>
+                                    {% trans 'Games' %}
+                                    <small><a href="{% url 'game:add' %}">{% trans 'Add game' %}</a></small>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-12 columns">
+                                {% include '_game_grid.html' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content" id="stats">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <h3>
+                                    {% trans 'Statistics' %}
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <div id="dev-statistics-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     {% endif %}
 {% endblock main %}
+{% if user_profile.is_developer %}
+    {% block body_js %}
+        {{ block.super }}
+        <script>
+            $(function() {
+                $("#dev-statistics-chart").CanvasJSChart({
+                    title: {
+                        text: "Monthly Rainfall in Columbus - 1996"
+                    },
+                    axisY: {
+                        title: "Rainfall in mm",
+                        includeZero: false
+                    },
+                    axisX: {
+                        interval: 1
+                    },
+                    data: [
+                    {
+                        type: "line", //try changing to column, area
+                        toolTipContent: "{label}: {y} mm",
+                        dataPoints: [
+                            { label: "Jan",  y: 5.28 },
+                            { label: "Feb",  y: 3.83 },
+                            { label: "March",y: 6.55 },
+                            { label: "April",y: 4.81 },
+                            { label: "May",  y: 2.37 },
+                            { label: "June", y: 2.33 },
+                            { label: "July", y: 3.06 },
+                            { label: "Aug",  y: 2.94 },
+                            { label: "Sep",  y: 5.41 },
+                            { label: "Oct",  y: 2.17 },
+                            { label: "Nov",  y: 2.17 },
+                            { label: "Dec",  y: 2.80 }
+                        ]
+                    }
+                    ]
+                });
+            });
+        </script>
+    {% endblock body_js %}
+{% endif %}
