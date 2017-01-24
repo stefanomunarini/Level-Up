@@ -10,7 +10,7 @@
         <div class="row">
             <h3>My Games</h3>
             <div class="small-12 columns">
-                {% include '_game_grid.html' %}
+                {% include '_game_grid.html' with games=request.user.profile.get_developed_games %}
             </div>
         </div>
     {% endif %}

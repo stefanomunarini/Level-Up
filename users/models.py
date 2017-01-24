@@ -65,5 +65,5 @@ class UserProfile(models.Model):
 
     def get_developed_games(self):
         if self.is_developer:
-            return Game.objects.filter(dev=self)
+            return Game.objects.filter(dev=self).order_by('-plays', '-downloads', '-name')
         return None
