@@ -47,6 +47,6 @@ class MyDevelopedGames(ApiBaseView):
 class SaleStatistics(ApiBaseView):
     def request_valid(self):
         response = {
-            'stats': services.get_sale_stats(self.api_token_obj)
+            'stats': services.get_sale_stats(self.api_token_obj.developer)
         }
         return JsonResponse(data=response, status=200)

@@ -10,11 +10,11 @@
 {% block col-main %}
     <div>
         <h3>
-            {{ user_profile.display_name }}
+            {{ request.user.profile.display_name }}
             <small><a href="{% url 'profile:user-profile-update' %}">{% trans 'Update profile' %}</a></small>
         </h3>
-        <p>Email: {{ user_profile.user.email }}</p>
-        <p>Last login: {{ user_profile.user.last_login }}</p>
+        <p>Email: {{ request.user.profile.user.email }}</p>
+        <p>Last login: {{ request.user.profile.user.last_login }}</p>
         {%  if request.user.profile.is_developer %}
             <ul>
             {% for api_token in request.user.profile.api_tokens.all %}

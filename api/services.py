@@ -19,13 +19,13 @@ def get_developed_games(api_token_obj):
     return serialized_games
 
 
-def get_sale_stats(api_token_obj):
-    sales = Transaction.objects.filter(game__in=api_token_obj.developer.get_developed_games())\
+def get_sale_stats(developer):
+    earnings = Transaction.objects.filter(game__in=developer.get_developed_games())\
         .aggregate(earnings=Coalesce(Sum('amount'), 0)).get('earnings')
     stats = {
-        'developer': api_token_obj.developer.display_name,
-        'developer_slug': api_token_obj.developer.url_slug,
-        'earnings': sales,
+        'developer': developer.display_name,
+        'developer_slug': developer.url_slug,
+        'earnings': earnings,
         'games_developed': [
             {
                 'name': game.name,
@@ -34,7 +34,7 @@ def get_sale_stats(api_token_obj):
                 'played': game.plays
             }
             for game
-            in api_token_obj.developer.get_developed_games()
+            in developer.get_developed_games()
             if game.downloads > 0
         ]
     }

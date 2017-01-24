@@ -33,7 +33,7 @@ class GameListView(ListView, FormView):
     form_class = GameSearchForm
     template_name = 'game_list.html'
     page_title = _('Games')
-    paginate_by = 20
+    paginate_by = 30
     paginate_orphans = 3
     # a member that can be used in the url dispatcher to customize the view
     show_games_that_are = ''
