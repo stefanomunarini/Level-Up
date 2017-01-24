@@ -53,28 +53,21 @@ class SignupDeveloperView(AbstractSignupView):
     template_name = 'signup_developer.html'
 
 
-# User Profile
-
-# TODO: I think this is redundant as request.user.profile exists as well. - Simo
-class UserProfileMixin(object):
-    """
-    This is a convenient mixin that set the user_profile object as a variable in the context
-    so that it can be used in the template like this: {{ user_profile.user.email }}
-    Moreover, it adds a reference to the same object in the class
-    """
-
-    def get_context_data(self, **kwargs):
-        context = super(UserProfileMixin, self).get_context_data(**kwargs)
-        context['user_profile'] = self.request.user.profile
-        return context
-
-
-class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
+class UserProfileDetailView(LoginRequiredMixin, TemplateView):
     login_url = reverse_lazy('login')
     template_name = 'user_profile_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileDetailView, self).get_context_data(**kwargs)
+        if self.request.user.profile.is_developer:
+            games = Game.objects.filter(dev=self.request.user.profile)
+            context['games'] = games
+            context['sales'] = "[{x:2006,y:6},{x:2007,y:2}]"
+            context['profits'] = "[{x:2006,y:1},{x:2007,y:4}]"
+        return context
 
-class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
+
+class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     form_class = UserUpdateModelForm
     login_url = reverse_lazy('login')
     success_url = reverse_lazy('profile:user-profile')
