@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector, SearchQuery
 from django.core.exceptions import PermissionDenied
-from django.db.models import Sum, Min
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -16,12 +15,13 @@ from django.views.generic import CreateView, DeleteView, DetailView, FormView, L
 from django.views.generic import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
-from games.forms import GameBuyForm, GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
+from games import services
+from games.forms import GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
 from games.models import Game, GameState, GameScore
 from games.utils import GameOwnershipRequiredMixin
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
-from transactions.models import Transaction
 from transactions.forms import TransactionForm
+from transactions.models import Transaction
 
 
 class GameListView(ListView, FormView):
@@ -128,9 +128,7 @@ class GameDetailView(DetailView):
         if self.request.user.is_authenticated:
             user_profile = self.request.user.profile
             if user_profile.is_developer and user_profile == self.get_object().dev:
-                context['game_stats'] = Transaction.objects.filter(game=self.get_object(),
-                                                                   status=Transaction.SUCCESS_STATUS) \
-                    .aggregate(amount_earned=Sum('amount'), first_sell=Min('datetime'))
+                context['game_stats'] = services.get_game_stats(self.get_object())
         return context
 
 

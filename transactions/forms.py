@@ -9,4 +9,4 @@ class TransactionForm(Form):
     error_url = CharField(widget=HiddenInput())
     checksum = CharField(widget=HiddenInput())
     amount = CharField(widget=HiddenInput())
-    dev = BooleanField()
+    dev = BooleanField(required=False)

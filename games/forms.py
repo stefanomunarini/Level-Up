@@ -27,12 +27,7 @@ GameScreenshotModelFormSet = modelformset_factory(
 )
 
 
-class GameBuyForm(Form):
-    pass
-
-
 class GameUpdateModelForm(ModelForm):
-
     class Meta:
         model = Game
         fields = ('name', 'icon', 'price', 'description', 'url',)
