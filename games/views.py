@@ -2,8 +2,9 @@ from _md5 import md5
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.postgres.search import SearchVector, SearchQuery
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -49,7 +50,7 @@ class GameListView(ListView, FormView):
         return initial
 
     def get_queryset(self):
-        queryset = Game.objects
+        queryset = Game.objects.all()
 
         if self.show_games_that_are == 'bought-by-the-user':
             queryset = self.request.user.profile.get_bought_games()
@@ -57,19 +58,16 @@ class GameListView(ListView, FormView):
             queryset = self.request.user.profile.get_developed_games()
 
         search = self.request.GET.get('q')
-        vector = SearchVector('name', 'description', 'url')
+        vector = SearchVector('name', 'description')
         query = None
 
         if search:
-            words = search.split()
-            for word in words:
+            for word in search.split():
                 if not query:
                     query = SearchQuery(word)
                 else:
                     query = query | SearchQuery(word)
-            queryset = queryset.annotate(
-                search=SearchVector('name') + SearchVector('description'),
-            ).filter(search=query)
+            queryset = queryset.annotate(rank=SearchRank(vector, query)).order_by('-rank').filter(rank__gt=0)
 
         return queryset.filter(is_published=True)
 

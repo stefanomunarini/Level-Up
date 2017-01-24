@@ -32,7 +32,8 @@ class ApiBaseView(View):
         raise NotImplementedError('You must implement this function, which is responsible for returning the response.')
 
     def request_invalid(self):
-        return JsonResponse(data={'error': self.form.errors, 'req_origin': self.request.META.get('HTTP_REFERER')},
+
+        return JsonResponse(data={'error': self.form.errors},
                             status=401)
 
 
