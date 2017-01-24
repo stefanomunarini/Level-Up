@@ -20,7 +20,7 @@ class ApiBaseView(View):
             return JsonResponse(data={'error': self.INVALID_TOKEN_MESSAGE}, status=401)
         self.form = self.form_class({
             'token': token.split(' ')[1],
-            'website_url': self.request.is_secure() and 'https://' or 'http://' + self.request.META['HTTP_HOST']
+            'website_url': request.META.get('HTTP_REFERER', '')
         })
         if self.form.is_valid():
             self.api_token_obj = self.form.instance
@@ -32,7 +32,8 @@ class ApiBaseView(View):
         raise NotImplementedError('You must implement this function, which is responsible for returning the response.')
 
     def request_invalid(self):
-        return JsonResponse(data={'error': self.form.errors, 'req_origin': self.request.META['HTTP_HOST']}, status=401)
+        return JsonResponse(data={'error': self.form.errors, 'req_origin': self.request.META.get('HTTP_REFERER')},
+                            status=401)
 
 
 class MyDevelopedGames(ApiBaseView):
