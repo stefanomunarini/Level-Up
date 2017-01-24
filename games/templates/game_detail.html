@@ -4,44 +4,55 @@
 {% load cloudinary %}
 
 {% block main %}
-    <h3>
-        {{ game.name|title }}
-        <small>
-            {% with request.user.profile.get_bought_games as bought_games %}
-                {% if game in bought_games %}
-                    <a href="{% url 'game:play' slug=game.slug %}">{% trans 'Play' %}</a>
-                {% else %}
-                    <a href="{% url 'game:buy' slug=game.slug %}">{% trans 'Buy' %}</a>
+{% with request.user.profile.get_bought_games as bought_games %}
+    <div class="row">
+        <div class="small-12 columns">
+            <br>
+            <h3>{{ game.name|title }}</h3>
+            <br>
+            <div class="small-6 large-6 columns">
+                {% cloudinary game.icon format="jpg" width=250 height=250 crop="fill" %}
+            </div>
+            <div class="small-6 large-6 columns">
+                {% if game.screenshots.all %}
+                    <span>Screenshots:</span>
                 {% endif %}
-                {%  if game in request.user.profile.get_developed_games %}
-                    <a href="{% url 'game:update' slug=game.slug %}">{% trans 'Update' %}</a>
-                {% endif %}
+                <ul data-orbit>
+                    {% for screenshot in game.screenshots.all %}
+                        <li data-orbit-slide="headline-1">
+                            {% cloudinary screenshot.image format="jpg" width=250 height=250 crop="fill" %}
+                            <div class="orbit-caption">Screenshot {{ forloop.counter }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            {% with request.user.profile.get_developed_games as developed_games %}
+                {% include '_game_actions.html' with game=game developed_games=developed_games bought_games=bought_games %}
             {%  endwith %}
-        </small>
-    </h3>
+        </div>
+    </div>
 
-    {% cloudinary game.icon format="jpg" width=250 height=250 crop="fill" %}
-
-    <p>Added: {{ game.date_added|date:"Y-m-d" }}</p>
-    <p>Slug: {{ game.slug }}</p>
-    <p>Dev: {{ game.dev.url_slug }}</p>
-    <p>Url: {{ game.url }}</p>
-    <p>Description: {{ game.description }}</p>
-    <p>Price: {{ game.price }}</p>
-    <p>Downloads: {{ game.downloads }}</p>
-    <p>Played: {{ game.plays }}</p>
-
-    {%  if game in request.user.profile.get_developed_games %}
-        <h4>Developer stats:</h4>
-        <p>Earning: {{ game_stats.amount_earned }}</p>
-        <p>First sell: {{ game_stats.first_sell }}</p>
-    {%  endif %}
-
-    {% if game.screenshots.all %}
-        <p>Screenshots:</p>
-    {% endif %}
-
-    {% for screenshot in game.screenshots.all %}
-        {% cloudinary screenshot.image format="jpg" width=250 height=250 crop="fill" %}
-    {% endfor %}
+    <div class="row">
+        <div class="small-8 columns">
+            <p><b>Downloads</b> {{ game.downloads }}</p>
+            <p><b>Played</b> {{ game.plays }} times</p>
+            <p><b>Added</b> {{ game.date_added|date:"Y-m-d" }}</p>
+            <p><b>Developed By</b> {{ game.dev }} {% if game in bought_games and game.dev.support_email %}<a href="mailto:{{ game.dev.support_email }}">Email</a>{% endif %}</p>
+        </div>
+        <div class="small-4 columns">
+            {%  if game in request.user.profile.get_developed_games %}
+                <p><b>Earning:</b> {{ game_stats.amount_earned }} &euro;</p>
+                <p><b>First sell:</b> {{ game_stats.first_sell }}</p>
+            {%  endif %}
+        </div>
+        <div class="small-12 columns">
+            <p><b>Description</b></p><p>{{ game.description }}</p>
+        </div>
+    </div>
+{%  endwith %}
 {% endblock main %}
