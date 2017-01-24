@@ -5,7 +5,7 @@ from . import services
 
 
 class HomepageView(TemplateView):
-    elements_to_show = 4  # the number of games to show for every section
+    elements_to_show = 6  # the number of games to show for every section
     template_name = 'home.html'
 
     def get_context_data(self, **kwargs):

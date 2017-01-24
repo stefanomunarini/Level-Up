@@ -10,7 +10,7 @@ def get_homepage_games(elements_to_show):
         'best_sellers': get_best_sellers(games)[:elements_to_show],
         'trending_this_week': get_trending_this_week(games, today)[:elements_to_show],
         'trending_this_month': get_trending_this_month(games, today)[:elements_to_show],
-        'most_played': get_most_played(games)
+        'most_played': get_most_played(games)[:elements_to_show]
     }
 
 
