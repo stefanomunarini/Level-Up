@@ -15,7 +15,4 @@ from whitenoise.django import DjangoWhiteNoise
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "levelup.settings")
 
 application = get_wsgi_application()
-
-# Override production variables if DJANGO_DEVELOPMENT env variable is set
-if not os.environ.get('DJANGO_DEVELOPMENT'):
-    application = DjangoWhiteNoise(application)
+application = DjangoWhiteNoise(application)
