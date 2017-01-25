@@ -1,33 +1,26 @@
 {% load i18n %}
 $(function() {
-    var title = "{{ title }}";
-    var titleY1 = "{{ titleY1 }}";
-    var titleY2 = "{{ titleY2 }}";
-    var data1 = {% firstof data1|safe "[]" %};
-    var data2 = {% firstof data2|safe "[]" %};
-    var color1 = "{% firstof col1 "#008CBA" %}";
-    var color2 = "{% firstof col2 "#43AC6A" %}";
+    var dataLeft = JSON.parse("{% firstof chart.y_left.data|escapejs "[]" %}");
+    var dataRight = JSON.parse("{% firstof chart.y_right.data|escapejs "[]" %}");
 
     var steps = 5;
 
-    var max1 = Math.max.apply(Math,data1.map(function(o){return o.y;}));
-    max1 = Math.ceil(Math.max(steps,max1) / steps)*steps;
-    var max2 = Math.max.apply(Math,data2.map(function(o){return o.y;}));
-    max2 = Math.ceil(Math.max(steps,max2) / steps)*steps;
+    var maxLeft = Math.max.apply(Math,dataLeft.map(function(o){return o.y;}));
+    maxLeft = Math.ceil(Math.max(steps,maxLeft) / steps)*steps;
+    var maxRight = Math.max.apply(Math,dataRight.map(function(o){return o.y;}));
+    maxRight = Math.ceil(Math.max(steps,maxRight) / steps)*steps;
 
-    var xValueFormatString = "";
-
-    {% if is_date %}
-        function x_to_date(o) { o.x = new Date(o.x); }
-
-        data1.forEach(x_to_date);
-        data2.forEach(x_to_date);
-        xValueFormatString = "DD MMM YY";
+    {# If X-values are dates #}
+    {% if chart.x_interval_type != "number" %}
+        function x_to_date_object(o) { o.x = new Date(o.x); }
+        dataLeft.forEach(x_to_date_object);
+        dataRight.forEach(x_to_date_object);
     {% endif %}
 
+    {# Display settings #}
     var fontFamily = "Helvetica";
-    var markerType = "circle";
-    var lineThickness = 2;
+    var markerType = "none";
+    var lineThickness = 4;
     var markerSize = lineThickness*1.5;
     var markerBorderThickness = lineThickness/2;
     var markerColor = "#ffffff";
@@ -35,22 +28,13 @@ $(function() {
 
     {# TODO: localize culture info with Django #}
 
-    $("{{ elem }}").CanvasJSChart({
+    $("{{ elem|escapejs }}").CanvasJSChart({
         culture: '{{ LANGUAGE_CODE }}',
-        title:{
-            text: title,
-            fontFamily: fontFamily,
-            fontSize: 24,
-        },
-        legend:{
-            fontFamily: fontFamily,
-        },
+        dataPointMaxWidth: 20,
         axisX:{
             interval: 1,
-            xValueFormatString: xValueFormatString,
-            {% if is_date %}
-                intervalType: "day",
-            {% endif %}
+            xValueFormatString: "{{ x_format|escapejs }}",
+            intervalType: "{% firstof chart.x_interval_type|escapejs "number" %}",
             titleFontFamily: fontFamily,
             titleFontSize: 24,
             labelFontFamily: fontFamily,
@@ -60,76 +44,74 @@ $(function() {
             labelFontColor: "#000000",
 
         },
-        {% if data1 %}
+        {% if chart.y_left %}
             axisY:{
-                title: titleY1,
+                title: "{{ chart.y_left.title|escapejs }}",
                 titleFontFamily: fontFamily,
                 titleFontSize: 24,
                 labelFontFamily: fontFamily,
                 labelFontSize: 16,
-                lineColor: color1,
-                titleFontColor: color1,
-                labelFontColor: color1,
+                lineColor: "{{ chart.y_left.color|escapejs }}",
+                titleFontColor: "{{ chart.y_left.color|escapejs }}",
+                labelFontColor: "{{ chart.y_left.color|escapejs }}",
                 lineThickness: 0,
                 gridThickness: 1,
                 gridColor: gridColor,
                 tickLength: 5,
-                tickColor: color1,
+                tickColor: "{{ chart.y_left.color|escapejs }}",
                 tickThickness: 1,
-                maximum: max1,
-                interval: max1 / steps,
+                maximum: maxLeft,
+                interval: maxLeft / steps,
             },
         {% endif %}
-        {% if data2 %}
+        {% if chart.y_right %}
             axisY2:{
-                title: titleY2,
+                title: "{{ chart.y_right.title|escapejs }}",
                 titleFontFamily: fontFamily,
                 titleFontSize: 24,
                 labelFontFamily: fontFamily,
                 labelFontSize: 16,
-                lineColor: color2,
-                titleFontColor: color2,
-                labelFontColor: color2,
+                lineColor: "{{ chart.y_right.color|escapejs }}",
+                titleFontColor: "{{ chart.y_right.color|escapejs }}",
+                labelFontColor: "{{ chart.y_right.color|escapejs }}",
                 lineThickness: 0,
                 gridThickness: 0,
                 gridColor: gridColor,
                 tickLength: 5,
-                tickColor: color2,
+                tickColor: "{{ chart.y_right.color|escapejs }}",
                 tickThickness: 1,
-                maximum: max2,
-                interval: max2 / steps,
+                maximum: maxRight,
+                interval: maxRight / steps,
             },
         {% endif %}
         data: [
-            {% if data1 %}
-                {
-                    type: "column",
-                    xValueFormatString: xValueFormatString,
-                    color: color1,
-                    dataPoints: data1,
-                    markerType: markerType,
-                    markerSize: markerSize,
-                    markerColor: markerColor,
-                    markerBorderColor: color1,
-                    markerBorderThickness: markerBorderThickness,
-                    lineThickness: lineThickness,
-                },
-            {% endif %}
-            {% if data2 %}
-                {
-                    type: "column",
-                    axisYType: "secondary",
-                    xValueFormatString: xValueFormatString,
-                    color: color2,
-                    dataPoints: data2,
-                    markerType: markerType,
-                    markerSize: markerSize,
-                    markerColor: markerColor,
-                    markerBorderColor: color2,
-                    markerBorderThickness: markerBorderThickness,
-                    lineThickness: lineThickness,
-                }
-            {% endif %}
+            {
+                type: "{{ chart.y_left.type|escapejs }}",
+                valueFormatString: "{{ chart.y_left.format|escapejs }}",
+                xValueFormatString: "{{ chart.x_format|escapejs }}",
+                color: "{{ chart.y_left.color|escapejs }}",
+                dataPoints: dataLeft,
+                markerType: markerType,
+                markerSize: markerSize,
+                markerColor: markerColor,
+                markerBorderColor: "{{ chart.y_left.color|escapejs }}",
+                markerBorderThickness: markerBorderThickness,
+                lineThickness: lineThickness,
+            },
+            {
+                type: "{{ chart.y_left.type|escapejs }}",
+                axisYType: "secondary",
+                valueFormatString: "{{ chart.y_right.format|escapejs }}",
+                xValueFormatString: "{{ chart.x_format|escapejs }}",
+                color: "{{ chart.y_right.color|escapejs }}",
+                dataPoints: dataRight,
+                markerType: markerType,
+                markerSize: markerSize,
+                markerColor: markerColor,
+                markerBorderColor: "{{ chart.y_right.color|escapejs }}",
+                markerBorderThickness: markerBorderThickness,
+                lineThickness: lineThickness,
+            }
         ]
     });
 });

@@ -1,4 +1,7 @@
 import uuid, json
+from datetime import datetime, timedelta
+
+from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -75,16 +78,42 @@ class UserProfileDetailView(LoginRequiredMixin, TemplateView):
             profits = []
             for transaction in transactions:
                 date_iso = transaction['datetime'].date().isoformat()
-                # if the last added
-                if sales and date_iso == sales[-1]['x']:
+                # if no records, add the first record
+                if not sales:
+                    sales += [{'x': date_iso, 'y': 1}, ]
+                    profits += [{'x': date_iso, 'y': transaction['amount']}, ]
+                else:
+                    # set value of days without transactions to zero
+                    while date_iso != sales[-1]['x']:
+                        # take
+                        last_date_iso = datetime.strptime(sales[-1]['x'], '%Y-%m-%d')
+                        next_date_iso = (last_date_iso + timedelta(1)).date().isoformat()
+                        sales += [{'x': next_date_iso, 'y': 0},]
+                        profits += [{'x': next_date_iso, 'y': 0},]
                     sales[-1]['y'] += 1
                     profits[-1]['y'] += transaction['amount']
-                else:
-                    sales += [{'x':date_iso,'y':1},]
-                    profits += [{'x': date_iso, 'y': transaction['amount']},]
 
             context['sales'] = json.dumps(sales)
             context['profits'] = json.dumps(profits)
+
+            context['sales_and_profits_chart'] = {
+                'y_left': {
+                    'type': 'line',
+                    'title': _('Sales'),
+                    'color': '#008CBA',
+                    'data': json.dumps(sales),
+                    'format': '#',
+                },
+                'y_right': {
+                    'type': 'line',
+                    'title': _('Profits'),
+                    'color': '#43AC6A',
+                    'data': json.dumps(profits),
+                    'format': '#',
+                },
+                'x_interval_type': 'day',
+                'x_format': 'DD MMM YY',
+            }
 
         return context
 

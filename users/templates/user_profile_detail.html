@@ -53,7 +53,7 @@
     {% block body_js %}
         {{ block.super }}
         <script>
-            {% include "_chart.js" with elem="#dev-statistics-chart" title=_('Sales and Profits') titleY1=_('Sales') titleY2=_('Profits') data1=sales data2=profits is_date=True %}
+            {% include "_chart.js" with elem="#dev-statistics-chart" chart=sales_and_profits_chart %}
         </script>
     {% endblock body_js %}
 {% endif %}
