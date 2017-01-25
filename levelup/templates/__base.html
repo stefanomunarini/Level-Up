@@ -68,6 +68,9 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
         {% block foundation_js %}
             <script src="{% static "foundation/js/foundation.min.js" %}"></script>
         {% endblock foundation_js %}
+        {% block canvasjs %}
+            <script src="{% static "javascript/jquery.canvasjs.min.js" %}"></script>
+        {% endblock canvasjs %}
     {% endblock body_js %}
 
     {% block foundation_js_init %}

@@ -63,6 +63,7 @@ class UserProfile(models.Model):
             id__in=self.transactions.filter(status=Transaction.SUCCESS_STATUS).values_list('game', flat=True)
         )
 
+    # Return all the games that this user has bought
     def get_developed_games(self):
         if self.is_developer:
             return Game.objects.filter(dev=self).order_by('-plays', '-downloads', '-name')

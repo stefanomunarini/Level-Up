@@ -1,4 +1,7 @@
-import uuid
+import uuid, json
+from datetime import datetime, timedelta
+
+from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +16,7 @@ from users.forms import (
     UserUpdateModelForm, UserProfileUpdateModelFormset,
     ApiKeyForm)
 from users.models import UserProfile
+from transactions.models import Transaction
 
 
 # User Signup
@@ -53,28 +57,68 @@ class SignupDeveloperView(AbstractSignupView):
     template_name = 'signup_developer.html'
 
 
-# User Profile
-
-# TODO: I think this is redundant as request.user.profile exists as well. - Simo
-class UserProfileMixin(object):
-    """
-    This is a convenient mixin that set the user_profile object as a variable in the context
-    so that it can be used in the template like this: {{ user_profile.user.email }}
-    Moreover, it adds a reference to the same object in the class
-    """
-
-    def get_context_data(self, **kwargs):
-        context = super(UserProfileMixin, self).get_context_data(**kwargs)
-        context['user_profile'] = self.request.user.profile
-        return context
-
-
-class UserProfileDetailView(LoginRequiredMixin, UserProfileMixin, TemplateView):
+class UserProfileDetailView(LoginRequiredMixin, TemplateView):
     login_url = reverse_lazy('login')
     template_name = 'user_profile_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileDetailView, self).get_context_data(**kwargs)
 
-class UserProfileUpdateView(LoginRequiredMixin, UserProfileMixin, UpdateView):
+        if self.request.user.profile.is_developer:
+            # the developer’s games
+            games = Game.objects.filter(dev=self.request.user.profile)
+            context['games'] = games
+
+            # combined sales of the games
+            transactions = Transaction.objects\
+                .filter(game__in=games, status=Transaction.SUCCESS_STATUS)\
+                .order_by('datetime')\
+                .values('datetime','amount')
+            sales = []
+            profits = []
+            for transaction in transactions:
+                date_iso = transaction['datetime'].date().isoformat()
+                # if no records, add the first record
+                if not sales:
+                    sales += [{'x': date_iso, 'y': 1}, ]
+                    profits += [{'x': date_iso, 'y': transaction['amount']}, ]
+                else:
+                    # set value of days without transactions to zero
+                    while date_iso != sales[-1]['x']:
+                        # take
+                        last_date_iso = datetime.strptime(sales[-1]['x'], '%Y-%m-%d')
+                        next_date_iso = (last_date_iso + timedelta(1)).date().isoformat()
+                        sales += [{'x': next_date_iso, 'y': 0},]
+                        profits += [{'x': next_date_iso, 'y': 0},]
+                    sales[-1]['y'] += 1
+                    profits[-1]['y'] += transaction['amount']
+
+            context['sales'] = json.dumps(sales)
+            context['profits'] = json.dumps(profits)
+
+            context['sales_and_profits_chart'] = {
+                'y_left': {
+                    'type': 'line',
+                    'title': _('Sales'),
+                    'color': '#008CBA',
+                    'data': json.dumps(sales),
+                    'format': '#',
+                },
+                'y_right': {
+                    'type': 'line',
+                    'title': _('Profits'),
+                    'color': '#43AC6A',
+                    'data': json.dumps(profits),
+                    'format': '#',
+                },
+                'x_interval_type': 'day',
+                'x_format': 'DD MMM YY',
+            }
+
+        return context
+
+
+class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     form_class = UserUpdateModelForm
     login_url = reverse_lazy('login')
     success_url = reverse_lazy('profile:user-profile')
