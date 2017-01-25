@@ -1,4 +1,4 @@
-import uuid
+import uuid, json
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +13,7 @@ from users.forms import (
     UserUpdateModelForm, UserProfileUpdateModelFormset,
     ApiKeyForm)
 from users.models import UserProfile
+from transactions.models import Transaction
 
 
 # User Signup
@@ -59,11 +60,32 @@ class UserProfileDetailView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
+
         if self.request.user.profile.is_developer:
+            # the developer’s games
             games = Game.objects.filter(dev=self.request.user.profile)
             context['games'] = games
-            context['sales'] = "[{x:2006,y:6},{x:2007,y:2}]"
-            context['profits'] = "[{x:2006,y:1},{x:2007,y:4}]"
+
+            # combined sales of the games
+            transactions = Transaction.objects\
+                .filter(game__in=games, status=Transaction.SUCCESS_STATUS)\
+                .order_by('datetime')\
+                .values('datetime','amount')
+            sales = []
+            profits = []
+            for transaction in transactions:
+                date_iso = transaction['datetime'].date().isoformat()
+                # if the last added
+                if sales and date_iso == sales[-1]['x']:
+                    sales[-1]['y'] += 1
+                    profits[-1]['y'] += transaction['amount']
+                else:
+                    sales += [{'x':date_iso,'y':1},]
+                    profits += [{'x': date_iso, 'y': transaction['amount']},]
+
+            context['sales'] = json.dumps(sales)
+            context['profits'] = json.dumps(profits)
+
         return context
 
 

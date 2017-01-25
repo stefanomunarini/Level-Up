@@ -11,11 +11,25 @@
             <h3>My Games</h3>
             <div class="small-12 columns">
                 <ul class="tabs" data-tab data-options="deep_linking:true">
-                    <li class="tab-title active"><a href="#games">{% trans 'Games' %}</a></li>
-                    <li class="tab-title"><a href="#stats">{% trans 'Statistics' %}</a></li>
+                    <li class="tab-title active"><a href="#stats">{% trans 'Statistics' %}</a></li>
+                    <li class="tab-title"><a href="#games">{% trans 'Games' %}</a></li>
                 </ul>
                 <div class="tabs-content">
-                    <div class="content active" id="games">
+                    <div class="content active" id="stats">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <h3>
+                                    {% trans 'Statistics' %}
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <div id="dev-statistics-chart" class="expanded" style="height: 50%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content" id="games">
                         <div class="row">
                             <div class="small-12 columns">
                                 <h3>
@@ -30,20 +44,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="content" id="stats">
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <h3>
-                                    {% trans 'Statistics' %}
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <div id="dev-statistics-chart" style="width: 100%; height: 50%;"></div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
     {% block body_js %}
         {{ block.super }}
         <script>
-            {% include "_chart.js" with elem="#dev-statistics-chart" title=_('Sales and Profits') titleY1=_('Sales') titleY2=_('Profits') data1=sales data2=profits %}
+            {% include "_chart.js" with elem="#dev-statistics-chart" title=_('Sales and Profits') titleY1=_('Sales') titleY2=_('Profits') data1=sales data2=profits is_date=True %}
         </script>
     {% endblock body_js %}
 {% endif %}

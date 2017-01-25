@@ -3,8 +3,8 @@ $(function() {
     var title = "{{ title }}";
     var titleY1 = "{{ titleY1 }}";
     var titleY2 = "{{ titleY2 }}";
-    var data1 = {% firstof data1 "[]" %};
-    var data2 = {% firstof data2 "[]" %};
+    var data1 = {% firstof data1|safe "[]" %};
+    var data2 = {% firstof data2|safe "[]" %};
     var color1 = "{% firstof col1 "#008CBA" %}";
     var color2 = "{% firstof col2 "#43AC6A" %}";
 
@@ -15,12 +15,28 @@ $(function() {
     var max2 = Math.max.apply(Math,data2.map(function(o){return o.y;}));
     max2 = Math.ceil(Math.max(steps,max2) / steps)*steps;
 
+    var xValueFormatString = "";
+
+    {% if is_date %}
+        function x_to_date(o) { o.x = new Date(o.x); }
+
+        data1.forEach(x_to_date);
+        data2.forEach(x_to_date);
+        xValueFormatString = "DD MMM YY";
+    {% endif %}
+
     var fontFamily = "Helvetica";
-    var markerType = "none";
-    var lineThickness = 5;
+    var markerType = "circle";
+    var lineThickness = 2;
+    var markerSize = lineThickness*1.5;
+    var markerBorderThickness = lineThickness/2;
+    var markerColor = "#ffffff";
     var gridColor = "#e7e7e7";
 
+    {# TODO: localize culture info with Django #}
+
     $("{{ elem }}").CanvasJSChart({
+        culture: '{{ LANGUAGE_CODE }}',
         title:{
             text: title,
             fontFamily: fontFamily,
@@ -30,8 +46,11 @@ $(function() {
             fontFamily: fontFamily,
         },
         axisX:{
-            valueFormatString: "####",
             interval: 1,
+            xValueFormatString: xValueFormatString,
+            {% if is_date %}
+                intervalType: "day",
+            {% endif %}
             titleFontFamily: fontFamily,
             titleFontSize: 24,
             labelFontFamily: fontFamily,
@@ -84,22 +103,30 @@ $(function() {
         data: [
             {% if data1 %}
                 {
-                    type: "line",
-                    xValueFormatString: "####",
+                    type: "column",
+                    xValueFormatString: xValueFormatString,
                     color: color1,
                     dataPoints: data1,
                     markerType: markerType,
+                    markerSize: markerSize,
+                    markerColor: markerColor,
+                    markerBorderColor: color1,
+                    markerBorderThickness: markerBorderThickness,
                     lineThickness: lineThickness,
                 },
             {% endif %}
             {% if data2 %}
                 {
-                    type: "line",
+                    type: "column",
                     axisYType: "secondary",
-                    xValueFormatString: "####",
+                    xValueFormatString: xValueFormatString,
                     color: color2,
                     dataPoints: data2,
                     markerType: markerType,
+                    markerSize: markerSize,
+                    markerColor: markerColor,
+                    markerBorderColor: color2,
+                    markerBorderThickness: markerBorderThickness,
                     lineThickness: lineThickness,
                 }
             {% endif %}
