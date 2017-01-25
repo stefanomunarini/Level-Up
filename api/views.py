@@ -1,9 +1,13 @@
+from django.http import Http404
 from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
+from django.views.generic import DetailView
 
 from api import services
 from api.forms import ApiBaseForm
+from api.models import ApiToken
+from games.models import Game
 
 
 class ApiBaseView(View):
@@ -31,13 +35,14 @@ class ApiBaseView(View):
     def request_valid(self):
         raise NotImplementedError('You must implement this function, which is responsible for returning the response.')
 
-    def request_invalid(self):
-
-        return JsonResponse(data={'error': self.form.errors},
+    def request_invalid(self, errors=None):
+        if not errors:
+            errors = self.form.errors
+        return JsonResponse(data={'errors': errors},
                             status=401)
 
 
-class MyDevelopedGames(ApiBaseView):
+class ApiDevelopedGamesView(ApiBaseView):
     def request_valid(self):
         response = {
             'games': services.get_developed_games(self.api_token_obj)
@@ -45,9 +50,31 @@ class MyDevelopedGames(ApiBaseView):
         return JsonResponse(data=response, status=200)
 
 
-class SaleStatistics(ApiBaseView):
+class ApiSaleStatsView(ApiBaseView):
     def request_valid(self):
         response = {
             'stats': services.get_sale_stats(self.api_token_obj.developer)
+        }
+        return JsonResponse(data=response, status=200)
+
+
+class ApiGameStatsView(ApiBaseView, DetailView):
+    model = Game
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Override the dispatcher so we can return a JSON message error if no game
+        is found with the requested <slug>
+        """
+        try:
+            dispatcher = super(ApiGameStatsView, self).dispatch(request, *args, **kwargs)
+        except Http404 as error:
+            return self.request_invalid(errors=error.args)
+        else:
+            return dispatcher
+
+    def request_valid(self):
+        response = {
+            'game': self.get_object().name
         }
         return JsonResponse(data=response, status=200)
