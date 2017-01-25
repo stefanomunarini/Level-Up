@@ -7,13 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from transactions.models import Transaction
 
 
-def get_upload_path(instance, filename):
-    if isinstance(instance, Game):
-        return "dev_{}/game_{}/{}".format(instance.dev.url_slug, instance.slug, filename)
-    if isinstance(instance, GameScreenshot):
-        return "dev_{}/game_{}/screenshots/{}".format(instance.game.dev.url_slug, instance.game.slug, filename)
-
-
 class GameManager(models.Manager):
     def get_queryset(self):
         return super(GameManager, self).get_queryset() \
@@ -39,7 +32,7 @@ class Game(models.Model):
     date_added = models.DateTimeField(default=timezone.now, blank=True)
 
     """
-    Override default manager so that the default queryset include two extre attributes:
+    Override default manager so that the default queryset include two extra attributes:
     - downloads: the number of download for a particular game (which is the number of Transactions)
     - plays: the number of times the game has been played (which is the number of GameScores)
     """

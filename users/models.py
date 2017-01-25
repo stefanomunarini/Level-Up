@@ -10,11 +10,6 @@ from games.models import Game
 from transactions.models import Transaction
 
 
-def get_upload_path(instance, filename):
-    if isinstance(instance, UserProfile):
-        return "user_{}/profile_pics/{}".format(instance.user.username)
-
-
 class UserProfile(models.Model):
     DEVELOPER_GROUP = 'Developers'
     PLAYER_GROUP = 'Players'
@@ -63,7 +58,7 @@ class UserProfile(models.Model):
             id__in=self.transactions.filter(status=Transaction.SUCCESS_STATUS).values_list('game', flat=True)
         )
 
-    # Return all the games that this user has bought
+    # Return all the games that this user has developed
     def get_developed_games(self):
         if self.is_developer:
             return Game.objects.filter(dev=self).order_by('-plays', '-downloads', '-name')

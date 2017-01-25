@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -15,6 +14,7 @@ from django.views import View
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
 from django.views.generic import UpdateView
 from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import FormMixin
 
 from games import services
 from games.forms import GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
@@ -72,12 +72,13 @@ class GameListView(ListView, FormView):
         return queryset.filter(is_published=True)
 
 
-class GameBuyView(DetailView, FormView, LoginRequiredMixin):
+class GameBuyView(FormMixin, DetailView):
     form_class = TransactionForm
     model = Game
     context_object_name = 'game'
     template_name = 'game_buy.html'
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         game = get_object_or_404(Game, slug=kwargs.get(self.slug_url_kwarg))
         if Transaction.objects.filter(user=self.request.user.profile,

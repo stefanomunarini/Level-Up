@@ -19,7 +19,13 @@
         </div>
         <div class="row">
             <div class="small-12 columns">
-                <h2><a href="{% url 'game:detail' game.slug %}"><small>{{ game.name }}</small></a></h2>
+                <h2><a href="{% url 'game:detail' game.slug %}">
+                    {% if user.profile.is_developer and not game.is_published %}
+                        <small><strike>{{ game.name }}</strike> <b><small>UNPUBLISHED</small></b></small>
+                    {% else %}
+                        <small>{{ game.name }}</small>
+                    {% endif %}
+                </a></h2>
             </div>
         </div>
         <div class="row">
