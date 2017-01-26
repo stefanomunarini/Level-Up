@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-23 12:09+0000\n"
-"PO-Revision-Date: 2017-01-23 14:09+0200\n"
+"POT-Creation-Date: 2017-01-26 22:06+0000\n"
+"PO-Revision-Date: 2017-01-27 00:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -17,105 +17,152 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: games/models.py:16
-msgid "Game name"
-msgstr ""
+#: api/models.py:11
+msgid "The website in where you will use this token"
+msgstr "Verkkosivusto, jolla käytät tunnistetta"
 
-#: games/models.py:17
-msgid "Game URL slug"
+#: api/views.py:18
+msgid ""
+"Unauthorized! The token you are trying to use is invalid. Format should be: "
+"Bearer <TOKEN>"
 msgstr ""
+"Pääsy estetty! Käyttämäsi tunniste on kelvoton. Sen muoto tulisi olla <TOKEN>"
+
+#: games/forms.py:37 games/templates/game_list.html:21
+msgid "Search"
+msgstr "Hae"
 
 #: games/models.py:18
+msgid "Game name"
+msgstr "Pelin nimi"
+
+#: games/models.py:19
+msgid "Game URL slug"
+msgstr "Pelin URL-tunniste"
+
+#: games/models.py:20
 msgid "Part of the game page address on LevelUp, cannot be changed later"
-msgstr ""
+msgstr "Osa pelisivun osoitetta LevelUpissa, et voi muuttaa tätä myöhemmin"
 
-#: games/models.py:24
+#: games/models.py:26
 msgid "Source URL"
-msgstr ""
+msgstr "Lähde-URL"
 
-#: games/models.py:24
+#: games/models.py:26
 msgid "Where is the game hosted?"
-msgstr ""
+msgstr "Mistä osoitteesta peli ladataan?"
 
-#: games/templates/_game_grid.html:13 games/templates/game_detail.html:13
+#: games/models.py:27
+msgid "Game icon"
+msgstr "Pelin kuvake"
+
+#: games/models.py:46
+msgid "Screen shot"
+msgstr "Näyttökuva"
+
+#: games/templates/_game_actions.html:4
 msgid "Play"
-msgstr ""
+msgstr "Pelaa"
 
-#: games/templates/_game_grid.html:15
-msgid "Price"
-msgstr ""
+#: games/templates/_game_actions.html:6
+msgid "Buy"
+msgstr "Osta"
 
-#: games/templates/_game_grid.html:16
-msgid "Downloads"
-msgstr ""
+#: games/templates/_game_actions.html:9
+msgid "Edit"
+msgstr "Muokkaa"
 
-#: games/templates/_game_grid.html:20
-#, fuzzy
-#| msgid "English"
-msgid "Unpublish"
-msgstr "Englanti"
+#: games/templates/_game_actions.html:14
+msgid "Remove from store"
+msgstr "Poista kaupasta"
 
-#: games/templates/_game_grid.html:22
+#: games/templates/_game_actions.html:16
 msgid "Publish"
+msgstr "Julkaise"
+
+#: games/templates/_game_actions.html:22
+msgid "Share on Facebook or something!"
+msgstr "Jaa Facebookissa tai jotain!"
+
+#: games/templates/_game_grid.html:37
+msgid "Downloads"
+msgstr "Lataukset"
+
+#: games/templates/_game_grid.html:37
+msgid "Played"
+msgstr "Pelattu"
+
+#: games/templates/game_buy.html:20
+#, python-format
+msgid "Buy %(name)s"
+msgstr "Osta %(name)s"
+
+#: games/templates/game_buy.html:21
+msgid ""
+"\n"
+"                    The payment will be processed by Simple "
+"Payments&trade;.\n"
+"                "
 msgstr ""
+"\n"
+"Maksu suoritetaan Simple Payments&trade; palvelussa."
+
+#: games/templates/game_buy.html:30 transactions/models.py:14
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: games/templates/game_buy.html:33
+#, python-format
+msgid "Buy for %(price)s €"
+msgstr "Osta summalla %(price)s €"
 
 #: games/templates/game_create.html:4 games/templates/game_create.html:13
-#, fuzzy
-#| msgid "My Games"
+#: levelup/context_processors.py:12
 msgid "Add Game"
-msgstr "Omat pelit"
-
-#: games/templates/game_detail.html:15
-msgid "Buy"
-msgstr ""
-
-#: games/templates/game_detail.html:18 games/templates/game_update.html:11
-#: users/templates/user_profile_update.html:12
-msgid "Update"
-msgstr ""
-
-#: games/templates/game_list.html:17 games/views.py:48
-msgctxt "Query variable name"
-msgid "search"
-msgstr "hae"
-
-#: games/templates/game_list.html:18
-msgid "Search"
-msgstr ""
+msgstr "Lisää peli"
 
 #: games/templates/game_update.html:4
 msgid "Update Game Details"
-msgstr ""
+msgstr "Päivitä pelin tiedot"
+
+#: games/templates/game_update.html:7
+#, python-format
+msgid "Update %(name)s details"
+msgstr "Päivitä pelin %(name)s tiedot"
+
+#: games/templates/game_update.html:11
+#: users/templates/user_profile_update.html:12
+msgid "Update"
+msgstr "Päivitä"
 
 #: games/urls.py:26 levelup/context_processors.py:9
 msgid "My Games"
 msgstr "Omat pelit"
 
-#: games/urls.py:27 levelup/context_processors.py:10
+#: games/urls.py:27 levelup/context_processors.py:11
 msgid "Store"
 msgstr "Kauppa"
 
-#: games/views.py:38 users/templates/user_profile_detail.html:9
-#, fuzzy
-#| msgid "My Games"
+#: games/views.py:36 users/templates/user_profile_detail.html:15
+#: users/templates/user_profile_detail.html:37
 msgid "Games"
-msgstr "Omat pelit"
+msgstr "Pelit"
 
 #: levelup/context_processors.py:8
 msgid "Home"
 msgstr "Etusivu"
 
-#: levelup/settings.py:135
+#: levelup/settings.py:136
 msgid "English"
 msgstr "Englanti"
 
-#: levelup/settings.py:136
+#: levelup/settings.py:137
 msgid "Finnish"
 msgstr "Suomi"
 
-#: levelup/settings.py:137
+#: levelup/settings.py:138
 msgid "Italian"
-msgstr ""
+msgstr "italia"
 
 #: levelup/templates/_navigation.html:12
 msgid "Menu"
@@ -137,7 +184,7 @@ msgid "Log In"
 msgstr "Kirjaudu sisään"
 
 #: levelup/templates/_navigation.html:29
-#: levelup/templates/auth/_login_form.html:9
+#: levelup/templates/auth/_login_form.html:9 users/templates/new_api_key.html:4
 #: users/templates/signup_developer.html:4
 #: users/templates/signup_developer.html:22
 #: users/templates/signup_player.html:4 users/templates/signup_player.html:22
@@ -155,117 +202,146 @@ msgid "Welcome!"
 msgstr "Tervetuloa!"
 
 #: levelup/templates/home.html:11
-msgid "Best Sellers"
-msgstr ""
+msgid "Most Played"
+msgstr "Eniten pelatut"
 
 #: levelup/templates/home.html:18
-msgid "Trending this month"
-msgstr ""
+msgid "Best Sellers"
+msgstr "Myydyimmät"
 
 #: levelup/templates/home.html:25
+msgid "Trending this month"
+msgstr "Kuukauden suosituimmat"
+
+#: levelup/templates/home.html:32
 msgid "Trending this week"
-msgstr ""
+msgstr "Viikon suosituimmat"
+
+#: transactions/models.py:13
+msgid "Success"
+msgstr "Onnistui"
 
 #: transactions/models.py:15
-msgid "Success"
-msgstr ""
-
-#: transactions/models.py:16
-msgid "Cancel"
-msgstr ""
-
-#: transactions/models.py:17
 msgid "Error"
-msgstr ""
+msgstr "Virhe"
 
-#: users/forms.py:16
+#: users/forms.py:17
 msgid "Password"
 msgstr "Salasana"
 
-#: users/forms.py:21
+#: users/forms.py:22
 msgid "Password confirmation"
-msgstr ""
+msgstr "Vahvista salasana"
 
-#: users/forms.py:24
+#: users/forms.py:25
 msgid "Enter the same password as before, for verification."
-msgstr ""
+msgstr "Kirjoita salasana uudestaan."
 
-#: users/forms.py:32
+#: users/forms.py:33
 msgid "The passwords do not match."
-msgstr ""
+msgstr "Salasanat eivät täsmää."
 
-#: users/forms.py:40
+#: users/forms.py:41
 msgid "This username is already in use."
-msgstr ""
+msgstr "Käyttäjätunnus on jo käytössä."
 
-#: users/models.py:25
+#: users/models.py:21
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
-#: users/models.py:27
+#: users/models.py:24
 msgid "Profile picture"
-msgstr ""
+msgstr "Profiilikuva"
+
+#: users/models.py:35
+msgid "URL slug"
+msgstr "URL-tunniste"
 
 #: users/models.py:38
-msgid "URL slug"
-msgstr ""
-
-#: users/models.py:41
 msgid ""
 "This will be a part of the address of your public "
 "page                                     and cannot be changed later."
 msgstr ""
+"Tämä on osa julkisen sivusi osoitetta, etkä voi muuttaa sitä myöhemmin."
+
+#: users/models.py:41
+msgid "Developer website"
+msgstr "Kehittäjän verkkosivusto"
+
+#: users/models.py:43
+msgid "Developer support email"
+msgstr "Kehittäjän tukisähköpostiosoite"
 
 #: users/models.py:44
-msgid "Developer website"
-msgstr ""
-
-#: users/models.py:46
-msgid "Developer support email"
-msgstr ""
-
-#: users/models.py:47
 msgid "Visible to those users that have bought your games"
-msgstr ""
+msgstr "Näkyy niille käyttäjille, jotka ovat ostaneet pelejäsi"
 
-#: users/templates/_user_profile_details.html:15
+#: users/templates/_user_profile_details.html:14
 msgid "Update profile"
-msgstr ""
+msgstr "Päivitä profiili"
+
+#: users/templates/new_api_key.html:10
+msgid "Create New Key"
+msgstr "Luo uusi avain"
 
 #: users/templates/signup_developer.html:11
 msgid "Sign up as a developer"
-msgstr ""
+msgstr "Rekisteröidy kehittäjänä"
 
 #: users/templates/signup_developer.html:13
 msgid "Signup as a player"
-msgstr ""
+msgstr "Rekisteröidy pelaajana"
 
 #: users/templates/signup_player.html:11
 msgid "Sign up as a player"
-msgstr ""
+msgstr "Rekisteröidy pelaajana"
 
 #: users/templates/signup_player.html:13
 msgid "Signup as a developer"
-msgstr ""
+msgstr "Rekisteröidy kehittäjänä"
 
 #: users/templates/signup_user_group_selection.html:16
 msgid "I’m a player!"
-msgstr ""
+msgstr "Olen pelaaja!"
 
 #: users/templates/signup_user_group_selection.html:23
 msgid "I’m a developer!"
-msgstr ""
+msgstr "Olen kehittäjä!"
 
-#: users/templates/user_profile_detail.html:15
+#: users/templates/user_profile_detail.html:14
+#: users/templates/user_profile_detail.html:22
+msgid "Statistics"
+msgstr "Tilastot"
+
+#: users/templates/user_profile_detail.html:28
+msgid "Sales and Profits"
+msgstr "Myynti ja tuotot"
+
+#: users/templates/user_profile_detail.html:38
 msgid "Add game"
-msgstr ""
+msgstr "Lisää peli"
 
 #: users/templates/user_profile_update.html:4
 #: users/templates/user_profile_update.html:7
-#, fuzzy
-#| msgid "My Profile"
 msgid "Update Profile"
-msgstr "Profiili"
+msgstr "Päivitä profiili"
+
+#: users/views.py:103 users/views.py:126
+msgid "Sales"
+msgstr "Myynti"
+
+#: users/views.py:110 users/views.py:131
+msgid "Profits"
+msgstr "Tuotot"
+
+#, fuzzy
+#~| msgid "English"
+#~ msgid "Unpublish"
+#~ msgstr "Englanti"
+
+#~ msgctxt "Query variable name"
+#~ msgid "search"
+#~ msgstr "hae"
 
 #~ msgid "Username"
 #~ msgstr "Käyttäjätunnus"
