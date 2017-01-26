@@ -121,6 +121,48 @@ class UserProfileDetailView(LoginRequiredMixin, TemplateView):
                 }],
             })
 
+            context['sales_and_profits_chart'] = json.dumps({
+                'x': [{
+                    'title': 'a',
+                    'interval_type': 'day',
+                    'format': 'DD MMM YY',
+                    'y': [
+                        {
+                            'data': sales,
+                            'title': ugettext('Sales'),
+                            'type': 'line',
+                        },
+                        {
+                            'data': profits,
+                            'title': ugettext('Profits'),
+                            'type': 'line',
+                            'secondary': True,
+                            'color': 'red',
+                            'format': '#',
+                        }
+                    ]
+                },{
+                    'title': 'b',
+                    'interval_type': 'day',
+                    'format': 'DD MMM YY',
+                    'y': [
+                        {
+                            'data': sales,
+                            'title': ugettext('Sales'),
+                            'type': 'line',
+                        },
+                        {
+                            'data': profits,
+                            'title': ugettext('Profits'),
+                            'type': 'line',
+                            'secondary': True,
+                            'color': 'red',
+                            'format': '#',
+                        }
+                    ]
+                }],
+            })
+
         return context
 
 
