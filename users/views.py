@@ -2,6 +2,10 @@ import json
 import uuid
 from datetime import datetime, timedelta
 
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
+
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -116,6 +120,48 @@ class UserProfileDetailView(LoginRequiredMixin, TemplateView):
                 'x_interval_type': 'day',
                 'x_format': 'DD MMM YY',
             }
+
+            context['sales_and_profits_chart'] = json.dumps({
+                'x': [{
+                    'title': 'a',
+                    'interval_type': 'day',
+                    'format': 'DD MMM YY',
+                    'y': [
+                        {
+                            'data': sales,
+                            'title': ugettext('Sales'),
+                            'type': 'line',
+                        },
+                        {
+                            'data': profits,
+                            'title': ugettext('Profits'),
+                            'type': 'line',
+                            'secondary': True,
+                            'color': 'red',
+                            'format': '#',
+                        }
+                    ]
+                },{
+                    'title': 'b',
+                    'interval_type': 'day',
+                    'format': 'DD MMM YY',
+                    'y': [
+                        {
+                            'data': sales,
+                            'title': ugettext('Sales'),
+                            'type': 'line',
+                        },
+                        {
+                            'data': profits,
+                            'title': ugettext('Profits'),
+                            'type': 'line',
+                            'secondary': True,
+                            'color': 'red',
+                            'format': '#',
+                        }
+                    ]
+                }],
+            })
 
         return context
 
