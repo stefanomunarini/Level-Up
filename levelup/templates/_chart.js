@@ -3,6 +3,7 @@ $(function() {
     var data = {% firstof chart|safe "[]" %};
 
     // Setup localization
+    // Use Django’s translation to create only that translation which the user needs
     CanvasJS.addCultureInfo("{{ LANGUAGE_CODE }}", {
         decimalSeparator: "{{ DECIMAL_SEPARATOR }}",
         digitGroupSeparator: "{{ THOUSAND_SEPARATOR }}",
