@@ -33,3 +33,5 @@ MEDIA_ROOT = "levelup/static/images/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "levelup/static/"),
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
