@@ -1,22 +1,24 @@
-import uuid, json
+import json
+import uuid
 from datetime import datetime, timedelta
 
-from django.utils.translation import ugettext_lazy as _
-
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import FormView, TemplateView, UpdateView
+from django.views.generic import RedirectView
+from django.views.generic.detail import SingleObjectMixin
 
 from games.models import Game
+from transactions.models import Transaction
 from users.forms import (
     SignupPlayerForm, SignupDeveloperForm,
     UserUpdateModelForm, UserProfileUpdateModelFormset,
     ApiKeyForm)
 from users.models import UserProfile
-from transactions.models import Transaction
 
 
 # User Signup
@@ -39,11 +41,11 @@ class AbstractSignupView(FormView):
 
     def form_valid(self, form):
         form.save()
-        new_user = authenticate(
-            username=form.cleaned_data['email'],
-            password=form.cleaned_data['password1'],
-        )
-        login(self.request, new_user)
+        # new_user = authenticate(
+        #     username=form.cleaned_data['email'],
+        #     password=form.cleaned_data['password1'],
+        # )
+        # login(self.request, new_user)
         return super(AbstractSignupView, self).form_valid(self)
 
 
@@ -169,3 +171,18 @@ class NewApiKeyView(FormView):
         form.instance.token = str(uuid.uuid4())
         form.save()
         return super(NewApiKeyView, self).form_valid(self)
+
+
+class SignupActivateView(SingleObjectMixin, RedirectView):
+    model = User
+    url = reverse_lazy('home')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.get_object()
+        return super(SignupActivateView, self).dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        self.obj = super(SignupActivateView, self).get_object(queryset)
+        self.obj.is_active = True
+        self.obj.save()
+        return self.obj

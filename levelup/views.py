@@ -1,6 +1,10 @@
 from django.contrib.auth.forms import AuthenticationForm
+from django.template import Context
+from django.template.loader import get_template
 from django.views.generic import TemplateView
 
+from levelup.settings import REGISTRATION_EMAIL_SUBJECT
+from users.services import send_email
 from . import services
 
 

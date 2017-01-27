@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+    <body>
+        <h3>Welcome {{ username }}</h3>
+        <br>
+        <p>Start playing our games today!</p>
+        <p>To activate your account, please activate your account <a href="{{ url }}{% url 'profile:signup-activate' pk=user_id %}">here</a>.</p>
+        <br>
+        <p>We hope to see you soon on our platform.</p>
+        <p>The LevelUp team</p>
+    </body>
+</html>

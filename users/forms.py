@@ -1,16 +1,16 @@
 from django import forms
 from django.contrib.auth.models import User, Group
-from django.core.mail import send_mail
 from django.forms import (
     ModelForm, modelformset_factory,
 )
+from django.template import Context
 from django.utils.translation import ugettext_lazy as _
 
 from api.models import ApiToken
+from levelup.settings import REGISTRATION_EMAIL_SUBJECT, HEROKU_HOST
 from users.models import UserProfile
+from users.services import send_email
 
-
-# Signup Forms
 
 class AbstractSignupUserForm(ModelForm):
     email = forms.EmailField()
@@ -62,7 +62,9 @@ class AbstractSignupUserForm(ModelForm):
         user.groups.set([group])
         user.is_active = False
         user.save()
-        send_mail()
+
+        context = Context({'user_id': user.id, 'username': user.username, 'url': 'https://' + HEROKU_HOST})
+        send_email(REGISTRATION_EMAIL_SUBJECT, 'auth/registration_email.html', [email], context)
         self.instance.user = user
         self.instance.user_id = user.id
         return super(AbstractSignupUserForm, self).save(*args, **kwargs)

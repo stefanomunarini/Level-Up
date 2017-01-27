@@ -14,6 +14,7 @@ import os
 
 import cloudinary
 from django.contrib import messages
+from django.template.loader import get_template
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
@@ -207,4 +208,4 @@ EMAIL_USE_TLS = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-REGISTRATION_EMAIL_SUBJECT = ''
+REGISTRATION_EMAIL_SUBJECT = 'Welcome to LevelUp'
