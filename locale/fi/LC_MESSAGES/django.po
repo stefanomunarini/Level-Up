@@ -7,19 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2017-01-27 13:24+0000\n"
-"PO-Revision-Date: 2017-01-27 15:25+0200\n"
-=======
-"POT-Creation-Date: 2017-01-26 22:06+0000\n"
-"PO-Revision-Date: 2017-01-27 00:17+0200\n"
->>>>>>> Refactoring charts done
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2017-01-27 13:40+0000\n"
+"PO-Revision-Date: 2017-01-27 15:42+0200\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "X-Generator: Poedit 1.8.11\n"
 
 #: api/models.py:11
@@ -56,7 +52,6 @@ msgstr "Lähde-URL"
 #: games/models.py:26
 msgid "Where is the game hosted?"
 msgstr "Mistä osoitteesta peli ladataan?"
-<<<<<<< HEAD
 
 #: games/models.py:27
 msgid "Game icon"
@@ -66,17 +61,6 @@ msgstr "Pelin kuvake"
 msgid "Screen shot"
 msgstr "Näyttökuva"
 
-=======
-
-#: games/models.py:27
-msgid "Game icon"
-msgstr "Pelin kuvake"
-
-#: games/models.py:46
-msgid "Screen shot"
-msgstr "Näyttökuva"
-
->>>>>>> Refactoring charts done
 #: games/templates/_game_actions.html:4
 msgid "Play"
 msgstr "Pelaa"
@@ -115,7 +99,6 @@ msgid "Buy %(name)s"
 msgstr "Osta %(name)s"
 
 #: games/templates/game_buy.html:21
-<<<<<<< HEAD
 msgid "The payment will be processed by Simple Payments&trade;."
 msgstr "Maksu suoritetaan Simple Payments&trade; -palvelussa."
 
@@ -124,22 +107,6 @@ msgid "Cancel"
 msgstr "Peruuta"
 
 #: games/templates/game_buy.html:31
-=======
-msgid ""
-"\n"
-"                    The payment will be processed by Simple "
-"Payments&trade;.\n"
-"                "
-msgstr ""
-"\n"
-"Maksu suoritetaan Simple Payments&trade; palvelussa."
-
-#: games/templates/game_buy.html:30 transactions/models.py:14
-msgid "Cancel"
-msgstr "Peruuta"
-
-#: games/templates/game_buy.html:33
->>>>>>> Refactoring charts done
 #, python-format
 msgid "Buy for %(price)s €"
 msgstr "Osta summalla %(price)s €"
@@ -180,18 +147,17 @@ msgstr "Pelit"
 msgid "Home"
 msgstr "Etusivu"
 
-#: levelup/settings.py:136
+#: levelup/settings.py:137
 msgid "English"
 msgstr "Englanti"
 
-#: levelup/settings.py:137
+#: levelup/settings.py:138
 msgid "Finnish"
 msgstr "Suomi"
 
-#: levelup/settings.py:138
+#: levelup/settings.py:139
 msgid "Italian"
-msgstr "italia"
-<<<<<<< HEAD
+msgstr "Italia"
 
 #: levelup/templates/_chart.js:11 levelup/templates/_chart.js:14
 msgid "Zoom"
@@ -371,8 +337,6 @@ msgstr "Marras"
 #: levelup/templates/_chart.js:62
 msgid "Dec"
 msgstr "Joulu"
-=======
->>>>>>> Refactoring charts done
 
 #: levelup/templates/_navigation.html:12
 msgid "Menu"
@@ -500,22 +464,9 @@ msgid "Sign up as a developer"
 msgstr "Rekisteröidy kehittäjänä"
 
 #: users/templates/signup_developer.html:13
-<<<<<<< HEAD
 #: users/templates/signup_player.html:11
 msgid "Sign up as a player"
 msgstr "Rekisteröidy pelaajana"
-=======
-msgid "Signup as a player"
-msgstr "Rekisteröidy pelaajana"
-
-#: users/templates/signup_player.html:11
-msgid "Sign up as a player"
-msgstr "Rekisteröidy pelaajana"
-
-#: users/templates/signup_player.html:13
-msgid "Signup as a developer"
-msgstr "Rekisteröidy kehittäjänä"
->>>>>>> Refactoring charts done
 
 #: users/templates/signup_user_group_selection.html:16
 msgid "I’m a player!"
@@ -529,19 +480,11 @@ msgstr "Olen kehittäjä!"
 #: users/templates/user_profile_detail.html:22
 msgid "Statistics"
 msgstr "Tilastot"
-<<<<<<< HEAD
 
 #: users/templates/user_profile_detail.html:28
 msgid "Sales and Profits"
 msgstr "Myynti ja tuotot"
 
-=======
-
-#: users/templates/user_profile_detail.html:28
-msgid "Sales and Profits"
-msgstr "Myynti ja tuotot"
-
->>>>>>> Refactoring charts done
 #: users/templates/user_profile_detail.html:38
 msgid "Add game"
 msgstr "Lisää peli"
@@ -551,61 +494,10 @@ msgstr "Lisää peli"
 msgid "Update Profile"
 msgstr "Päivitä profiili"
 
-<<<<<<< HEAD
-#: users/views.py:105
+#: users/views.py:104
 msgid "Sales"
 msgstr "Myynti"
 
-#: users/views.py:110
+#: users/views.py:109
 msgid "Profits"
 msgstr "Tuotot"
-
-#~ msgid "Signup as a player"
-#~ msgstr "Rekisteröidy pelaajana"
-
-#~ msgid "Signup as a developer"
-#~ msgstr "Rekisteröidy kehittäjänä"
-
-=======
-#: users/views.py:103 users/views.py:126
-msgid "Sales"
-msgstr "Myynti"
-
-#: users/views.py:110 users/views.py:131
-msgid "Profits"
-msgstr "Tuotot"
-
->>>>>>> Refactoring charts done
-#, fuzzy
-#~| msgid "English"
-#~ msgid "Unpublish"
-#~ msgstr "Englanti"
-<<<<<<< HEAD
-=======
-
-#~ msgctxt "Query variable name"
-#~ msgid "search"
-#~ msgstr "hae"
->>>>>>> Refactoring charts done
-
-#~ msgid "Username"
-#~ msgstr "Käyttäjätunnus"
-
-#~ msgid "Confirm Password"
-#~ msgstr "Vahvista salasana"
-
-#~ msgid "Your username and password didn’t match. Please try again."
-#~ msgstr "Käyttäjätunnus ja salasana eivät täsmää. Yritä uudelleen."
-
-#~ msgid ""
-#~ "Your account doesn’t have access to this page. To proceed, please login "
-#~ "with an account that has access."
-#~ msgstr ""
-#~ "Tunnuksillasi ei ole pääsyä tälle sivulle. Edetäksesi kirjaudu "
-#~ "tunnuksilla, joilla on pääsy."
-
-#~ msgid "Please login to see this page."
-#~ msgstr "Ole hyvä ja kirjaudu nähdäksesi tämän sivun."
-
-#~ msgid "Incorrect credentials!"
-#~ msgstr "Virheelliset käyttäjätiedot!"
