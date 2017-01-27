@@ -4,7 +4,8 @@ $(function() {
 
     {# TODO: localize culture info with Django #}
 
-    var chart_settings = {
+    // Initialize chart settings object
+    var chartSettings = {
         culture: '{{ LANGUAGE_CODE }}',
         dataPointMaxWidth: 20,
         axisX: [],
@@ -23,7 +24,7 @@ $(function() {
         steps: 5,
     };
 
-    var common_axis_settings = {
+    var commonAxisSettings = {
         titleFontFamily: defaults.font,
         titleFontSize: 24,
         labelFontFamily: defaults.font,
@@ -34,93 +35,101 @@ $(function() {
         tickLength: 5,
     };
 
-    var common_data_settings = {
+    var commonDataSettings = {
         markerType: "None",
         lineThickness: 4,
     };
 
-    if(Array.isArray(data.x)) {
-        data.x.forEach(parseAxis);
-    } else if('x' in data) {
-        parseAxis(data.x)
+    // Parse arguments and dynamically build chart settings object
+    wrapInArr(data.x).forEach(parseXAxis);
+
+    // Draw chart
+    $("{{ elem|escapejs }}").CanvasJSChart(chartSettings);
+
+    // HELPER FUNCTIONS
+
+    function parseXAxis(xArgs) {
+
+        var xAxisSettings = $.extend(dynamicAxisSettings(xArgs), commonAxisSettings);
+
+        xAxisSettings.gridThickness = 0;
+        xAxisSettings.intervalType = xArgs.interval_type || "number";
+
+        if(xArgs.secondary) {
+            chartSettings.axisX2.push(xAxisSettings);
+        } else {
+            chartSettings.axisX.push(xAxisSettings);
+        }
+
+        wrapInArr(xArgs.y).forEach(parseYAxis, xAxisSettings);
+
     }
 
-    //alert(JSON.stringify(chart_settings));
-    $("{{ elem|escapejs }}").CanvasJSChart(chart_settings);
+    function parseYAxis(yArgs) {
+        var xAxisSettings = this;
 
-    // Create chart_settings according to input
-    function parseAxis(axis) {
+        var yAxisSettings = $.extend(dynamicAxisSettings(yArgs), commonAxisSettings);
 
-        var color = defaults.dataColors.shift() || defaults.textColor;
+        // Find the largest Y value in data
+        var max = Math.max.apply(Math,yArgs.data.map(function(dataPoint){return dataPoint.y;}));
+        // Set axis maximum as the closest multiple of defaults.steps above the maximum Y value
+        yAxisSettings.maximum = Math.ceil(max / defaults.steps) * defaults.steps;
+        // All Y-axis will have same number of steps in the grid
+        yAxisSettings.interval = yAxisSettings.maximum / defaults.steps;
 
-        var axis_settings = {
-            title: axis.title || "",
-            valueFormatString: axis.format || "0",
-            interval: axis.interval || 1,
-            titleFontColor: axis.color || color,
-            labelFontColor: axis.color || color,
-            tickColor: axis.color || color,
-            lineColor: axis.color || color,
+        var dataSettings = {
+            dataPoints: yArgs.data,
+            type: yArgs.type || "line",
+            lineColor: yArgs.color || yAxisSettings.lineColor,
+            valueFormatString: yArgs.format || "0",
+            xValueFormatString: xAxisSettings.valueFormatString || "0",
+            axisXType: chartSettings.axisX.indexOf(xAxisSettings) > -1 ? "primary" : "secondary",
+            color: yAxisSettings.lineColor,
         };
-        $.extend(axis_settings, common_axis_settings);
+        dataSettings.axisXIndex = dataSettings.axisXType == "primary"
+            ? chartSettings.axisX.indexOf(xAxisSettings)
+            : chartSettings.axisX2.indexOf(xAxisSettings);
+        $.extend(dataSettings, commonDataSettings);
 
-        if('y' in axis) { // is X-axis
-            axis_settings.gridThickness = 0;
-            axis_settings.intervalType = axis.interval_type || "number";
-
-            axis.y.x_format = axis.format;
-
-            if(axis.secondary) {
-                axis.y.x_index = chart_settings.axisX2.length;
-                axis.y.x_type = "secondary";
-                chart_settings.axisX2.push(axis_settings);
-            } else {
-                axis.y.x_index = chart_settings.axisX.length;
-                chart_settings.axisX.push(axis_settings);
-            }
-
-            if(Array.isArray(axis.y)) {
-                axis.y.forEach(parseAxis);
-            } else if('y' in axis) {
-                parseAxis(axis.y);
-            }
-        } else if ('data' in axis) { // is Y-axis
-
-            var max = Math.max.apply(Math,axis.data.map(function(data_point){return data_point.y;}));
-            max = Math.ceil(Math.max(defaults.steps,max) / defaults.steps)*defaults.steps;
-
-            axis_settings.maximum = max;
-            axis_settings.interval = axis_settings.maximum / defaults.steps;
-
-            var data_settings = {
-                dataPoints: axis.data,
-                type: axis.type || "line",
-                lineColor: axis.color || color,
-                valueFormatString: axis.format || "0",
-                xValueFormatString: axis.x_format || "0",
-                axisXType: axis.x_type || "primary",
-                axisXIndex: axis.x_index || 0,
-                color: axis.color || color,
-            };
-            $.extend(data_settings, common_data_settings);
-
-            if(axis_settings.intervalType != "number") {
-                data_settings.dataPoints.forEach(xToDateObj);
-            }
-
-            if(axis.secondary) {
-                chart_settings.axisY2.push(axis_settings);
-                data_settings.axisYType = "secondary";
-            } else {
-                chart_settings.axisY.push(axis_settings);
-            }
-
-            chart_settings.data.push(data_settings);
+        if(yAxisSettings.intervalType != "number") {
+            dataSettings.dataPoints.forEach(xToDateObj);
         }
+
+        if(yArgs.secondary) {
+            chartSettings.axisY2.push(yAxisSettings);
+            dataSettings.axisYType = "secondary";
+        } else {
+            chartSettings.axisY.push(yAxisSettings);
+        }
+
+        chartSettings.data.push(dataSettings);
+    }
+
+    function dynamicAxisSettings(args) {
+        var color = defaults.dataColors.shift() || defaults.textColor;
+        return {
+            title: args.title || "",
+            valueFormatString: args.format || "0",
+            interval: args.interval || 1,
+            titleFontColor: args.color || color,
+            labelFontColor: args.color || color,
+            tickColor: args.color || color,
+            lineColor: args.color || color,
+        };
     }
 
     // Map X values in given data point from String to JS Date Object
-    function xToDateObj(data_point) {
-        data_point.x = new Date(data_point.x);
+    function xToDateObj(dataPoint) {
+        dataPoint.x = new Date(dataPoint.x);
+    }
+
+    // If the argument is an array, it will be returned as is, otherwise an array is returned
+    // with the argument as its first element.
+    function wrapInArr(o) {
+        if(Array.isArray(o)) {
+            return o;
+        } else {
+            return [o];
+        }
     }
 });

@@ -99,27 +99,6 @@ class UserProfileDetailView(LoginRequiredMixin, TemplateView):
                     sales[-1]['y'] += 1
                     profits[-1]['y'] += transaction['amount']
 
-            context['sales'] = json.dumps(sales)
-            context['profits'] = json.dumps(profits)
-
-            context['sales_and_profits_chart'] = {
-                'y_left': {
-                    'type': 'line',
-                    'title': _('Sales'),
-                    'color': '#008CBA',
-                    'data': json.dumps(sales),
-                    'format': '#',
-                },
-                'y_right': {
-                    'type': 'line',
-                    'title': _('Profits'),
-                    'color': '#43AC6A',
-                    'data': json.dumps(profits),
-                    'format': '#',
-                },
-                'x_interval_type': 'day',
-                'x_format': 'DD MMM YY',
-            }
 
             context['sales_and_profits_chart'] = json.dumps({
                 'x': [{
