@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User, Group
+from django.core.mail import send_mail
 from django.forms import (
     ModelForm, modelformset_factory,
 )
@@ -59,7 +60,9 @@ class AbstractSignupUserForm(ModelForm):
             email=email
         )
         user.groups.set([group])
+        user.is_active = False
         user.save()
+        send_mail()
         self.instance.user = user
         self.instance.user_id = user.id
         return super(AbstractSignupUserForm, self).save(*args, **kwargs)
