@@ -2,8 +2,6 @@
 $(function() {
     var data = {% firstof chart|safe "[]" %};
 
-    {# TODO: localize culture info with Django #}
-
     // Setup localization
     CanvasJS.addCultureInfo("{{ LANGUAGE_CODE }}", {
         decimalSeparator: "{{ DECIMAL_SEPARATOR }}",
