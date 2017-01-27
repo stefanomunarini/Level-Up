@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-26 22:06+0000\n"
-"PO-Revision-Date: 2017-01-27 00:17+0200\n"
+"POT-Creation-Date: 2017-01-27 13:24+0000\n"
+"PO-Revision-Date: 2017-01-27 15:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -98,20 +98,14 @@ msgid "Buy %(name)s"
 msgstr "Osta %(name)s"
 
 #: games/templates/game_buy.html:21
-msgid ""
-"\n"
-"                    The payment will be processed by Simple "
-"Payments&trade;.\n"
-"                "
-msgstr ""
-"\n"
-"Maksu suoritetaan Simple Payments&trade; palvelussa."
+msgid "The payment will be processed by Simple Payments&trade;."
+msgstr "Maksu suoritetaan Simple Payments&trade; -palvelussa."
 
-#: games/templates/game_buy.html:30 transactions/models.py:14
+#: games/templates/game_buy.html:28 transactions/models.py:14
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: games/templates/game_buy.html:33
+#: games/templates/game_buy.html:31
 #, python-format
 msgid "Buy for %(price)s €"
 msgstr "Osta summalla %(price)s €"
@@ -163,6 +157,185 @@ msgstr "Suomi"
 #: levelup/settings.py:138
 msgid "Italian"
 msgstr "italia"
+
+#: levelup/templates/_chart.js:11 levelup/templates/_chart.js:14
+msgid "Zoom"
+msgstr "Suurennus"
+
+#: levelup/templates/_chart.js:12
+msgid "Pan"
+msgstr "Siirrä"
+
+#: levelup/templates/_chart.js:13
+msgid "Reset"
+msgstr "Nollaa"
+
+#: levelup/templates/_chart.js:15
+msgid "Save as PNG"
+msgstr "Tallenna PNG-kuvana"
+
+#: levelup/templates/_chart.js:16
+msgid "Save as JPG"
+msgstr "Tallenna JPG-kuvana"
+
+#: levelup/templates/_chart.js:17
+msgid "More Options"
+msgstr "Lisää valintoja"
+
+#: levelup/templates/_chart.js:19
+msgid "Sunday"
+msgstr "Sunnuntai"
+
+#: levelup/templates/_chart.js:20
+msgid "Monday"
+msgstr "Maanantai"
+
+#: levelup/templates/_chart.js:21
+msgid "Tuesday"
+msgstr "Tiistai"
+
+#: levelup/templates/_chart.js:22
+msgid "Wednesday"
+msgstr "Keskiviikko"
+
+#: levelup/templates/_chart.js:23
+msgid "Thursday"
+msgstr "Torstai"
+
+#: levelup/templates/_chart.js:24
+msgid "Friday"
+msgstr "Perjantai"
+
+#: levelup/templates/_chart.js:25
+msgid "Saturday"
+msgstr "Lauantai"
+
+#: levelup/templates/_chart.js:28
+msgid "Sun"
+msgstr "Su"
+
+#: levelup/templates/_chart.js:29
+msgid "Mon"
+msgstr "Ma"
+
+#: levelup/templates/_chart.js:30
+msgid "Tue"
+msgstr "Ti"
+
+#: levelup/templates/_chart.js:31
+msgid "Wed"
+msgstr "Ke"
+
+#: levelup/templates/_chart.js:32
+msgid "Thu"
+msgstr "To"
+
+#: levelup/templates/_chart.js:33
+msgid "Fri"
+msgstr "Pe"
+
+#: levelup/templates/_chart.js:34
+msgid "Sat"
+msgstr "La"
+
+#: levelup/templates/_chart.js:37
+msgid "January"
+msgstr "Tammikuu"
+
+#: levelup/templates/_chart.js:38
+msgid "February"
+msgstr "Helmikuu"
+
+#: levelup/templates/_chart.js:39
+msgctxt "Month name"
+msgid "March"
+msgstr "Maaliskuu"
+
+#: levelup/templates/_chart.js:40
+msgid "April"
+msgstr "Huhtikuu"
+
+#: levelup/templates/_chart.js:41
+msgctxt "Month name"
+msgid "May"
+msgstr "Toukokuu"
+
+#: levelup/templates/_chart.js:42
+msgid "June"
+msgstr "Kesäkuu"
+
+#: levelup/templates/_chart.js:43
+msgid "July"
+msgstr "Heinäkuu"
+
+#: levelup/templates/_chart.js:44
+msgid "August"
+msgstr "Elokuu"
+
+#: levelup/templates/_chart.js:45
+msgid "September"
+msgstr "Syyskuu"
+
+#: levelup/templates/_chart.js:46
+msgid "October"
+msgstr "Lokakuu"
+
+#: levelup/templates/_chart.js:47
+msgid "November"
+msgstr "Marraskuu"
+
+#: levelup/templates/_chart.js:48
+msgid "December"
+msgstr "Joulukuu"
+
+#: levelup/templates/_chart.js:51
+msgid "Jan"
+msgstr "Tammi"
+
+#: levelup/templates/_chart.js:52
+msgid "Feb"
+msgstr "Helmi"
+
+#: levelup/templates/_chart.js:53
+msgid "Mar"
+msgstr "Maalis"
+
+#: levelup/templates/_chart.js:54
+msgid "Apr"
+msgstr "Huhti"
+
+#: levelup/templates/_chart.js:55
+msgctxt "Short month name"
+msgid "May"
+msgstr "Touko"
+
+#: levelup/templates/_chart.js:56
+msgid "Jun"
+msgstr "Kesä"
+
+#: levelup/templates/_chart.js:57
+msgid "Jul"
+msgstr "Heinä"
+
+#: levelup/templates/_chart.js:58
+msgid "Aug"
+msgstr "Elo"
+
+#: levelup/templates/_chart.js:59
+msgid "Sep"
+msgstr "Syys"
+
+#: levelup/templates/_chart.js:60
+msgid "Oct"
+msgstr "Loka"
+
+#: levelup/templates/_chart.js:61
+msgid "Nov"
+msgstr "Marras"
+
+#: levelup/templates/_chart.js:62
+msgid "Dec"
+msgstr "Joulu"
 
 #: levelup/templates/_navigation.html:12
 msgid "Menu"
@@ -285,20 +458,14 @@ msgid "Create New Key"
 msgstr "Luo uusi avain"
 
 #: users/templates/signup_developer.html:11
+#: users/templates/signup_player.html:13
 msgid "Sign up as a developer"
 msgstr "Rekisteröidy kehittäjänä"
 
 #: users/templates/signup_developer.html:13
-msgid "Signup as a player"
-msgstr "Rekisteröidy pelaajana"
-
 #: users/templates/signup_player.html:11
 msgid "Sign up as a player"
 msgstr "Rekisteröidy pelaajana"
-
-#: users/templates/signup_player.html:13
-msgid "Signup as a developer"
-msgstr "Rekisteröidy kehittäjänä"
 
 #: users/templates/signup_user_group_selection.html:16
 msgid "I’m a player!"
@@ -326,22 +493,24 @@ msgstr "Lisää peli"
 msgid "Update Profile"
 msgstr "Päivitä profiili"
 
-#: users/views.py:103 users/views.py:126
+#: users/views.py:105
 msgid "Sales"
 msgstr "Myynti"
 
-#: users/views.py:110 users/views.py:131
+#: users/views.py:110
 msgid "Profits"
 msgstr "Tuotot"
+
+#~ msgid "Signup as a player"
+#~ msgstr "Rekisteröidy pelaajana"
+
+#~ msgid "Signup as a developer"
+#~ msgstr "Rekisteröidy kehittäjänä"
 
 #, fuzzy
 #~| msgid "English"
 #~ msgid "Unpublish"
 #~ msgstr "Englanti"
-
-#~ msgctxt "Query variable name"
-#~ msgid "search"
-#~ msgstr "hae"
 
 #~ msgid "Username"
 #~ msgstr "Käyttäjätunnus"

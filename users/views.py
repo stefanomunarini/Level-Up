@@ -116,7 +116,7 @@ class UserProfileDetailView(LoginRequiredMixin, TemplateView):
                             'type': 'line',
                             'secondary': True,
                             'format': '0 "€"',
-                        }
+                        },
                     ]
                 }],
             })

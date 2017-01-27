@@ -18,9 +18,7 @@
         <div class="row">
             <div class="small-12 columns">
                 <h1>{% blocktrans with name=game.name %}Buy {{ name }}{% endblocktrans %}</h1>
-                <p>{% blocktrans %}
-                    The payment will be processed by Simple Payments&trade;.
-                {% endblocktrans %}</p>
+                <p>{% trans "The payment will be processed by Simple Payments&trade;." %}</p>
             </div>
         </div>
         <form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
