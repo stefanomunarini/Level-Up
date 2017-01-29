@@ -1,3 +1,5 @@
+import cloudinary
+from allauth.socialaccount.models import SocialAccount
 from django import forms
 from django.contrib.auth.models import User, Group
 from django.forms import (
@@ -121,3 +123,32 @@ class ApiKeyForm(ModelForm):
     class Meta:
         model = ApiToken
         fields = ('website_url',)
+
+
+class SignupSocialForm(forms.Form):
+    developer, player = 1, 2
+    GROUP_CHOICES = (
+        (1, _('I am a developer')),
+        (2, _('I am a player')),
+    )
+    group = forms.ChoiceField(
+        required=False,
+        widget=forms.RadioSelect,
+        choices=GROUP_CHOICES,
+        label=_('Select your role'),
+    )
+
+    def signup(self, request, user):
+        group_id = self.cleaned_data['group']
+        group = Group.objects.get(pk=group_id)
+        user.groups.set([group])
+        user.save()
+
+        social_profile = SocialAccount.objects.get(user_id=user.id)
+        profile_url = "http://graph.facebook.com/{}/picture?width=250&height=250".format(social_profile.uid)
+        profile_picture = cloudinary.uploader.upload(profile_url)
+        UserProfile.objects.create(
+            user=user,
+            profile_picture=profile_picture['url'],
+            third_party_login=social_profile.provider
+        )

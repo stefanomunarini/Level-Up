@@ -1,11 +1,12 @@
 {% extends "__base.html" %}
 {% load i18n %}
+{% load socialaccount %}
 
 {% block title %}{% trans "Sign Up" %} &ndash; {{ block.super }}{% endblock title %}
 
 {% block main %}
 
-
+    <a class="button" href="{% provider_login_url "facebook" %}">{% trans "Facebook" %}</a>
     <div class="row">
         <div class="small-12 columns">
             <h1>{% trans "Sign up as a developer" %}
