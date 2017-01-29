@@ -1,13 +1,9 @@
 from __future__ import unicode_literals
 
-from allauth.account.signals import user_signed_up
-from allauth.socialaccount.models import SocialAccount
-from allauth.socialaccount.signals import pre_social_login
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User, Group
 from django.core import validators
 from django.db import models
-from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from games.models import Game
@@ -67,19 +63,3 @@ class UserProfile(models.Model):
         if self.is_developer:
             return Game.objects.filter(dev=self).order_by('-plays', '-downloads', '-name')
         return None
-
-# @receiver(user_signed_up)
-# def CreateProfile(sender, request, user, **kwargs):
-#     print('user', user)
-#     social_profile = SocialAccount.objects.get(user_id=user.id)
-#     # group = Group.objects.get(pk=1)
-#     # user.groups.set([group])
-#     # user.save()
-#     UserProfile.objects.create(
-#         user=user,
-#         third_party_login=social_profile.provider
-#     )
-#
-# @receiver(pre_social_login)
-# def PreLogin(sender, request, sociallogin, **kwargs):
-#     print('user', sociallogin)
