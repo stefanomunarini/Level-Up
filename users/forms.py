@@ -132,7 +132,7 @@ class SignupSocialForm(forms.Form):
         (2, _('I am a player')),
     )
     group = forms.ChoiceField(
-        required=False,
+        required=True,
         widget=forms.RadioSelect,
         choices=GROUP_CHOICES,
         label=_('Select your role'),
@@ -145,10 +145,10 @@ class SignupSocialForm(forms.Form):
         user.save()
 
         social_profile = SocialAccount.objects.get(user_id=user.id)
-        profile_url = "http://graph.facebook.com/{}/picture?width=250&height=250".format(social_profile.uid)
-        profile_picture = cloudinary.uploader.upload(profile_url)
+        # profile_url = social_profile.get_avatar_url()
+        # profile_picture = cloudinary.uploader.upload(profile_url)
         UserProfile.objects.create(
             user=user,
-            profile_picture=profile_picture['url'],
+            # profile_picture=profile_picture['url'],
             third_party_login=social_profile.provider
         )
