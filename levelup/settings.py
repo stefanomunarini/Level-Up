@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.openid',
 ]
 
 MIDDLEWARE = [
@@ -232,5 +234,16 @@ SITE_ID = 1  # id of the site, if there is no site with id=1, django will raise 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_AUTO_SIGNUP = False
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupSocialForm'
+SOCIALACCOUNT_PROVIDERS = {
+    'openid': {
+        'SERVERS': [
+            dict(
+                id='yahoo',
+                name='Yahoo',
+                openid_url='http://me.yahoo.com'
+            ),
+        ]
+    }
+}
