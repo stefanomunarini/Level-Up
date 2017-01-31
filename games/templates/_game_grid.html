@@ -5,12 +5,12 @@
 {% with request.user.profile.get_bought_games as bought_games %}
 <ul class="small-block-grid-2 large-block-grid-3 game-grid">
     {% for game in games %}
-    <li class="small-text-center">
+    <li class="small-text-center" itemscope itemtype="http://schema.org/Game">
         <div class="row">
             <div class="small-12 columns">
-                <a href="{% url 'game:detail' game.slug %}">
+                <a itemprop="url" href="{% url 'game:detail' game.slug %}">
                     {% if game.icon %}
-                        {% cloudinary game.icon format="jpg" width=250 height=250 crop="fill" %}
+                        <img itemprop="image" src="{% cloudinary_url game.icon format="jpg" width=250 height=250 crop="fill" %}" width="250" height="250">
                     {% else %}
                         <img src="https://screenshotlayer.com/images/assets/placeholder.png">
                     {% endif %}
@@ -23,7 +23,8 @@
                     {% if user.profile.is_developer and not game.is_published %}
                         <small><strike>{{ game.name }}</strike> <b><small>UNPUBLISHED</small></b></small>
                     {% else %}
-                        <small>{{ game.name }}</small> <span class="secondary label">{{ game.category }}</span>
+                        <small itemprop="name">{{ game.name }}</small>
+                        <small itemprop="genre secondary label">{{ game.category }}</small>
                     {% endif %}
                 </a></h2>
             </div>

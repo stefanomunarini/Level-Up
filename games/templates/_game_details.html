@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             <tr>
-                <th>{{ game.dev }}</th>
+                <th>{{ game.dev }} {% if game in bought_games and game.dev.support_email %}<a href="mailto:{{ game.dev.support_email }}" class="label">Send an email</a>{% endif %}</th>
                 <th>{{ game.date_added }}</th>
                 <th>{{ game.downloads }}</th>
                 <th>{{ game.plays }}</th>
