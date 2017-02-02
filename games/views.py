@@ -25,7 +25,7 @@ from transactions.forms import TransactionForm
 from transactions.models import Transaction
 
 
-class GameListView(ListView, FormView):
+class GameListView(FormMixin, ListView):
     """
     A view that is used whenever a list of games needs to be shown
     Games to be displayed are controlled by passing attribute values in the url dispatcher
@@ -47,6 +47,7 @@ class GameListView(ListView, FormView):
     def get_initial(self):
         initial = super(GameListView, self).get_initial()
         initial['q'] = self.request.GET.get('q')
+        initial['category'] = self.request.GET.get('category')
         return initial
 
     def get_queryset(self):
@@ -58,6 +59,8 @@ class GameListView(ListView, FormView):
             queryset = self.request.user.profile.get_developed_games()
 
         search = self.request.GET.get('q')
+        category = self.request.GET.get('category')
+
         vector = SearchVector('name', 'description')
         query = None
 
@@ -68,6 +71,9 @@ class GameListView(ListView, FormView):
                 else:
                     query = query | SearchQuery(word)
             queryset = queryset.annotate(rank=SearchRank(vector, query)).order_by('-rank').filter(rank__gt=0)
+
+        if category:
+            queryset = queryset.filter(category=category)
 
         return queryset.filter(is_published=True)
 
@@ -214,7 +220,7 @@ class GameCreateUpdateMixin(object):
     """
     This mixin provides shared functionality for creating and updating a game. In particular, it checks that the user
     is authenticated and has a 'Developer' profile.
-    Moreover, provide functionality to save/update screenshot when saving/updating a Game instance.
+    Moreover, provide functionality to save/update screenshot when
     """
 
     @method_decorator(login_required)
@@ -246,7 +252,7 @@ class GameCreateUpdateMixin(object):
 
 
 class GameCreateView(GameCreateUpdateMixin, CreateView):
-    fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
+    fields = ('name', 'slug', 'url', 'icon', 'description', 'price', 'category')
     model = Game
     template_name = 'game_create.html'
     success_url = reverse_lazy('profile:user-profile')

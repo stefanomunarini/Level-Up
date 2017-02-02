@@ -4,7 +4,7 @@ from games.models import Game
 
 
 def get_homepage_games(elements_to_show):
-    games = _order_and_filter(Game.objects.all(), only_positive_downloads=True)
+    games = _order_and_filter(Game.objects.filter(is_published=True), only_positive_downloads=True)
     today = date.today()
     return {
         'best_sellers': get_best_sellers(games)[:elements_to_show],
@@ -36,4 +36,4 @@ def _order_and_filter(queryset, only_positive_downloads=False):
 
 
 def get_most_played():
-    return Game.objects.all().order_by('-plays', '-downloads').filter(downloads__gt=0)
+    return Game.objects.all().order_by('-plays', '-downloads').filter(downloads__gt=0, is_published=True)

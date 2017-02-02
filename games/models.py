@@ -15,6 +15,25 @@ class GameManager(models.Manager):
 
 
 class Game(models.Model):
+
+    ACTION_CATEGORY = 'action'
+    ADVENTURE_CATEGORY = 'adventure'
+    ARCADE_CATEGORY = 'arcade'
+    KIDS_CATEGORY = 'kids'
+    RPG_CATEGORY = 'rpg'
+    SPORT_CATEGORY = 'sport'
+    STRATEGY_CATEGORY = 'strategy'
+
+    CATEGORIES = (
+        (ACTION_CATEGORY, _('Action')),
+        (ADVENTURE_CATEGORY, _('Adventure')),
+        (ARCADE_CATEGORY, _('Arcade')),
+        (KIDS_CATEGORY, _('Kids')),
+        (RPG_CATEGORY, _('RPG')),
+        (SPORT_CATEGORY, _('Sport')),
+        (STRATEGY_CATEGORY, _('Strategy')),
+    )
+
     name = models.CharField(_('Game name'), max_length=64)
     slug = models.SlugField(_('Game URL slug'),
                             help_text=_('Part of the game page address on LevelUp, cannot be changed later'),
@@ -30,6 +49,8 @@ class Game(models.Model):
     is_public = models.BooleanField(default=True)
     is_published = models.BooleanField(default=True)
     date_added = models.DateTimeField(default=timezone.now, blank=True)
+
+    category = models.CharField(max_length=31, choices=CATEGORIES, null=False, blank=False)
 
     """
     Override default manager so that the default queryset include two extra attributes:

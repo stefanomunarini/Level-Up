@@ -1,4 +1,4 @@
-from django.forms import modelformset_factory, Form, ModelForm, HiddenInput, CharField
+from django.forms import modelformset_factory, Form, ModelForm, HiddenInput, CharField, ChoiceField, Select
 from django.utils.translation import ugettext_lazy as _
 
 from games.models import GameScreenshot, Game
@@ -32,4 +32,9 @@ class GameUpdateModelForm(ModelForm):
 
 
 class GameSearchForm(Form):
+    ACCEPTED_CATEGORIES = list(Game.CATEGORIES)
+    ACCEPTED_CATEGORIES.insert(0, (None, '-------'))
+    ACCEPTED_CATEGORIES = tuple(ACCEPTED_CATEGORIES)
+
     q = CharField(label=_('Search'), max_length=200)
+    category = ChoiceField(label=_('Category'), choices=ACCEPTED_CATEGORIES, widget=Select, required=False)
