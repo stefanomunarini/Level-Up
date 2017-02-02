@@ -80,6 +80,7 @@ TEMPLATES = [
         'DIRS': [
             'levelup/templates',
             'users/templates',
+            'transactions/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {

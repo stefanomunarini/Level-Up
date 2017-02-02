@@ -124,7 +124,7 @@
     "pk": 3311,
     "fields": {
         "user": 3311,
-        "display_name": "Player with password 'a'",
+        "display_name": "Player",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": null,
@@ -137,7 +137,7 @@
     "pk": 3312,
     "fields": {
         "user": 3312,
-        "display_name": "Player with password 's'",
+        "display_name": "Player",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": null,
@@ -150,7 +150,7 @@
     "pk": 3313,
     "fields": {
         "user": 3313,
-        "display_name": "Player with password 'd'",
+        "display_name": "Player",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": null,
@@ -163,7 +163,7 @@
     "pk": 3314,
     "fields": {
         "user": 3314,
-        "display_name": "Dev with password 'q'",
+        "display_name": "Developer",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": "dq",
@@ -176,7 +176,7 @@
     "pk": 3315,
     "fields": {
         "user": 3315,
-        "display_name": "Dev with password 'w'",
+        "display_name": "Developer",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": "dw",
@@ -189,7 +189,7 @@
     "pk": 3316,
     "fields": {
         "user": 3316,
-        "display_name": "Dev with password 'e'",
+        "display_name": "Developer",
         "deactivated_until": null,
         "third_party_login": null,
         "url_slug": "de",

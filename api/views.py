@@ -2,11 +2,10 @@ from django.http import Http404
 from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
-from django.views.generic import DetailView
+from django.views.generic.detail import SingleObjectMixin
 
 from api import services
 from api.forms import ApiBaseForm
-from api.models import ApiToken
 from games.models import Game
 
 
@@ -18,13 +17,13 @@ class ApiBaseView(View):
         'Unauthorized! The token you are trying to use is invalid. Format should be: Bearer <TOKEN>')
 
     def dispatch(self, request, *args, **kwargs):
-        # the parameter is only 'TOKEN' but it is automatically attached with 'HTTP_', hence 'HTTP_TOKEN'
+        # the parameter is only 'TOKEN' but it is automatically attached with the prefix 'HTTP_', hence 'HTTP_TOKEN'
         token = request.META.get('HTTP_TOKEN')
         if not token or not len(token.split(' ')) == 2 or 'Bearer' not in token:
             return JsonResponse(data={'error': self.INVALID_TOKEN_MESSAGE}, status=401)
         self.form = self.form_class({
-            'token': token.split(' ')[1],
-            'website_url': request.META.get('HTTP_REFERER', '')
+            'token': token.split(' ')[1],  # remove Bearer and get only the token
+            'website_url': request.META.get('HTTP_REFERER', '')  # client address
         })
         if self.form.is_valid():
             self.api_token_obj = self.form.instance
@@ -33,7 +32,8 @@ class ApiBaseView(View):
             return self.request_invalid()
 
     def request_valid(self):
-        raise NotImplementedError('You must implement this function, which is responsible for returning the response.')
+        raise NotImplementedError(
+            'You must implement this function, which is responsible for returning the JSON response of this endpoint.')
 
     def request_invalid(self, errors=None):
         if not errors:
@@ -45,7 +45,9 @@ class ApiBaseView(View):
 class ApiDevelopedGamesView(ApiBaseView):
     def request_valid(self):
         response = {
-            'games': services.get_developed_games(self.api_token_obj)
+            'data': {
+                'games': services.get_developed_games(self.api_token_obj)
+            }
         }
         return JsonResponse(data=response, status=200)
 
@@ -53,18 +55,20 @@ class ApiDevelopedGamesView(ApiBaseView):
 class ApiSaleStatsView(ApiBaseView):
     def request_valid(self):
         response = {
-            'stats': services.get_sale_stats(self.api_token_obj.developer)
+            'data': {
+                'stats': services.get_sale_stats(self.api_token_obj.developer)
+            }
         }
         return JsonResponse(data=response, status=200)
 
 
-class ApiGameStatsView(ApiBaseView, DetailView):
+class ApiGameStatsView(SingleObjectMixin, ApiBaseView):
     model = Game
 
     def dispatch(self, request, *args, **kwargs):
         """
-        Override the dispatcher so we can return a JSON message error if no game
-        is found with the requested <slug>
+        Return a JSON message error instead of a 404 HTML response
+        if no game is found with the requested <slug>
         """
         try:
             dispatcher = super(ApiGameStatsView, self).dispatch(request, *args, **kwargs)
@@ -75,6 +79,8 @@ class ApiGameStatsView(ApiBaseView, DetailView):
 
     def request_valid(self):
         response = {
-            'game': self.get_object().name
+            'data': {
+                'game': services.get_game_stats(self.get_object())
+            }
         }
         return JsonResponse(data=response, status=200)

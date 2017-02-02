@@ -23,7 +23,7 @@
                     {% if user.profile.is_developer and not game.is_published %}
                         <small><strike>{{ game.name }}</strike> <b><small>UNPUBLISHED</small></b></small>
                     {% else %}
-                        <small>{{ game.name }}</small>
+                        <small>{{ game.name }}</small> <span class="secondary label">{{ game.category }}</span>
                     {% endif %}
                 </a></h2>
             </div>
@@ -33,8 +33,6 @@
                 {% include '_game_actions.html' with game=game developed_games=developed_games bought_games=bought_games %}
             </div>
         </div>
-
-        <p>{% trans 'Downloads' %}: {{ game.downloads }}, {% trans 'Played' %}: {{ game.plays }}</p>
     </li>
     {% endfor %}
 </ul>

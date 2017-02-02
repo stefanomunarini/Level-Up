@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+    <body>
+        <h3>Congratulations {{ username }}!</h3>
+        <br>
+        <p>You have just bought {{ game.name }}!</p>
+        <p>Start playing now!</p>
+        <br>
+        <a href="{{ url }}{% url 'game:play' game.slug %}" class="button radius tiny success split">Play<span data-dropdown="social-drop-{{ game.slug }}"></span></a>
+        <br>
+        <p>We hope to see you soon on our platform.</p>
+        <p>The LevelUp team</p>
+    </body>
+</html>

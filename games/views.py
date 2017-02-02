@@ -4,28 +4,28 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
-from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from django.views.generic import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin
 
 from games import services
 from games.forms import GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
-from games.models import Game, GameState, GameScore
+from games.models import Game, GameState, GameScore, GameScreenshot
 from games.utils import GameOwnershipRequiredMixin
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.forms import TransactionForm
 from transactions.models import Transaction
 
 
-class GameListView(ListView, FormView):
+class GameListView(FormMixin, ListView):
     """
     A view that is used whenever a list of games needs to be shown
     Games to be displayed are controlled by passing attribute values in the url dispatcher
@@ -47,6 +47,7 @@ class GameListView(ListView, FormView):
     def get_initial(self):
         initial = super(GameListView, self).get_initial()
         initial['q'] = self.request.GET.get('q')
+        initial['category'] = self.request.GET.get('category')
         return initial
 
     def get_queryset(self):
@@ -58,6 +59,8 @@ class GameListView(ListView, FormView):
             queryset = self.request.user.profile.get_developed_games()
 
         search = self.request.GET.get('q')
+        category = self.request.GET.get('category')
+
         vector = SearchVector('name', 'description')
         query = None
 
@@ -68,6 +71,9 @@ class GameListView(ListView, FormView):
                 else:
                     query = query | SearchQuery(word)
             queryset = queryset.annotate(rank=SearchRank(vector, query)).order_by('-rank').filter(rank__gt=0)
+
+        if category:
+            queryset = queryset.filter(category=category)
 
         return queryset.filter(is_published=True)
 
@@ -120,6 +126,7 @@ class GameBuyView(FormMixin, DetailView):
 class GameDetailView(DetailView):
     model = Game
     context_object_name = 'game'
+    results_to_show = 10
     template_name = 'game_detail.html'
 
     def get_context_data(self, **kwargs):
@@ -128,6 +135,8 @@ class GameDetailView(DetailView):
             user_profile = self.request.user.profile
             if user_profile.is_developer and user_profile == self.get_object().dev:
                 context['game_stats'] = services.get_game_stats(self.get_object())
+            context['global_scores'] = services.get_game_global_scores(self.object,
+                                                                       results_to_show=self.results_to_show)
         return context
 
 
@@ -142,8 +151,7 @@ class GamePlayView(GameOwnershipRequiredMixin, GameDetailView):
         context['my_scores'] = GameScore.objects.filter(game=self.object,
                                                         player=self.request.user.profile)\
                                         .order_by('-score', '-start_time')[:self.results_to_show]
-        context['global_scores'] = GameScore.objects.filter(game=self.object)\
-                                            .order_by('-score', '-start_time')[:self.results_to_show]
+        context['global_scores'] = services.get_game_global_scores(self.object, results_to_show=self.results_to_show)
         return context
 
 
@@ -210,22 +218,18 @@ DEVELOPERS VIEWS
 """
 
 
-class GameCreateView(CreateView):
-    fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
-    model = Game
-    template_name = 'game_create.html'
-    success_url = reverse_lazy('profile:user-profile')
+class GameCreateUpdateMixin(object):
+    """
+    This mixin provides shared functionality for creating and updating a game. In particular, it checks that the user
+    is authenticated and has a 'Developer' profile.
+    Moreover, provide functionality to save/update screenshot when
+    """
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated and not request.user.profile.is_developer:
-            return HttpResponseForbidden()
-        return super(GameCreateView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(GameCreateView, self).get_context_data(**kwargs)
-        context['game_screenshot_forms'] = GameScreenshotModelFormSet()
-        return context
+            raise PermissionDenied
+        return super(GameCreateUpdateMixin, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         game = form.instance
@@ -238,14 +242,39 @@ class GameCreateView(CreateView):
             game_screenshot_instance.game = game
             game_screenshot_instance.save()
 
-        return super(GameCreateView, self).form_valid(form)
+        return super(GameCreateUpdateMixin, self).form_valid(form)
+
+    def get_screenshot_formset(self, game_filter=None):
+        formset = GameScreenshotModelFormSet()
+        if game_filter:
+            formset.queryset = GameScreenshot.objects.filter(game=game_filter)
+        else:
+            formset.queryset = GameScreenshot.objects.none()
+        return formset
 
 
-class GameUpdateView(LoginRequiredMixin, UpdateView):
+class GameCreateView(GameCreateUpdateMixin, CreateView):
+    fields = ('name', 'slug', 'url', 'icon', 'description', 'price', 'category')
+    model = Game
+    template_name = 'game_create.html'
+    success_url = reverse_lazy('profile:user-profile')
+
+    def get_context_data(self, **kwargs):
+        context = super(GameCreateView, self).get_context_data(**kwargs)
+        context['game_screenshot_forms'] = self.get_screenshot_formset()
+        return context
+
+
+class GameUpdateView(GameCreateUpdateMixin, UpdateView):
     model = Game
     context_object_name = 'game'
     form_class = GameUpdateModelForm
     template_name = 'game_update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(GameUpdateView, self).get_context_data(**kwargs)
+        context['game_screenshot_forms'] = self.get_screenshot_formset(self.get_object())
+        return context
 
     def get_object(self, queryset=None):
         self.object = super(GameUpdateView, self).get_object(queryset)
@@ -265,7 +294,7 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
     def get_object(self, queryset=None):
         obj = super(GameDeleteView, self).get_object(queryset=queryset)
         if not obj.dev == self.request.user.profile:
-            return HttpResponseForbidden()
+            raise PermissionDenied
         return obj
 
     def delete(self, request, *args, **kwargs):

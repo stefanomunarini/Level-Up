@@ -2,16 +2,12 @@ import json
 import uuid
 from datetime import datetime, timedelta
 
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
-
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from django.views.generic import FormView, TemplateView, UpdateView
 from django.views.generic import RedirectView
 from django.views.generic.detail import SingleObjectMixin
