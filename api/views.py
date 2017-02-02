@@ -75,6 +75,6 @@ class ApiGameStatsView(ApiBaseView, DetailView):
 
     def request_valid(self):
         response = {
-            'game': self.get_object().name
+            'game': services.get_game_stats(self.get_object())
         }
         return JsonResponse(data=response, status=200)

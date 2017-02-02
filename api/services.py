@@ -39,3 +39,20 @@ def get_sale_stats(developer):
         ]
     }
     return stats
+
+
+def get_game_stats(game):
+    dev = game.dev
+    stats = {
+        'name': game.name,
+        'slug': game.slug,
+        'price': game.price,
+        'developer': {
+            'name': dev.display_name,
+            'url_slug': dev.url_slug,
+            'website': dev.website
+        },
+        'downloads': game.downloads,
+        'played': game.plays
+    }
+    return stats
