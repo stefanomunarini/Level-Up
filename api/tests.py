@@ -3,8 +3,6 @@ import uuid
 from django.contrib.auth.models import User, Group
 from django.test import Client
 from django.test import TestCase
-
-# Create your tests here.
 from django.urls import reverse_lazy
 
 from api import services
