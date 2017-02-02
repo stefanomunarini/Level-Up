@@ -126,6 +126,7 @@ class GameBuyView(FormMixin, DetailView):
 class GameDetailView(DetailView):
     model = Game
     context_object_name = 'game'
+    results_to_show = 10
     template_name = 'game_detail.html'
 
     def get_context_data(self, **kwargs):
@@ -134,6 +135,8 @@ class GameDetailView(DetailView):
             user_profile = self.request.user.profile
             if user_profile.is_developer and user_profile == self.get_object().dev:
                 context['game_stats'] = services.get_game_stats(self.get_object())
+            context['global_scores'] = services.get_game_global_scores(self.object,
+                                                                       results_to_show=self.results_to_show)
         return context
 
 
@@ -148,8 +151,7 @@ class GamePlayView(GameOwnershipRequiredMixin, GameDetailView):
         context['my_scores'] = GameScore.objects.filter(game=self.object,
                                                         player=self.request.user.profile)\
                                         .order_by('-score', '-start_time')[:self.results_to_show]
-        context['global_scores'] = GameScore.objects.filter(game=self.object)\
-                                            .order_by('-score', '-start_time')[:self.results_to_show]
+        context['global_scores'] = services.get_game_global_scores(self.object, results_to_show=self.results_to_show)
         return context
 
 
