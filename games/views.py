@@ -4,14 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
-from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from django.views.generic import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin
@@ -228,7 +228,7 @@ class GameCreateUpdateMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated and not request.user.profile.is_developer:
-            return HttpResponseForbidden()
+            raise PermissionDenied
         return super(GameCreateUpdateMixin, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -294,7 +294,7 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
     def get_object(self, queryset=None):
         obj = super(GameDeleteView, self).get_object(queryset=queryset)
         if not obj.dev == self.request.user.profile:
-            return HttpResponseForbidden()
+            raise PermissionDenied
         return obj
 
     def delete(self, request, *args, **kwargs):
