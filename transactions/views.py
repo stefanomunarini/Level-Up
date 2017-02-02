@@ -1,17 +1,20 @@
 from _md5 import md5
 
 from django.core.exceptions import PermissionDenied
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import RedirectView
 
 from games.models import Game
-from levelup.settings import PAYMENT_SERVICE_SECRET_KEY
+from levelup.settings import PAYMENT_SERVICE_SECRET_KEY, HEROKU_HOST
 from transactions.models import Transaction
+from users.services import send_email
 
 
 class PaymentResultRedirectView(RedirectView):
-
     def dispatch(self, request, *args, **kwargs):
         pid = self.request.GET.get('pid')
         payment_ref = self.request.GET.get('ref')
@@ -39,3 +42,12 @@ class PaymentResultRedirectView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         return reverse_lazy('game:detail', kwargs={'slug': self.request.GET.get('pid')})
+
+
+@receiver(post_save, sender=Transaction, dispatch_uid="new_transaction")
+def send_email_after_transaction(sender, instance, **kwargs):
+    subject = _('Congratulations, you have bought {}!'.format(instance.game.name))
+    send_email(subject, 'game_bought_email.html', [instance.user.user.email],
+               context={'username': instance.user.user.username,
+                        'game': instance.game,
+                        'url': 'https://' + HEROKU_HOST})
