@@ -33,8 +33,6 @@
                 {% include '_game_actions.html' with game=game developed_games=developed_games bought_games=bought_games %}
             </div>
         </div>
-
-        <p>{% trans 'Downloads' %}: {{ game.downloads }}, {% trans 'Played' %}: {{ game.plays }}</p>
     </li>
     {% endfor %}
 </ul>

@@ -1,5 +1,4 @@
 from django.forms import modelformset_factory, Form, ModelForm, HiddenInput, CharField
-
 from django.utils.translation import ugettext_lazy as _
 
 from games.models import GameScreenshot, Game
@@ -23,7 +22,6 @@ GameScreenshotModelFormSet = modelformset_factory(
     extra=3,
     min_num=0,
     max_num=3
-
 )
 
 
@@ -34,4 +32,4 @@ class GameUpdateModelForm(ModelForm):
 
 
 class GameSearchForm(Form):
-    q = CharField(label=_('Search'),max_length=200)
+    q = CharField(label=_('Search'), max_length=200)

@@ -18,7 +18,7 @@ from django.views.generic.edit import FormMixin
 
 from games import services
 from games.forms import GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
-from games.models import Game, GameState, GameScore
+from games.models import Game, GameState, GameScore, GameScreenshot
 from games.utils import GameOwnershipRequiredMixin
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.forms import TransactionForm
@@ -210,22 +210,18 @@ DEVELOPERS VIEWS
 """
 
 
-class GameCreateView(CreateView):
-    fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
-    model = Game
-    template_name = 'game_create.html'
-    success_url = reverse_lazy('profile:user-profile')
+class GameCreateUpdateMixin(object):
+    """
+    This mixin provides shared functionality for creating and updating a game. In particular, it checks that the user
+    is authenticated and has a 'Developer' profile.
+    Moreover, provide functionality to save/update screenshot when saving/updating a Game instance.
+    """
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated and not request.user.profile.is_developer:
             return HttpResponseForbidden()
-        return super(GameCreateView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(GameCreateView, self).get_context_data(**kwargs)
-        context['game_screenshot_forms'] = GameScreenshotModelFormSet()
-        return context
+        return super(GameCreateUpdateMixin, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         game = form.instance
@@ -238,14 +234,39 @@ class GameCreateView(CreateView):
             game_screenshot_instance.game = game
             game_screenshot_instance.save()
 
-        return super(GameCreateView, self).form_valid(form)
+        return super(GameCreateUpdateMixin, self).form_valid(form)
+
+    def get_screenshot_formset(self, game_filter=None):
+        formset = GameScreenshotModelFormSet()
+        if game_filter:
+            formset.queryset = GameScreenshot.objects.filter(game=game_filter)
+        else:
+            formset.queryset = GameScreenshot.objects.none()
+        return formset
 
 
-class GameUpdateView(LoginRequiredMixin, UpdateView):
+class GameCreateView(GameCreateUpdateMixin, CreateView):
+    fields = ('name', 'slug', 'url', 'icon', 'description', 'price')
+    model = Game
+    template_name = 'game_create.html'
+    success_url = reverse_lazy('profile:user-profile')
+
+    def get_context_data(self, **kwargs):
+        context = super(GameCreateView, self).get_context_data(**kwargs)
+        context['game_screenshot_forms'] = self.get_screenshot_formset()
+        return context
+
+
+class GameUpdateView(GameCreateUpdateMixin, UpdateView):
     model = Game
     context_object_name = 'game'
     form_class = GameUpdateModelForm
     template_name = 'game_update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(GameUpdateView, self).get_context_data(**kwargs)
+        context['game_screenshot_forms'] = self.get_screenshot_formset(self.get_object())
+        return context
 
     def get_object(self, queryset=None):
         self.object = super(GameUpdateView, self).get_object(queryset)
