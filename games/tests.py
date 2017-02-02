@@ -1,5 +1,4 @@
 # Create your tests here.
-from django.contrib.auth import authenticate
 from django.contrib.auth.models import User, Group
 from django.test import Client
 from django.test import TestCase
