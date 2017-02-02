@@ -22,7 +22,8 @@
             </div>
         </div>
         <form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
-            {% include "_input_grid.html" %}
+            {# include "_input_grid.html" #}
+            {{ form }}
             <div class="row">
                 <div class="small-6 columns">
                     <a class="button float-right" href="{% url 'game:detail' game.slug %}">{% trans "Cancel" %}</a>

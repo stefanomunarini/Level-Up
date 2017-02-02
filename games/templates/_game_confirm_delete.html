@@ -1,0 +1,12 @@
+{% load i18n %}
+
+<form action="{% url "game:delete" game.slug %}" method="post">
+    {% csrf_token %}
+    {% if game.is_published %}
+        <p>{% blocktrans %}Are you sure you want to remove {{ game }} from the store?{% endblocktrans %}</p>
+        <input type="submit" value="{% blocktrans %}Remove {{ game }}{% endblocktrans %}" />
+    {% else %}
+        <p>{% blocktrans %}Are you sure you want to publish {{ game }}?{% endblocktrans %}</p>
+        <input type="submit" value="{% blocktrans %}Publish {{ game }}{% endblocktrans %}" />
+    {% endif %}
+</form>

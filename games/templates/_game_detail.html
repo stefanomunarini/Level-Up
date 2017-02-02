@@ -1,0 +1,66 @@
+{% load i18n cloudinary %}
+<div itemscope itemtype="http://schema.org/Game">
+    <div class="row text-center">
+        <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="fit" %}" width="128" height="128"></p>
+        <h3 itemprop="name">{{ game.name }}</h3>
+        <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><a itemprop="name" href="{% url 'game:developer-page' game.dev.url_slug %}">{{ game.dev }}</a></p>
+        <p>
+            {% if game in bought_games %}
+                <a href="{% url 'game:play' game.slug %}" class="button radius tiny split">
+                    {% trans "Play" %}<span data-dropdown="social-drop-{{ game.slug }}">
+                </span></a>
+            {% else %}
+                <div id="reveal-buy-{{ game.slug }}" class="reveal-modal" data-reveal aria-labelledby="modal-title-buy-{{ game.slug }}" aria-hidden="true" role="dialog">
+                    <h2 id="modal-title-buy-{{ game.slug }}">{% blocktrans with name=game.name %}Buy {{ name }}{% endblocktrans %}</h2>
+                    <p>{% trans "The payment will be processed by Simple Payments&trade;." %}</p>
+                    {% include "_game_confirm_buy.html" %}
+                    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                </div>
+                <a href="#" data-reveal-id="reveal-buy-{{ game.slug }}" class="button radius tiny split success">
+                    {% if game.price == 0 %}
+                        {% trans "Free" %}
+                    {% else %}
+                        {% trans "Buy" %}: {{ game.price }} &euro;
+                    {% endif %}
+                    <span data-dropdown="social-drop-{{ game.slug }}"></span>
+                </a>
+            {% endif %}
+            {% if game.dev == user.profile %}
+                <a href="{% url 'game:update' game.slug %}" class="button radius tiny secondary split">
+                    {% trans "Edit" %}
+                    <span data-dropdown="dev-drop-{{ game.slug }}"></span>
+                </a>
+                <br>
+                <ul id="dev-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
+                    <li><a href="{% url 'game:delete' game.pk %}">
+                        {% if game.is_published %}
+                            {% trans "Remove from store" %}
+                        {% else %}
+                            {% trans 'Publish' %}
+                        {% endif %}
+                    </a></li>
+                </ul>
+            {% endif %}
+            <ul id="social-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
+                <li><a href="#">{% trans "Share on Facebook or something!" %}</a></li>
+            </ul>
+        </p>
+    </div>
+
+    <div class="small-6 large-6 columns">
+        <img itemprop="image" src="{% cloudinary_url game.icon format="jpg" width=250 height=250 crop="fill" %}" width="250" height="250">
+    </div>
+    <div class="small-6 large-6 columns">
+        {% if game.screenshots.all %}
+            <span>Screenshots:</span>
+        {% endif %}
+        <ul data-orbit>
+            {% for screenshot in game.screenshots.all %}
+                <li data-orbit-slide="headline-1">
+                    {% cloudinary screenshot.image format="jpg" width=250 height=250 crop="fill" %}
+                    <div class="orbit-caption">Screenshot {{ forloop.counter }}</div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

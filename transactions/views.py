@@ -31,13 +31,7 @@ class PaymentResultRedirectView(RedirectView):
             raise PermissionDenied
 
         game = get_object_or_404(Game, slug=pid)
-        transaction = Transaction()
-        transaction.game = game
-        transaction.user = self.request.user.profile
-        transaction.status = result
-        transaction.payment_ref = payment_ref
-        transaction.amount = game.price
-        transaction.save()
+        save_transaction(game, request.user, result, payment_ref)
 
         if result != 'success':
             messages.error(request, 'There was a problem processing the payment. Please try again later!')
@@ -55,3 +49,12 @@ def send_email_after_transaction(sender, instance, **kwargs):
                context={'username': instance.user.user.username,
                         'game': instance.game,
                         'url': 'https://' + HEROKU_HOST})
+
+def save_transaction(game, user, status, payment_ref=None):
+    transaction = Transaction()
+    transaction.game = game
+    transaction.user = user.profile
+    transaction.status = status
+    transaction.payment_ref = payment_ref
+    transaction.amount = game.price
+    transaction.save()

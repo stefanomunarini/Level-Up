@@ -11,6 +11,8 @@
 {% endblock meta %}
 
 {% block main %}
+    {% include "_game_detail.html" with bought_games=request.user.profile.get_bought_games %}
+    <!--
     <div itemscope itemtype="http://schema.org/Game">
         {% with request.user.profile.get_bought_games as bought_games %}
             <div class="row">
@@ -64,4 +66,5 @@
             </div>
         {%  endwith %}
     </div>
+    -->
 {% endblock main %}

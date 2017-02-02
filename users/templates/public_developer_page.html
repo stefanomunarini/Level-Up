@@ -1,0 +1,60 @@
+{% extends "__base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans 'My Profile' %} &ndash; {{ block.super }}{% endblock title %}
+
+
+{% block main %}
+    {% include '_user_profile_details.html' %}
+    {% if user.profile.is_developer %}
+        <div class="row">
+            <h3>My Games</h3>
+            <div class="small-12 columns">
+                <ul class="tabs" data-tab data-options="deep_linking:true">
+                    <li class="tab-title active"><a href="#stats">{% trans 'Statistics' %}</a></li>
+                    <li class="tab-title"><a href="#games">{% trans 'Games' %}</a></li>
+                </ul>
+                <div class="tabs-content">
+                    <div class="content active" id="stats">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <h2>
+                                    {% trans 'Statistics' %}
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <h3>{% trans "Sales and Profits" %}</h3>
+                                <div id="dev-statistics-chart" class="expanded" style="height: 50%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content" id="games">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <h2>
+                                    {% trans 'Games' %}
+                                    <small><a href="{% url 'game:add' %}">{% trans 'Add game' %}</a></small>
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-12 columns">
+                                {% include '_game_grid.html' %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock main %}
+{% if user_profile.is_developer %}
+    {% block body_js %}
+        {{ block.super }}
+        <script>
+            {% include "_chart.js" with elem="#dev-statistics-chart" chart=sales_and_profits_chart %}
+        </script>
+    {% endblock body_js %}
+{% endif %}

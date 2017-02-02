@@ -25,6 +25,7 @@ from games.utils import GameOwnershipRequiredMixin, GameSearchMixin
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.forms import TransactionForm
 from transactions.models import Transaction
+from transactions.views import save_transaction
 
 
 class GameListView(GameSearchMixin, FormMixin, ListView):
@@ -62,11 +63,15 @@ class GameBuyView(FormMixin, DetailView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         game = get_object_or_404(Game, slug=kwargs.get(self.slug_url_kwarg))
+        if game.price == 0:
+            save_transaction(game, request.user, Transaction.SUCCESS_STATUS)
+            return HttpResponseRedirect(
+                reverse_lazy('game:detail', kwargs=self.kwargs))
         if Transaction.objects.filter(user=self.request.user.profile,
                                       game=game,
                                       status=Transaction.SUCCESS_STATUS).exists():
             return HttpResponseRedirect(
-                reverse_lazy('game:detail', kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}))
+                reverse_lazy('game:detail', kwargs=self.kwargs))
         return super(GameBuyView, self).dispatch(request, *args, **kwargs)
 
     def get_initial(self):
