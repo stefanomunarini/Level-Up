@@ -45,7 +45,9 @@ class ApiBaseView(View):
 class ApiDevelopedGamesView(ApiBaseView):
     def request_valid(self):
         response = {
-            'games': services.get_developed_games(self.api_token_obj)
+            'data': {
+                'games': services.get_developed_games(self.api_token_obj)
+            }
         }
         return JsonResponse(data=response, status=200)
 
@@ -53,7 +55,9 @@ class ApiDevelopedGamesView(ApiBaseView):
 class ApiSaleStatsView(ApiBaseView):
     def request_valid(self):
         response = {
-            'stats': services.get_sale_stats(self.api_token_obj.developer)
+            'data': {
+                'stats': services.get_sale_stats(self.api_token_obj.developer)
+            }
         }
         return JsonResponse(data=response, status=200)
 
@@ -75,6 +79,8 @@ class ApiGameStatsView(ApiBaseView, DetailView):
 
     def request_valid(self):
         response = {
-            'game': services.get_game_stats(self.get_object())
+            'data': {
+                'game': services.get_game_stats(self.get_object())
+            }
         }
         return JsonResponse(data=response, status=200)
