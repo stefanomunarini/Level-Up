@@ -11,17 +11,27 @@
     <div>
         <h3>
             {{ user.profile.display_name }}
-            <small><a href="{% url 'profile:user-profile-update' %}">{% trans 'Update profile' %}</a></small>
         </h3>
-        <p>Email: {{ user.profile.user.email }}</p>
+        <p>{{ user.profile.user.email }}</p>
         <p>Last login: {{ user.profile.user.last_login }}</p>
+        <p>
+            <small>
+                <a href="{% url 'profile:user-profile-update' %}" class="button success">{% trans 'Update profile' %}</a>
+            </small>
+            <small>
+                <a id="game_new" href="{% url 'profile:create-api-key' %}" class="button">New API Key</a>
+            </small>
+        </p>
         {%  if request.user.profile.is_developer %}
+            {% if request.user.profile.api_tokens.all %}
+                <h4>API Keys</h4>
+            {% endif %}
             <ul>
             {% for api_token in request.user.profile.api_tokens.all %}
                 <li><b>{{ api_token.token }}</b> - {{ api_token.website_url }}</li>
             {% endfor %}
             </ul>
-            <a id="game_new" href="{% url 'profile:create-api-key' %}" class="button">New API Key</a>
+
         {% endif %}
     </div>
 {% endblock col-main %}
