@@ -1,0 +1,41 @@
+{% load i18n %}
+{% load socialaccount %}
+
+{% get_providers as socialaccount_providers %}
+<div class="social-login">
+    {% for provider in socialaccount_providers %}
+        {% if provider.id == "openid" %}
+            {% for brand in provider.get_brands %}
+                <a class="has-tip bottom socialaccount_provider {{provider.id}} {{brand.id}}"
+                   data-tooltip aria-haspopup="true"
+                   data-disable-hover="false" tabindex="2"
+                   title="{% trans "Log in with "%} {% trans brand.name %}"
+                   href="{% provider_login_url provider.id openid=brand.openid_url process=process %}"
+                >
+                    {% if brand.id == "yahoo" %}
+                        <i class="fa fa-yahoo" aria-hidden="true"></i>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        {% endif %}
+        <a class="has-tip bottom socialaccount_provider {{provider.id}}"
+           data-tooltip aria-haspopup="true"
+           data-disable-hover="false" tabindex="2"
+           title="{% trans "Log in with "%} {% trans provider.name %}"
+           href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+            {#            {{provider.id}}#}
+            {% if provider.id == "facebook" %}
+                <i class="fa fa-facebook-official" aria-hidden="true"></i>
+            {% endif %}
+            {% if provider.id == "twitter" %}
+                <i class="fa fa-twitter-square" aria-hidden="true"></i>
+            {% endif %}
+            {% if provider.id == "google" %}
+                <i class="fa fa-google" aria-hidden="true"></i>
+            {% endif %}
+            {% if provider.id == "openid" %}
+                <i class="fa fa-openid" aria-hidden="true"></i>
+            {% endif %}
+        </a>
+    {% endfor %}
+</div>

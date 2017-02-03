@@ -1,8 +1,9 @@
 {% load i18n %}
 
+{% include "_social_login.html" %}
 <form action="{%  url 'login' %}" method="post">
-{% csrf_token %}
-{% include "_input_grid.html" with submit_text=_('Log In') %}
+    {% csrf_token %}
+    {% include "_input_grid.html" with submit_text=_('Log In') %}
 </form>
 
 <p><a href="{% url 'password_reset' %}">{% trans 'Lost password?' %}</a></p>
