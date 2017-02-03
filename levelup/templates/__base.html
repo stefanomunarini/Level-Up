@@ -26,6 +26,9 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
             <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet"/>
         {% endblock fontawesome_css %}
         <link href="{% static "css/levelup.css" %}" rel="stylesheet"/>
+        {% block custom_css %}
+            <link href="{% static "/css/_social_login.css" %}" rel="stylesheet"/>
+        {% endblock custom_css %}
     {% endblock css %}
 
     {% block head_js %}
@@ -54,6 +57,8 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
         <main class="row"><div class="small-12 columns">
             {% block main %}
             {% endblock main %}
+            {% block content %}
+            {% endblock %}
         </div></main>
         <footer class="row">
             {% block footer %}

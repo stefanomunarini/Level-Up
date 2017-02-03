@@ -1,0 +1,12 @@
+.social-login {
+    text-align: center;
+}
+.social-login .socialaccount_provider {
+    font-size: 25px;
+    color: #008CBA;
+}
+
+/*signup*/
+#signup_form #id_group {
+    list-style-type: none;
+}
