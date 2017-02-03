@@ -1,11 +1,8 @@
 {% extends "__base.html" %}
 {% load i18n %}
-{% load socialaccount %}
 
 {% block main %}
     <h1>{% trans 'Welcome!' %}</h1>
-
-    <a class="button" href="{% provider_login_url "facebook" %}">{% trans "Facebook" %}</a>
 
     {% if most_played %}
         <h3>{% trans 'Most Played' %}</h3>

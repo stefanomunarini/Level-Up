@@ -103,3 +103,4 @@ db.sqlite3
 # sass cache
 .sass-cache
 .sass-cache/*
+levelup/staticfiles
