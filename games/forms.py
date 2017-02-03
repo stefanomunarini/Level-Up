@@ -36,5 +36,5 @@ class GameSearchForm(Form):
     ACCEPTED_CATEGORIES.insert(0, (None, '-------'))
     ACCEPTED_CATEGORIES = tuple(ACCEPTED_CATEGORIES)
 
-    q = CharField(label=_('Search'), max_length=200)
+    q = CharField(label=_('Search'), max_length=200, required=False)
     category = ChoiceField(label=_('Category'), choices=ACCEPTED_CATEGORIES, widget=Select, required=False)

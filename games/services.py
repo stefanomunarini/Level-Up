@@ -12,4 +12,4 @@ def get_game_stats(game):
 
 def get_game_global_scores(game, results_to_show=10):
     return GameScore.objects.filter(game=game) \
-        .order_by('-score', '-start_time')[:results_to_show]
+        .order_by('-score', '-timestamp')[:results_to_show]

@@ -150,7 +150,7 @@ class GamePlayView(GameOwnershipRequiredMixin, GameDetailView):
                                                          user=self.request.user.profile).last()
         context['my_scores'] = GameScore.objects.filter(game=self.object,
                                                         player=self.request.user.profile)\
-                                        .order_by('-score', '-start_time')[:self.results_to_show]
+                                        .order_by('-score', '-timestamp')[:self.results_to_show]
         context['global_scores'] = services.get_game_global_scores(self.object, results_to_show=self.results_to_show)
         return context
 
