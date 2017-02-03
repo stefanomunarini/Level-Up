@@ -1,5 +1,23 @@
-<ol>
+{% if scores %}
+<table>
+<caption>{{ title }}</caption>
+    <thead>
+        <tr>
+            <th>Player</th>
+            <th>Scores</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
     {% for score in scores %}
-        <li>{% if score.player == request.user.profile %}<b>{% endif %}{{ score.player }}{% if score.player == request.user.profile %}</b>{% endif %} {{ score.score }}</li>
+        <tr>
+            <th {% if score.player == request.user.profile %}style="color: #3a945b"{% endif %}>
+                {{ score.player }}
+            </th>
+            <th>{{ score.score }}</th>
+            <th>{{ score.timestamp }}</th>
+        </tr>
     {% endfor %}
-</ol>
+    </tbody>
+</table>
+{% endif %}

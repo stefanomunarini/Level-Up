@@ -71,8 +71,7 @@ class GameScreenshot(models.Model):
 class GameScore(models.Model):
     player = models.ForeignKey('users.UserProfile', related_name='scores')
     game = models.ForeignKey(Game, related_name='scores')
-    start_time = models.DateTimeField(default=timezone.now, blank=True)
-    end_time = models.DateTimeField(null=True, blank=True)
+    timestamp = models.DateTimeField(default=timezone.now, blank=True)
     score = models.IntegerField(null=True, blank=True)
 
 

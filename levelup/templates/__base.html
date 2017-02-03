@@ -28,6 +28,7 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
         {% block custom_css %}
             <link href="{% static "/css/_social_login.css" %}" rel="stylesheet"/>
         {% endblock custom_css %}
+        <link href="{% static "css/levelup.css" %}" rel="stylesheet"/>
     {% endblock css %}
 
     {% block head_js %}
@@ -66,7 +67,7 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
         </footer>
     {% endblock body %}
 
-    {% block body_js %} 
+    {% block body_js %}
         {% block foundation_jquery %}
             <script src="{% static "foundation/js/vendor/jquery.js" %}"></script>
         {% endblock foundation_jquery %}

@@ -11,7 +11,7 @@
 
 {% block main %}
 
-    <h3>{{ game.name|title }}</h3>
+    <h3><a href="{% url 'game:detail' game.slug %}">{{ game.name|title }}</a></h3>
 
     <div id="game_play">
         <iframe id="game_frame" src="https://grader-host.cs.hut.fi/static/wsd/example_game.html" {% if game_state.state %}style="filter: blur(5px)"{% endif %}></iframe>
@@ -22,13 +22,11 @@
     </div>
 
     <div class="row" id="scores">
-        <div class="small-6 large-6 columns" id="my_scores">
-            <h4>Your Scores:</h4>
-            {% include '_results_list.html' with scores=my_scores %}
+        <div class="small-12 large-6 columns" id="my_scores">
+            {% include '_results_list.html' with scores=my_scores title=_('Your Scores') %}
         </div>
-        <div class="small-6 large-6 columns">
-            <h4>Global Scores:</h4>
-            {% include '_results_list.html' with scores=global_scores %}
+        <div class="small-12 large-6 columns">
+            {% include '_results_list.html' with scores=global_scores title=_('Global Scores')%}
         </div>
     </div>
 
