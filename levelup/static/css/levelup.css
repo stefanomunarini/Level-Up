@@ -1,10 +1,15 @@
-footer.row {
+main {
+    min-height: 580px;
+}
+footer {
     text-align: center;
-    color: white;
-    background: #333333;
+    background: #074e68;
     padding-top: 15px;
 }
 
+footer h4, footer p {
+    color: #ddd;
+}
 .tbody.tr {
     font-style: normal;
 }
