@@ -34,3 +34,12 @@ environment variable which tell Django to use a different configuration.
 Finally, start the server:
 
 `python manage.py runserver`
+
+Third party authentication configuration:
+- Create a site with the domain name (CHANGE the default site "example.com" to this):
+    + '127.0.0.1:8000' in development
+    + 'level-up-eu.herokuapp.com' in production
+- Add 'social applications' (these cliendIDs and secrets are for local only, production will be configured later):
+    + FB: clientID: 1002345393243744 - secret: 33b4bc0f78ed644dd08dfd96ea671e7a
+    + Google: cliendID: 245364129880-53uqutp3uiu8qbfpjt9inroou30r0p2n.apps.googleusercontent.com - secret: O-MSYOS2w7aOvDDZEVsVIwNP
+    + Twitter: cliendID: yLAEnc4I4hPtlUsn0RXo5cU9k - secret: MsBLDGfxlau1O0AJmewYhxdDSluuOdi0C9srmwpzppTmw4K6pd
