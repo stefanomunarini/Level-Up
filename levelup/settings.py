@@ -48,6 +48,12 @@ INSTALLED_APPS = [
     'games',
     'transactions',
     'api',
+    # 3rd party authentication
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +74,11 @@ ROOT_URLCONF = 'levelup.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['levelup/templates', 'users/templates', 'transactions/templates'],
+        'DIRS': [
+            'levelup/templates',
+            'users/templates',
+            'transactions/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -209,3 +219,17 @@ EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 REGISTRATION_EMAIL_SUBJECT = 'Welcome to LevelUp'
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1  # id of the site, if there is no site with id=1, django will raise an error about 'Site matching query'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_AUTO_SIGNUP = False
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupSocialForm'

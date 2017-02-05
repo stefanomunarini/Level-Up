@@ -27,6 +27,7 @@ from .views import HomepageView
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^profile/', include(users_url, namespace='profile')),
+    url(r'^profile/', include('allauth.urls')),
     url(r'^games/', include(games_url, namespace='game')),
     url(r'^transactions/', include(transactions_url, namespace='transactions')),
     url(r'^$', HomepageView.as_view(), name='home'),
