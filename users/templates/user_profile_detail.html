@@ -43,13 +43,13 @@
                 </div>
             </div>
         </div>
-    {% endif %}
-{% endblock main %}
-{% if user_profile.is_developer %}
+    <div class="row">
     {% block body_js %}
         {{ block.super }}
         <script>
             {% include "_chart.js" with elem="#dev-statistics-chart" chart=sales_and_profits_chart %}
         </script>
     {% endblock body_js %}
-{% endif %}
+    </div>
+    {% endif %}
+{% endblock main %}
