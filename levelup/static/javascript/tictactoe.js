@@ -29,21 +29,29 @@ $(document).ready( function () {
             if ($(this).text().length == 0) {
                 if (counter % 2 == 0) {
                     $(this).text('X');
-                } else {
-                    $(this).text('O');
+                    counter++;
                 }
                 board_dict[this.id] = $(this).text();
                 var winner = check_board();
-                if (winner == 'X') {
+                if (!winner && counter < 9){
+                    make_ai_move();
+                    counter++;
+                    var winner = check_board();
+                } else if (winner == 'X') {
                     stop_timer();
                     send_score(calculate_final_score());
                     enabled = false;
+                    $('#winner').text('You won the game!');
+                } else if (winner == 'O') {
+                    stop_timer();
+                    enabled = false;
+                    $('#winner').text('You lost the game!');
+                } else if (counter == 9){
+                    $('#winner').text('It\'s a tie!');
                 }
-                counter++;
             }
         }
     });
-
 });
 
 var counter = 0, // counts the number of clicks in the grid (used to alternate Xs and Os)
@@ -60,6 +68,114 @@ function init_board(board){
         $(this).text(board[this.id]);
         board_dict[this.id] = board[this.id];
     });
+}
+
+function make_ai_move(){
+
+    if (counter == 8){
+        return;
+    }
+
+    var next_move = calculate_next_move();
+
+    if (next_move.win){
+        $('.wrapper').find('span#' + next_move.win).text('O');
+        board_dict[next_move.win] = 'O';
+    } else if (next_move.stop_oppo){
+        $('.wrapper').find('span#' + next_move.stop_oppo).text('O');
+        board_dict[next_move.stop_oppo] = 'O';
+    } else {
+        var random_cell = Math.floor(Math.random() * (8 + 1));
+        var cell_id = int_to_string_value(random_cell);
+        if (!board_dict[cell_id] == '') {
+            make_ai_move();
+        } else {
+            $('.wrapper').find('span#' + cell_id).text('O');
+            board_dict[cell_id] = 'O';
+        }
+    }
+}
+
+function calculate_next_move() {
+    var decision = {'win': null, 'stop_oppo': null};
+    for ( var i=0; i<3; i++ ) {
+        var row = {};
+        for (var j=0; j<3; j++){
+            var row_key = int_to_string_value(3*i+j);
+            row[row_key] = board_dict[row_key];
+        }
+        var row_occurrences = calculate_triplet_occurrencies(row);
+        decision = update_decision(decision, calculate_next_cell(row, row_occurrences));
+        if (decision.win){
+            return decision;
+        }
+
+        var column = {};
+        for (var j=0; j <= 6; j += 3){
+            var column_key = int_to_string_value(i+j);
+            column[column_key] = board_dict[column_key];
+        }
+        var column_occurrences = calculate_triplet_occurrencies(column);
+        decision = update_decision(decision, calculate_next_cell(column, column_occurrences));
+        if (decision.win){
+            return decision;
+        }
+    }
+
+    var diagonal = {};
+    diagonal[int_to_string_value(0)] = board_dict[int_to_string_value(0)];
+    diagonal[int_to_string_value(4)] = board_dict[int_to_string_value(4)];
+    diagonal[int_to_string_value(8)] = board_dict[int_to_string_value(8)];
+    var diagonal_occurrences = calculate_triplet_occurrencies(diagonal);
+    decision = update_decision(decision, calculate_next_cell(diagonal, diagonal_occurrences));
+    if (decision.win){
+        return decision;
+    }
+
+    diagonal = {};
+    diagonal[int_to_string_value(2)] = board_dict[int_to_string_value(2)];
+    diagonal[int_to_string_value(4)] = board_dict[int_to_string_value(4)];
+    diagonal[int_to_string_value(6)] = board_dict[int_to_string_value(6)];
+    diagonal_occurrences = calculate_triplet_occurrencies(diagonal);
+    decision = update_decision(decision, calculate_next_cell(diagonal, diagonal_occurrences));
+
+    return decision;
+}
+
+function calculate_triplet_occurrencies(row){
+    var counts = {'X': 0, 'O': 0};
+    for (var key in row){
+        counts[row[key]] = (counts[row[key]] + 1) || 1;
+    }
+    return counts;
+}
+
+function calculate_next_cell(row, row_occurrences){
+    var decision = {'win': null, 'stop_oppo': null};
+    if (row_occurrences['O'] == 2 && row_occurrences['X'] == 0){
+        for (var key in row){
+            if (row[key] == null){
+                decision['win'] = key;
+            }
+        }
+    }
+
+    if (row_occurrences['X'] == 2 && row_occurrences['O'] == 0){
+        for (var key in row){
+            if (row[key] == null){
+                decision['stop_oppo'] = key;
+            }
+        }
+    }
+    return decision;
+}
+
+function update_decision(decision, next_decision){
+    decision['win'] = next_decision['win'];
+    if (next_decision['stop_oppo'] != null){
+        decision['stop_oppo'] = next_decision['stop_oppo']
+    }
+    return decision;
 }
 
 function check_board() {

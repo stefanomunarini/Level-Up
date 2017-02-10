@@ -12,15 +12,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='gamescore',
-            old_name='start_time',
-            new_name='timestamp',
-        ),
-        migrations.RemoveField(
-            model_name='gamescore',
-            name='end_time',
-        ),
         migrations.AlterField(
             model_name='game',
             name='description',
