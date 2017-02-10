@@ -35,7 +35,7 @@ urlpatterns = [
 
 
     # Tic Tac Toe
-    url(r'^tictactoe/$', TicTacToe.as_view(), name='home'),
+    url(r'^tictactoe/$', TicTacToe.as_view(), name='tictactoe'),
 
     # Auth
     url(r'^login/$', login, {'template_name': 'auth/login.html'}, name='login'),
