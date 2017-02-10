@@ -277,11 +277,10 @@ function start_timer() {
 
 function stop_timer() {
     end_time = new Date().getTime();
-    calculate_total_time();
 }
 
 function calculate_total_time() {
-    total_time = ((end_time - start_time) / 1000) % 60 + previous_time;
+    return ((end_time - start_time) / 1000) % 60 + previous_time;
 }
 
 function calculate_final_score(){
@@ -310,20 +309,19 @@ function calculate_moves_score(){
     //      4 moves      : 5  points
     //      moves >= 5   : 1  point
     var moves_score = 0;
-    var moves_counter = counter/2;
-    if (moves_counter >= 0 && moves_counter <= 3){
+    if (counter >= 0 && counter <= 5){ // 3rd move
         moves_score = 10;
-    } else if (moves_counter == 4){
+    } else if (counter == 7){ // 4th move
         moves_score = 5;
     } else {
-        moves_score = 1;
+        moves_score = 1; // 5th move
     }
     return moves_score;
 }
 
 function calculate_time_score(){
     // Return the score based on the time taken to win the game
-    var x = total_time / 3;
+    var x = calculate_total_time() / 3;
     x = parseInt(x.toString()); // keep only the decimal part, without approximation
     return 10 - x;
 }
@@ -356,7 +354,7 @@ function save_game_state(){
         "messageType": "SAVE",
         "gameState": {
             "board": board_dict,
-            "time": parseFloat(total_time),
+            "time": calculate_total_time(),
             "moves_count": counter
         }
     };
