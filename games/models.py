@@ -34,7 +34,7 @@ class Game(models.Model):
         (STRATEGY_CATEGORY, _('Strategy')),
     )
 
-    name = models.CharField(_('Game name'), max_length=64)
+    name = models.CharField(_('Game name'), max_length=64, db_index=True)
     slug = models.SlugField(_('Game URL slug'),
                             help_text=_('Part of the game page address on LevelUp, cannot be changed later'),
                             null=False, blank=False, unique=True)
@@ -44,7 +44,7 @@ class Game(models.Model):
                             related_name='games')
     url = models.URLField(_('Source URL'), help_text=_('Where is the game hosted?'), null=False, blank=False)
     icon = CloudinaryField(_('Game icon'), default='image/upload/v1485195482/default/thug.jpg')
-    description = models.TextField()
+    description = models.TextField(db_index=True)
     price = models.FloatField(null=False, blank=False)
     is_public = models.BooleanField(default=True)
     is_published = models.BooleanField(default=True)
