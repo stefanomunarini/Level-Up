@@ -19,6 +19,7 @@ from django.contrib.auth.views import login
 
 from api import urls as api_urls
 from games import urls as games_url
+from games.views import TicTacToe
 from transactions import urls as transactions_url
 from users import urls as users_url
 from . import settings
@@ -31,7 +32,11 @@ urlpatterns = [
     url(r'^games/', include(games_url, namespace='game')),
     url(r'^transactions/', include(transactions_url, namespace='transactions')),
     url(r'^$', HomepageView.as_view(), name='home'),
-    
+
+
+    # Tic Tac Toe
+    url(r'^tictactoe/$', TicTacToe.as_view(), name='home'),
+
     # Auth
     url(r'^login/$', login, {'template_name': 'auth/login.html'}, name='login'),
     url('^', include('django.contrib.auth.urls')),

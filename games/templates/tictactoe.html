@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+
+    <script src="{% static "foundation/js/vendor/jquery.js" %}"></script>
+    <script type="text/javascript" src={% static "javascript/tictactoe.js" %}></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/tictactoe.css' %}" />
+</head>
+<body>
+
+    <div id="title-wrapper">
+        <h3>Tic Tac Toe</h3>
+        <button id="pause-game">Pause Game</button>
+    </div>
+
+    <div class="wrapper">
+      <div class="row">
+        <span id='first'></span>
+        <span id='second'></span>
+        <span id='third'></span>
+      </div>
+      <div class="row">
+        <span id='fourth'></span>
+        <span id='fifth'></span>
+        <span id='sixth'></span>
+      </div>
+      <div class="row">
+        <span id='seventh'></span>
+        <span id='eight'></span>
+        <span id='ninth'></span>
+      </div>
+    </div>
+
+</body>
+</html>

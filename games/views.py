@@ -12,6 +12,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin
@@ -36,7 +37,7 @@ class GameListView(FormMixin, ListView):
     page_title = _('Games')
     paginate_by = 30
     paginate_orphans = 3
-    # a member that can be used in the url dispatcher to customize the view
+    # an attribute that can be used in the url dispatcher to customize the view
     show_games_that_are = ''
 
     def get_context_data(self, **kwargs):
@@ -303,7 +304,10 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
         redirects to the success URL.
         """
         self.object = self.get_object()
-        success_url = self.get_success_url()
         self.object.is_published = not self.object.is_published
         self.object.save()
-        return HttpResponseRedirect(success_url)
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class TicTacToe(TemplateView):
+    template_name = 'tictactoe.html'
