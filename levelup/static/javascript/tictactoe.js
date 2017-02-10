@@ -1,6 +1,7 @@
 $(document).ready( function () {
 
     set_frame_resolution();
+    addWebAppMessageListener();
 
     $('#start-game').click(function(){
         enabled = true;
@@ -16,8 +17,6 @@ $(document).ready( function () {
         load_request();
     });
 
-    addWebAppMessageListener();
-
     // Cell click handler
     $('.row>span').click(function() {
         if (!clicked){
@@ -26,8 +25,8 @@ $(document).ready( function () {
             clicked = true;
         }
         if (enabled) {
-            if ($(this).text().length == 0) {
-                if (counter % 2 == 0) {
+            if ($(this).text().length == 0) { // only clicks in free cells
+                if (counter % 2 == 0) { // wait for the oppo to make the move
                     $(this).text('X');
                     counter++;
                 }
@@ -36,18 +35,22 @@ $(document).ready( function () {
                 if (!winner && counter < 9){
                     make_ai_move();
                     counter++;
-                    var winner = check_board();
+                    winner = check_board();
+                    if (winner == 'O') {
+                        stop_timer();
+                        enabled = false;
+                        $('#winner').text('You lost the game!');
+                        $("#pause-game").hide();
+                    }
                 } else if (winner == 'X') {
                     stop_timer();
                     send_score(calculate_final_score());
                     enabled = false;
                     $('#winner').text('You won the game!');
-                } else if (winner == 'O') {
-                    stop_timer();
-                    enabled = false;
-                    $('#winner').text('You lost the game!');
+                    $("#pause-game").hide();
                 } else if (counter == 9){
                     $('#winner').text('It\'s a tie!');
+                    $("#pause-game").hide();
                 }
             }
         }
@@ -72,12 +75,11 @@ function init_board(board){
 
 function make_ai_move(){
 
-    if (counter == 8){
+    if (counter == 8){ // The game is finished. No more cells are free
         return;
     }
 
     var next_move = calculate_next_move();
-
     if (next_move.win){
         $('.wrapper').find('span#' + next_move.win).text('O');
         board_dict[next_move.win] = 'O';
@@ -86,8 +88,8 @@ function make_ai_move(){
         board_dict[next_move.stop_oppo] = 'O';
     } else {
         var random_cell = Math.floor(Math.random() * (8 + 1));
-        var cell_id = int_to_string_value(random_cell);
-        if (!board_dict[cell_id] == '') {
+        var cell_id = _int_to_string_value(random_cell);
+        if (board_dict[cell_id]) { // if the cell is already occupied try again
             make_ai_move();
         } else {
             $('.wrapper').find('span#' + cell_id).text('O');
@@ -97,80 +99,94 @@ function make_ai_move(){
 }
 
 function calculate_next_move() {
+    // This AI knows three different behaviours:
+    // - WIN always win if possible with the current board status;
+    // - BLOCK_OPPO if no chances to win with the current board status,
+    //              but one or more chances for the opponent to win with
+    //              the next move, then block it;
+    // - RANDOM_MOVE make a random move if none of the above applies
     var decision = {'win': null, 'stop_oppo': null};
-    for ( var i=0; i<3; i++ ) {
+    for (var i=0; i<3; i++) {
         var row = {};
         for (var j=0; j<3; j++){
-            var row_key = int_to_string_value(3*i+j);
+            var row_key = _int_to_string_value(3*i+j);
             row[row_key] = board_dict[row_key];
         }
-        var row_occurrences = calculate_triplet_occurrencies(row);
-        decision = update_decision(decision, calculate_next_cell(row, row_occurrences));
+        var row_occurrences = calculate_triplet_occurrences(row);
+        decision = _update_decision(decision, calculate_next_cell(row, row_occurrences));
         if (decision.win){
             return decision;
         }
 
         var column = {};
         for (var j=0; j <= 6; j += 3){
-            var column_key = int_to_string_value(i+j);
+            var column_key = _int_to_string_value(i+j);
             column[column_key] = board_dict[column_key];
         }
-        var column_occurrences = calculate_triplet_occurrencies(column);
-        decision = update_decision(decision, calculate_next_cell(column, column_occurrences));
+        var column_occurrences = calculate_triplet_occurrences(column);
+        decision = _update_decision(decision, calculate_next_cell(column, column_occurrences));
         if (decision.win){
             return decision;
         }
     }
 
     var diagonal = {};
-    diagonal[int_to_string_value(0)] = board_dict[int_to_string_value(0)];
-    diagonal[int_to_string_value(4)] = board_dict[int_to_string_value(4)];
-    diagonal[int_to_string_value(8)] = board_dict[int_to_string_value(8)];
-    var diagonal_occurrences = calculate_triplet_occurrencies(diagonal);
-    decision = update_decision(decision, calculate_next_cell(diagonal, diagonal_occurrences));
+    diagonal[_int_to_string_value(0)] = board_dict[_int_to_string_value(0)];
+    diagonal[_int_to_string_value(4)] = board_dict[_int_to_string_value(4)];
+    diagonal[_int_to_string_value(8)] = board_dict[_int_to_string_value(8)];
+    var diagonal_occurrences = calculate_triplet_occurrences(diagonal);
+    decision = _update_decision(decision, calculate_next_cell(diagonal, diagonal_occurrences));
     if (decision.win){
         return decision;
     }
 
     diagonal = {};
-    diagonal[int_to_string_value(2)] = board_dict[int_to_string_value(2)];
-    diagonal[int_to_string_value(4)] = board_dict[int_to_string_value(4)];
-    diagonal[int_to_string_value(6)] = board_dict[int_to_string_value(6)];
-    diagonal_occurrences = calculate_triplet_occurrencies(diagonal);
-    decision = update_decision(decision, calculate_next_cell(diagonal, diagonal_occurrences));
+    diagonal[_int_to_string_value(2)] = board_dict[_int_to_string_value(2)];
+    diagonal[_int_to_string_value(4)] = board_dict[_int_to_string_value(4)];
+    diagonal[_int_to_string_value(6)] = board_dict[_int_to_string_value(6)];
+    diagonal_occurrences = calculate_triplet_occurrences(diagonal);
+    decision = _update_decision(decision, calculate_next_cell(diagonal, diagonal_occurrences));
 
     return decision;
 }
 
-function calculate_triplet_occurrencies(row){
+function calculate_triplet_occurrences(triplet){
+    // Return a dictionary containing the number of occurrences
+    // for every Xs and Os in the triplet
     var counts = {'X': 0, 'O': 0};
-    for (var key in row){
-        counts[row[key]] = (counts[row[key]] + 1) || 1;
+    for (var key in triplet){
+        counts[triplet[key]] = (counts[triplet[key]] + 1) || 1;
     }
     return counts;
 }
 
 function calculate_next_cell(row, row_occurrences){
+    // Return a dictionary containing the two possible next moves
+    // Return null values if no win or block_oppo moves are found
     var decision = {'win': null, 'stop_oppo': null};
-    if (row_occurrences['O'] == 2 && row_occurrences['X'] == 0){
-        for (var key in row){
-            if (row[key] == null){
-                decision['win'] = key;
-            }
-        }
-    }
-
-    if (row_occurrences['X'] == 2 && row_occurrences['O'] == 0){
-        for (var key in row){
-            if (row[key] == null){
-                decision['stop_oppo'] = key;
-            }
-        }
+    
+    if (counter %2 == 0){ // X
+        decision['win'] = _take_next_decision(row, row_occurrences, 'X', 'O', 'win');
+        decision['stop_oppo'] = _take_next_decision(row, row_occurrences, 'O', 'X', 'stop_oppo');
+    } else { // O
+        decision['win'] = _take_next_decision(row, row_occurrences, 'O', 'X', 'win');
+        decision['stop_oppo'] = _take_next_decision(row, row_occurrences, 'X', 'O', 'stop_oppo');
     }
     return decision;
 }
 
-function update_decision(decision, next_decision){
+function _take_next_decision(row, row_occurrences, player, opponent, move){
+    if (row_occurrences[player] == 2 && row_occurrences[opponent] == 0){
+        for (var key in row){
+            if (row[key] == null){
+                return key;
+            }
+        }
+    }
+}
+
+function _update_decision(decision, next_decision){
+    // Update the decision dictionary
     decision['win'] = next_decision['win'];
     if (next_decision['stop_oppo'] != null){
         decision['stop_oppo'] = next_decision['stop_oppo']
@@ -179,35 +195,36 @@ function update_decision(decision, next_decision){
 }
 
 function check_board() {
+    // Check if there is a winner with the board at the current status,
     for ( var i=0; i<3; i++ ) {
-        var row = [board_dict[int_to_string_value(3*i)],
-                    board_dict[int_to_string_value(3*i+1)],
-                    board_dict[int_to_string_value(3*i+2)]];
+        var row = [board_dict[_int_to_string_value(3*i)],
+                    board_dict[_int_to_string_value(3*i+1)],
+                    board_dict[_int_to_string_value(3*i+2)]];
         if ( check_triplet(row, 0) ) {
             color_winner_cells_triplet([3*i,3*i+1,3*i+2]);
             return row[0];
         }
 
-        var column = [board_dict[int_to_string_value(i)],
-                        board_dict[int_to_string_value(i+3)],
-                        board_dict[int_to_string_value(i+6)]];
+        var column = [board_dict[_int_to_string_value(i)],
+                        board_dict[_int_to_string_value(i+3)],
+                        board_dict[_int_to_string_value(i+6)]];
         if ( check_triplet(column, 0) ) {
             color_winner_cells_triplet([i,i+3,i+6]);
             return row[0];
         }
     }
 
-    var diagonal = [board_dict[int_to_string_value(0)],
-                    board_dict[int_to_string_value(4)],
-                    board_dict[int_to_string_value(8)]];
+    var diagonal = [board_dict[_int_to_string_value(0)],
+                    board_dict[_int_to_string_value(4)],
+                    board_dict[_int_to_string_value(8)]];
     if ( check_triplet(diagonal, 0) ) {
         color_winner_cells_triplet([0,4,8]);
         return diagonal[0];
     }
 
-    diagonal = [board_dict[int_to_string_value(2)],
-                board_dict[int_to_string_value(4)],
-                board_dict[int_to_string_value(6)]];
+    diagonal = [board_dict[_int_to_string_value(2)],
+                board_dict[_int_to_string_value(4)],
+                board_dict[_int_to_string_value(6)]];
     if ( check_triplet(diagonal, 0) ) {
         color_winner_cells_triplet([2,4,6]);
         return diagonal[0];
@@ -216,6 +233,7 @@ function check_board() {
 }
 
 function check_triplet(row, index) {
+    // Check if the triplet of values are all the same
     if ( row[index] == row[index+1] && row[index] == 'X' || row[index] == row[index+1] && row[index] == 'O') {
         if ( index == 1 ) {
             return true;
@@ -227,11 +245,11 @@ function check_triplet(row, index) {
 
 function color_winner_cells_triplet(indexes) {
     for (var i = 0; i < indexes.length; i++) {
-        $('.wrapper').find('span#' + int_to_string_value(indexes[i])).css("background-color", "green");
+        $('.wrapper').find('span#' + _int_to_string_value(indexes[i])).css("background-color", "green");
     }
 }
 
-function int_to_string_value(int_value){
+function _int_to_string_value(int_value){
     if (int_value == 0) {
         return 'first';
     } else if (int_value == 1) {
@@ -287,6 +305,10 @@ function calculate_final_score(){
 }
 
 function calculate_moves_score(){
+    // Return the score based on the number of moves to win the game
+    //      0 < moves < 3: 10 points
+    //      4 moves      : 5  points
+    //      moves >= 5   : 1  point
     var moves_score = 0;
     var moves_counter = counter/2;
     if (moves_counter >= 0 && moves_counter <= 3){
@@ -300,6 +322,7 @@ function calculate_moves_score(){
 }
 
 function calculate_time_score(){
+    // Return the score based on the time taken to win the game
     var x = total_time / 3;
     x = parseInt(x.toString()); // keep only the decimal part, without approximation
     return 10 - x;
