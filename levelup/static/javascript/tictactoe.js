@@ -9,8 +9,8 @@ $(document).ready( function () {
 
     $('#pause-game').click(function () {
         enabled = false;
-        save_game_state();
         clearInterval(print_timer);
+        setTimeout(save_game_state, 500);
     });
 
     $('#load-game').click(function () {
@@ -21,30 +21,27 @@ $(document).ready( function () {
     $('.row>span').click(function () {
         if (!clicked) {
             // if first click in the grid, start the timer
-            start_timer();
+            start_time = new Date().getTime();
             clicked = true;
             print_timer = setInterval(print_score, 200);
         }
         if (enabled && $(this).text().length == 0 && counter % 2 == 0) {
-            // only clicks in free cells and wait for the oppo to make the move
+            // accepts only clicks in free cells and wait for the oppo to make the move
 
+            counter++;
             $(this).text('X');
             board_dict[this.id] = $(this).text();
-            counter++;
+            enabled = false;
 
             var winner = check_board();
             if (!winner && counter < 9) {
-                enabled = false; // Disable the board while the AI is thinking the next move
-                setTimeout(make_ai_move, 750);
+                make_ai_move();
             } else if (winner == 'X') {
-                clearInterval(print_timer);
                 terminate_game('You win!');
-                setTimeout(send_score, 500);
+                send_score();
+                // setTimeout(send_score, 500);
             } else if (counter == 9) {
-                $('#winner').text('It\'s a tie!');
-                $("#pause-game").hide();
-                clearInterval(print_timer);
-                enabled = false;
+                terminate_game('It\'s a tie!');
             }
 
         }
@@ -71,12 +68,12 @@ function init_board(board){
 }
 
 function print_score(){
-    var score = calculate_score();
-    $('#score').text(score);
+    $('#score').text(calculate_score());
 }
 
 function terminate_game(message){
     enabled = false;
+    clearInterval(print_timer);
     $('#winner').text(message);
     $("#pause-game").hide();
 }
@@ -93,28 +90,35 @@ function make_ai_move(){
     if (next_move.win){
         $('.wrapper').find('span#' + next_move.win).text('O');
         board_dict[next_move.win] = 'O';
+        check_O_winner();
     } else if (next_move.stop_oppo){
         $('.wrapper').find('span#' + next_move.stop_oppo).text('O');
         board_dict[next_move.stop_oppo] = 'O';
+        check_O_winner();
     } else {
-        var random_cell = Math.floor(Math.random() * (8 + 1));
-        var cell_id = _int_to_string_value(random_cell);
-        if (board_dict[cell_id]) { // if the cell is already occupied try again
-            make_ai_move();
-        } else {
-            $('.wrapper').find('span#' + cell_id).text('O');
-            board_dict[cell_id] = 'O';
-        }
+        make_random_move()
     }
+}
 
-    // print_score();
-
+function check_O_winner(){
     var winner = check_board();
     if (winner == 'O') {
         terminate_game('You lose!');
     } else {
         enabled = true;
     }
+}
+
+function make_random_move(){
+    var random_cell = Math.floor(Math.random() * (8 + 1));
+    var cell_id = _int_to_string_value(random_cell);
+    if (board_dict[cell_id]) { // if the cell is already occupied try again
+        make_random_move();
+    } else {
+        $('.wrapper').find('span#' + cell_id).text('O');
+        board_dict[cell_id] = 'O';
+    }
+    check_O_winner();
 }
 
 function calculate_next_move() {
@@ -183,7 +187,6 @@ function calculate_next_cell(row, row_occurrences){
     // Return a dictionary containing the two possible next moves
     // Return null values if no win or block_oppo moves are found
     var decision = {'win': null, 'stop_oppo': null};
-
     decision['win'] = _take_next_decision(row, row_occurrences, 'O', 'X');
     decision['stop_oppo'] = _take_next_decision(row, row_occurrences, 'X', 'O');
     return decision;
@@ -192,7 +195,7 @@ function calculate_next_cell(row, row_occurrences){
 function _take_next_decision(row, row_occurrences, player, opponent){
     if (row_occurrences[player] == 2 && row_occurrences[opponent] == 0){
         for (var key in row){
-            if (row[key] == null){
+            if (row[key] == '' || row[key] == null){
                 return key;
             }
         }
@@ -201,7 +204,7 @@ function _take_next_decision(row, row_occurrences, player, opponent){
 
 function _update_decision(decision, next_decision){
     // Update the decision dictionary
-    decision['win'] = next_decision['win'];
+    decision['win'] = next_decision['win']; // win is always null, because otherwise it would have been already returned
     if (next_decision['stop_oppo'] != null){
         decision['stop_oppo'] = next_decision['stop_oppo']
     }
@@ -286,22 +289,6 @@ function _int_to_string_value(int_value){
     }
 }
 
-function start_timer() {
-    start_time = new Date().getTime();
-}
-
-function calculate_total_time() {
-    if (start_time == 0){
-        start_time = new Date().getTime();
-    }
-    if (end_time == 0){
-        end_time = new Date().getTime();
-    }
-    var total_time = ((end_time - start_time) / 1000) % 60 + previous_time;
-    end_time = 0;
-    return total_time;
-}
-
 function calculate_score(){
     // The final score is calculated based on the time and the number of moves.
     // It is calculated as follows: moves*time (1 < final_score < 100)
@@ -349,6 +336,19 @@ function calculate_time_score(){
     return 10 - x;
 }
 
+function calculate_total_time() {
+    if (start_time == 0){
+        start_time = new Date().getTime();
+        end_time = start_time + 1
+    }
+    if (end_time == 0){
+        end_time = new Date().getTime();
+    }
+    var total_time = ((end_time - start_time) / 1000) % 60 + previous_time;
+    end_time = 0;
+    return total_time;
+}
+
 function addWebAppMessageListener(){
     window.addEventListener("message", function(evt) {
         if(evt.data.messageType === "LOAD") {
@@ -387,7 +387,7 @@ function save_game_state(){
 function send_score (){
     var msg = {
         "messageType": "SCORE",
-        "score": score
+        "score": calculate_score()
     };
     window.parent.postMessage(msg, "*");
 }
