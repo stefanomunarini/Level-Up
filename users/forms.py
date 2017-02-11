@@ -149,6 +149,7 @@ class SignupSocialForm(forms.Form):
         # profile_picture = cloudinary.uploader.upload(profile_url)
         UserProfile.objects.create(
             user=user,
+            display_name=self.cleaned_data['username'],
             # profile_picture=profile_picture['url'],
             third_party_login=social_profile.provider
         )

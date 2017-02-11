@@ -1,0 +1,35 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 3310,
+    "fields": {
+      "password": "pbkdf2_sha256$30000$a6eIlibE3gcx$NV1getIY481McZQqMJbGqOtPAsD2T7HticoSET3Nr6M=",
+      "last_login": "2017-01-20T14:04:25.781Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "Admin",
+      "last_name": "",
+      "email": "admin@mail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2017-01-20T14:04:25.422Z",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.userprofile",
+    "pk": 3310,
+    "fields": {
+      "user": 3310,
+      "display_name": "Superuser",
+      "deactivated_until": null,
+      "third_party_login": null,
+      "url_slug": null,
+      "website": null,
+      "support_email": null
+    }
+  }
+]
