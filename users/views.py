@@ -75,7 +75,7 @@ class UserProfileDetailView(LoginRequiredMixin, TemplateView):
             transactions = Transaction.objects\
                 .filter(game__in=games, status=Transaction.SUCCESS_STATUS)\
                 .order_by('datetime')\
-                .values('datetime','amount')
+                .values('datetime', 'amount')
             sales = []
             profits = []
             for transaction in transactions:

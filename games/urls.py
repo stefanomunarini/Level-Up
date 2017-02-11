@@ -19,8 +19,8 @@ from django.utils.translation import ugettext_lazy as _
 from games.views import (
     GameDetailView, GameListView, GamePlayView, GameStateView,
     GameBuyView, GameCreateView, GameDeleteView, GameUpdateView,
-    GameScoreView, NewGameView
-)
+    GameScoreView, NewGameView,
+    TicTacToe)
 
 urlpatterns = [
     url(r'^$', GameListView.as_view(show_games_that_are='bought-by-the-user', page_title=_('My Games')), name='my-games'),
