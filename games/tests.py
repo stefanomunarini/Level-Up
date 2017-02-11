@@ -76,3 +76,9 @@ class GameTest(TestCase):
 
         response = self.dev_client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_only_authorized_users_can_play_game(self):
+        raise NotImplementedError
+
+    def test_only_owner_can_unpublish_game(self):
+        raise NotImplementedError

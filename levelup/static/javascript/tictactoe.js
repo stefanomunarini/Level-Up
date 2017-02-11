@@ -11,6 +11,7 @@ $(document).ready( function () {
         enabled = false;
         stop_timer();
         save_game_state();
+        clearInterval(timer);
     });
 
     $('#load-game').click(function(){
@@ -23,6 +24,7 @@ $(document).ready( function () {
             // if first click in the grid, start the timer
             start_timer();
             clicked = true;
+            timer = setInterval(print_score, 500);
         }
         if (enabled) {
             if ($(this).text().length == 0) { // only clicks in free cells
@@ -33,24 +35,16 @@ $(document).ready( function () {
                 }
                 var winner = check_board();
                 if (!winner && counter < 9){
-                    make_ai_move();
-                    counter++;
-                    winner = check_board();
-                    if (winner == 'O') {
-                        stop_timer();
-                        enabled = false;
-                        $('#winner').text('You lose!');
-                        $("#pause-game").hide();
-                    }
+                    enabled = false; // Disable the board while the AI is thinking the next move
+                    setTimeout(make_ai_move, 750);
                 } else if (winner == 'X') {
-                    stop_timer();
+                    terminate_game('You win!');
                     send_score(calculate_final_score());
-                    enabled = false;
-                    $('#winner').text('You win!');
-                    $("#pause-game").hide();
                 } else if (counter == 9){
                     $('#winner').text('It\'s a tie!');
                     $("#pause-game").hide();
+                    clearInterval(timer);
+                    enabled = false;
                 }
             }
         }
@@ -60,17 +54,30 @@ $(document).ready( function () {
 var counter = 0, // counts the number of clicks in the grid (used to alternate Xs and Os)
     board_dict = {},
     enabled = true,
-    start_time, // in milliseconds
-    end_time, // in milliseconds
-    total_time, // in seconds
+    start_time = 0, // in milliseconds
+    end_time = 0, // in milliseconds
     previous_time = 0,
-    clicked = false;
+    clicked = false,
+    timer;
 
 function init_board(board){
     $('.wrapper span').each(function(){
         $(this).text(board[this.id]);
         board_dict[this.id] = board[this.id];
     });
+}
+
+function print_score(){
+    var score = calculate_final_score();
+    $('#score').text(score);
+}
+
+function terminate_game(message){
+    enabled = false;
+    stop_timer();
+    clearInterval(timer);
+    $('#winner').text(message);
+    $("#pause-game").hide();
 }
 
 function make_ai_move(){
@@ -95,6 +102,14 @@ function make_ai_move(){
             $('.wrapper').find('span#' + cell_id).text('O');
             board_dict[cell_id] = 'O';
         }
+    }
+
+    var winner = check_board();
+    if (winner == 'O') {
+        terminate_game('You lose!');
+    } else {
+        counter++;
+        enabled = true;
     }
 }
 
@@ -164,18 +179,13 @@ function calculate_next_cell(row, row_occurrences){
     // Return a dictionary containing the two possible next moves
     // Return null values if no win or block_oppo moves are found
     var decision = {'win': null, 'stop_oppo': null};
-    
-    if (counter %2 == 0){ // X
-        decision['win'] = _take_next_decision(row, row_occurrences, 'X', 'O', 'win');
-        decision['stop_oppo'] = _take_next_decision(row, row_occurrences, 'O', 'X', 'stop_oppo');
-    } else { // O
-        decision['win'] = _take_next_decision(row, row_occurrences, 'O', 'X', 'win');
-        decision['stop_oppo'] = _take_next_decision(row, row_occurrences, 'X', 'O', 'stop_oppo');
-    }
+
+    decision['win'] = _take_next_decision(row, row_occurrences, 'O', 'X');
+    decision['stop_oppo'] = _take_next_decision(row, row_occurrences, 'X', 'O');
     return decision;
 }
 
-function _take_next_decision(row, row_occurrences, player, opponent, move){
+function _take_next_decision(row, row_occurrences, player, opponent){
     if (row_occurrences[player] == 2 && row_occurrences[opponent] == 0){
         for (var key in row){
             if (row[key] == null){
@@ -280,7 +290,12 @@ function stop_timer() {
 }
 
 function calculate_total_time() {
-    return ((end_time - start_time) / 1000) % 60 + previous_time;
+    if (end_time == 0){
+        end_time = new Date().getTime();
+    }
+    var total_time = ((end_time - start_time) / 1000) % 60 + previous_time;
+    end_time = 0;
+    return total_time;
 }
 
 function calculate_final_score(){
@@ -289,8 +304,8 @@ function calculate_final_score(){
     // The points are distributed like this:
     // - Moves :
     //      0 < moves < 3: 10 points
-    //      4 moves      : 5  points
-    //      moves > 5    : 1  point
+    //      4 moves      : 6  points
+    //      5 moves      : 2  point
     // - Time (every 3 seconds points are decreased by 1):
     //      3s           : 10 points
     //      3 < time <= 6: 9 points
@@ -300,6 +315,9 @@ function calculate_final_score(){
     // Mininum score = 1 point (5 moves) * 1 point (>30s) = 1
     var moves_score = calculate_moves_score();
     var time_score = calculate_time_score();
+    if (moves_score < 0 || time_score < 0){
+        return 0;
+    }
     return moves_score * time_score;
 }
 
@@ -309,12 +327,12 @@ function calculate_moves_score(){
     //      4 moves      : 5  points
     //      moves >= 5   : 1  point
     var moves_score = 0;
-    if (counter >= 0 && counter <= 5){ // 3rd move
+    if (counter >= 0 && counter <= 4){ // 3rd move
         moves_score = 10;
-    } else if (counter == 7){ // 4th move
-        moves_score = 5;
+    } else if (counter == 6){ // 4th move
+        moves_score = 6;
     } else {
-        moves_score = 1; // 5th move
+        moves_score = 2; // 5th move
     }
     return moves_score;
 }
