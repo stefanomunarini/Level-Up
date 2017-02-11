@@ -9,7 +9,6 @@ $(document).ready( function () {
 
     $('#pause-game').click(function () {
         enabled = false;
-        stop_timer();
         save_game_state();
         clearInterval(print_timer);
     });
@@ -40,7 +39,7 @@ $(document).ready( function () {
             } else if (winner == 'X') {
                 clearInterval(print_timer);
                 terminate_game('You win!');
-                setTimeout(send_score, 1500);
+                setTimeout(send_score, 500);
             } else if (counter == 9) {
                 $('#winner').text('It\'s a tie!');
                 $("#pause-game").hide();
@@ -67,6 +66,8 @@ function init_board(board){
         $(this).text(board[this.id]);
         board_dict[this.id] = board[this.id];
     });
+    enabled = true;
+    print_score();
 }
 
 function print_score(){
@@ -75,17 +76,14 @@ function print_score(){
 }
 
 function terminate_game(message){
-    stop_timer();
-    setTimeout(function(){
-        enabled = false;
-        $('#winner').text(message);
-        $("#pause-game").hide();
-    }, 500);
+    enabled = false;
+    $('#winner').text(message);
+    $("#pause-game").hide();
 }
 
 function make_ai_move(){
 
-    if (counter == 8){ // The game is finished. No more cells are free
+    if (counter >= 8){ // The game is finished. No more cells are free
         return;
     }
 
@@ -292,11 +290,10 @@ function start_timer() {
     start_time = new Date().getTime();
 }
 
-function stop_timer() {
-    end_time = new Date().getTime();
-}
-
 function calculate_total_time() {
+    if (start_time == 0){
+        start_time = new Date().getTime();
+    }
     if (end_time == 0){
         end_time = new Date().getTime();
     }
