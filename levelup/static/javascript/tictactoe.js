@@ -3,50 +3,51 @@ $(document).ready( function () {
     set_frame_resolution();
     addWebAppMessageListener();
 
-    $('#start-game').click(function(){
+    $('#start-game').click(function () {
         enabled = true;
     });
 
-    $('#pause-game').click(function(){
+    $('#pause-game').click(function () {
         enabled = false;
         stop_timer();
         save_game_state();
-        clearInterval(timer);
+        clearInterval(print_timer);
     });
 
-    $('#load-game').click(function(){
+    $('#load-game').click(function () {
         load_request();
     });
 
     // Cell click handler
-    $('.row>span').click(function() {
-        if (!clicked){
+    $('.row>span').click(function () {
+        if (!clicked) {
             // if first click in the grid, start the timer
             start_timer();
             clicked = true;
+            print_timer = setInterval(print_score, 200);
         }
-        if (enabled) {
-            if ($(this).text().length == 0) { // only clicks in free cells
-                if (counter % 2 == 0) { // wait for the oppo to make the move
-                    $(this).text('X');
-                    board_dict[this.id] = $(this).text();
-                    counter++;
-                }
-                var winner = check_board();
-                if (!winner && counter < 9){
-                    enabled = false; // Disable the board while the AI is thinking the next move
-                    setTimeout(print_score, 200);
-                    setTimeout(make_ai_move, 750);
-                } else if (winner == 'X') {
-                    terminate_game('You win!');
-                    setTimeout(send_score(calculate_final_score()), 1500);
-                } else if (counter == 9){
-                    $('#winner').text('It\'s a tie!');
-                    $("#pause-game").hide();
-                    clearInterval(timer);
-                    enabled = false;
-                }
+        if (enabled && $(this).text().length == 0 && counter % 2 == 0) {
+            // only clicks in free cells and wait for the oppo to make the move
+
+            $(this).text('X');
+            board_dict[this.id] = $(this).text();
+            counter++;
+
+            var winner = check_board();
+            if (!winner && counter < 9) {
+                enabled = false; // Disable the board while the AI is thinking the next move
+                setTimeout(make_ai_move, 750);
+            } else if (winner == 'X') {
+                clearInterval(print_timer);
+                terminate_game('You win!');
+                setTimeout(send_score, 1500);
+            } else if (counter == 9) {
+                $('#winner').text('It\'s a tie!');
+                $("#pause-game").hide();
+                clearInterval(print_timer);
+                enabled = false;
             }
+
         }
     });
 });
@@ -58,7 +59,8 @@ var counter = 0, // counts the number of clicks in the grid (used to alternate X
     end_time = 0, // in milliseconds
     previous_time = 0,
     clicked = false,
-    timer;
+    print_timer,
+    score = 100;
 
 function init_board(board){
     $('.wrapper span').each(function(){
@@ -68,18 +70,17 @@ function init_board(board){
 }
 
 function print_score(){
-    var score = calculate_final_score();
+    var score = calculate_score();
     $('#score').text(score);
 }
 
 function terminate_game(message){
-    setInterval(function(){
+    stop_timer();
+    setTimeout(function(){
         enabled = false;
-        stop_timer();
-        clearInterval(timer);
         $('#winner').text(message);
         $("#pause-game").hide();
-    }, 1000);
+    }, 500);
 }
 
 function make_ai_move(){
@@ -87,6 +88,8 @@ function make_ai_move(){
     if (counter == 8){ // The game is finished. No more cells are free
         return;
     }
+
+    counter++;
 
     var next_move = calculate_next_move();
     if (next_move.win){
@@ -106,11 +109,12 @@ function make_ai_move(){
         }
     }
 
+    // print_score();
+
     var winner = check_board();
     if (winner == 'O') {
         terminate_game('You lose!');
     } else {
-        counter++;
         enabled = true;
     }
 }
@@ -256,6 +260,7 @@ function check_triplet(row, index) {
 }
 
 function color_winner_cells_triplet(indexes) {
+    clearInterval(print_timer);
     for (var i = 0; i < indexes.length; i++) {
         $('.wrapper').find('span#' + _int_to_string_value(indexes[i])).css("background-color", "green");
     }
@@ -300,7 +305,7 @@ function calculate_total_time() {
     return total_time;
 }
 
-function calculate_final_score(){
+function calculate_score(){
     // The final score is calculated based on the time and the number of moves.
     // It is calculated as follows: moves*time (1 < final_score < 100)
     // The points are distributed like this:
@@ -320,21 +325,22 @@ function calculate_final_score(){
     if (moves_score < 0 || time_score < 0){
         return 0;
     }
-    return moves_score * time_score;
+    score = moves_score * time_score;
+    return score;
 }
 
 function calculate_moves_score(){
     // Return the score based on the number of moves to win the game
     //      0 < moves < 3: 10 points
-    //      4 moves      : 5  points
-    //      moves >= 5   : 1  point
+    //      4 moves      : 7  points
+    //      moves >= 5   : 4  point
     var moves_score = 0;
-    if (counter >= 0 && counter <= 4){ // 3rd move
+    if (counter >= 0 && counter <= 5){ // 3rd move
         moves_score = 10;
-    } else if (counter == 6){ // 4th move
-        moves_score = 6;
+    } else if (counter <= 7){ // 4th move
+        moves_score = 7;
     } else {
-        moves_score = 2; // 5th move
+        moves_score = 4; // 5th move
     }
     return moves_score;
 }
@@ -381,7 +387,7 @@ function save_game_state(){
     window.parent.postMessage(msg, "*");
 }
 
-function send_score (score){
+function send_score (){
     var msg = {
         "messageType": "SCORE",
         "score": score
