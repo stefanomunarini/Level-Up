@@ -11,6 +11,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
@@ -312,7 +313,6 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
 class TicTacToe(TemplateView):
     template_name = 'tictactoe.html'
 
+    @xframe_options_exempt
     def dispatch(self, request, *args, **kwargs):
-        response = super(TicTacToe, self).dispatch(request, *args, **kwargs)
-        del response['X-Frame-Options']
-        return response
+        return super(TicTacToe, self).dispatch(request, *args, **kwargs)

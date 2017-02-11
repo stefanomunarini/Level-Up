@@ -24,7 +24,6 @@ $(document).ready( function () {
             // if first click in the grid, start the timer
             start_timer();
             clicked = true;
-            timer = setInterval(print_score, 500);
         }
         if (enabled) {
             if ($(this).text().length == 0) { // only clicks in free cells
@@ -36,10 +35,11 @@ $(document).ready( function () {
                 var winner = check_board();
                 if (!winner && counter < 9){
                     enabled = false; // Disable the board while the AI is thinking the next move
+                    setTimeout(print_score, 200);
                     setTimeout(make_ai_move, 750);
                 } else if (winner == 'X') {
                     terminate_game('You win!');
-                    send_score(calculate_final_score());
+                    setTimeout(send_score(calculate_final_score()), 1500);
                 } else if (counter == 9){
                     $('#winner').text('It\'s a tie!');
                     $("#pause-game").hide();
@@ -73,11 +73,13 @@ function print_score(){
 }
 
 function terminate_game(message){
-    enabled = false;
-    stop_timer();
-    clearInterval(timer);
-    $('#winner').text(message);
-    $("#pause-game").hide();
+    setInterval(function(){
+        enabled = false;
+        stop_timer();
+        clearInterval(timer);
+        $('#winner').text(message);
+        $("#pause-game").hide();
+    }, 1000);
 }
 
 function make_ai_move(){
@@ -392,8 +394,8 @@ function set_frame_resolution(){
     var message =  {
         messageType: "SETTING",
         options: {
-            "width": 700, //Integer
-            "height": 400 //Integer
+            "width": 400, //Integer
+            "height": 500 //Integer
         }
     };
     window.parent.postMessage(message, "*");
