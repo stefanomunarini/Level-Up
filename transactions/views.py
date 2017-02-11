@@ -1,5 +1,6 @@
 from _md5 import md5
 
+from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -37,6 +38,9 @@ class PaymentResultRedirectView(RedirectView):
         transaction.payment_ref = payment_ref
         transaction.amount = game.price
         transaction.save()
+
+        if result != 'success':
+            messages.error(request, 'There was a problem processing the payment. Please try again later!')
 
         return super(PaymentResultRedirectView, self).dispatch(request, *args, **kwargs)
 

@@ -39,7 +39,6 @@ $(document).ready( function () {
             } else if (winner == 'X') {
                 terminate_game('You win!');
                 send_score();
-                // setTimeout(send_score, 500);
             } else if (counter == 9) {
                 terminate_game('It\'s a tie!');
             }
