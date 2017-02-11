@@ -21,7 +21,7 @@ from games import services
 from games.forms import GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
 from games.models import Game, GameState, GameScore, GameScreenshot
 from games.utils import GameOwnershipRequiredMixin
-from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
+from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, HEROKU_HOST
 from transactions.forms import TransactionForm
 from transactions.models import Transaction
 
@@ -311,3 +311,8 @@ class GameDeleteView(LoginRequiredMixin, DeleteView):
 
 class TicTacToe(TemplateView):
     template_name = 'tictactoe.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(TicTacToe, self).dispatch(request, *args, **kwargs)
+        del response['X-Frame-Options']
+        return response
