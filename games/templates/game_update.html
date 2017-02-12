@@ -12,6 +12,6 @@
         {% for game_screenshot_form in game_screenshot_forms %}
             {% include "_input_grid.html" with form=game_screenshot_form %}
         {% endfor %}
-        {% include "_input_grid.html" with form=game_screenshot_forms.management_form submit_text=_('Add Game') %}
+        {% include "_input_grid.html" with form=game_screenshot_forms.management_form submit_text=_('Save') %}
     </form>
 {% endblock main %}

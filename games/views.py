@@ -77,6 +77,9 @@ class GameListView(FormMixin, ListView):
         if category:
             queryset = queryset.filter(category=category)
 
+        if not search:
+            queryset = queryset.order_by('-date_added')
+
         return queryset.filter(is_published=True)
 
 
