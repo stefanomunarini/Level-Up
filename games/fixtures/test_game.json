@@ -1,0 +1,126 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "developer1",
+      "last_login": "2017-02-15T14:04:25.781Z",
+      "is_superuser": false,
+      "username": "developer1",
+      "first_name": "",
+      "last_name": "",
+      "email": "a@mail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-01-20T14:04:25.422Z",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.userprofile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "display_name": "Developer1",
+      "deactivated_until": null,
+      "third_party_login": null,
+      "url_slug": null,
+      "website": null,
+      "support_email": null
+    }
+  },
+  {
+    "fields": {
+      "name": "game",
+      "slug": "game",
+      "dev": 1,
+      "url": "https://grader-host.cs.hut.fi/static/wsd/example_game.html",
+      "description": "game_1",
+      "price": 1,
+      "date_added": "2017-01-16 20:22:51.261537+00"
+    },
+    "pk": 1,
+    "model": "games.Game"
+  },
+
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "developer2",
+      "last_login": "2017-02-15T14:04:25.781Z",
+      "is_superuser": false,
+      "username": "developer2",
+      "first_name": "",
+      "last_name": "",
+      "email": "b@mail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-01-20T14:04:25.422Z",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.userprofile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "display_name": "Developer2",
+      "deactivated_until": null,
+      "third_party_login": null,
+      "url_slug": null,
+      "website": null,
+      "support_email": null
+    }
+  },
+
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "player",
+      "last_login": "2017-02-15T14:04:25.781Z",
+      "is_superuser": false,
+      "username": "player",
+      "first_name": "",
+      "last_name": "",
+      "email": "c@mail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-01-20T14:04:25.422Z",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.userprofile",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "display_name": "Player",
+      "deactivated_until": null,
+      "third_party_login": null,
+      "url_slug": null,
+      "website": null,
+      "support_email": null
+    }
+  },
+  {
+    "model": "transactions.transaction",
+    "pk": 1,
+    "fields": {
+      "user": 3,
+      "game": 1,
+      "amount": 1,
+      "status": "success"
+    }
+  }
+]

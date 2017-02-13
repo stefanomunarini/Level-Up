@@ -1,4 +1,4 @@
-from django.forms import Form, BooleanField, CharField, HiddenInput
+from django.forms import Form, CharField, HiddenInput
 
 
 class TransactionForm(Form):

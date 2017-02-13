@@ -22,7 +22,7 @@ from games import services
 from games.forms import GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
 from games.models import Game, GameState, GameScore, GameScreenshot
 from games.utils import GameOwnershipRequiredMixin
-from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY, HEROKU_HOST
+from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.forms import TransactionForm
 from transactions.models import Transaction
 
@@ -227,7 +227,7 @@ class GameCreateUpdateMixin(object):
     """
     This mixin provides shared functionality for creating and updating a game. In particular, it checks that the user
     is authenticated and has a 'Developer' profile.
-    Moreover, provide functionality to save/update screenshot when
+    Moreover, provide functionality to save/update screenshot
     """
 
     @method_decorator(login_required)

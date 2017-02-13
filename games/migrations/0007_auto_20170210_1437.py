@@ -22,4 +22,13 @@ class Migration(migrations.Migration):
             name='name',
             field=models.CharField(db_index=True, max_length=64, verbose_name='Game name'),
         ),
+        migrations.RenameField(
+            model_name='gamescore',
+            old_name='start_time',
+            new_name='timestamp',
+        ),
+        migrations.RemoveField(
+            model_name='gamescore',
+            name='end_time',
+        ),
     ]

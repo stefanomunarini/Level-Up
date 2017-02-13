@@ -1,4 +1,3 @@
-import cloudinary
 from allauth.socialaccount.models import SocialAccount
 from django import forms
 from django.contrib.auth.models import User, Group
