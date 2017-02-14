@@ -416,7 +416,7 @@ function set_frame_resolution(){
         messageType: "SETTING",
         options: {
             "width": 400, //Integer
-            "height": 500 //Integer
+            "height": 420 //Integer
         }
     };
     window.parent.postMessage(message, "*");
