@@ -6,7 +6,7 @@
     <a href="{% url 'game:buy' game.slug %}" class="button radius tiny split">{% trans "Buy" %}: {{ game.price }} &euro;<span data-dropdown="social-drop-{{ game.slug }}"></span></a>
 {% endif %}
 {% if game in developed_games %}
-    <a href="{% url 'game:update' game.slug %}" class="button radius tiny secondary split">{% trans "Edit" %}<span data-dropdown="dev-drop-{{ game.slug }}"></span></a>
+    <a href="{% url 'game:update' game.slug %}" class="button radius tiny secondary split" id="game_update_button">{% trans "Edit" %}<span data-dropdown="dev-drop-{{ game.slug }}"></span></a>
     <br>
     <ul id="dev-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
         <li><a href="{% url 'game:delete' game.pk %}">

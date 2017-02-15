@@ -81,3 +81,12 @@ class GameTest(TestCase):
 
         response = self.dev_client.get(url)
         self.assertEqual(response.status_code, 302)
+
+    def test_game_details_contains_edit_button(self):
+        url = reverse_lazy('game:detail', kwargs={'slug': self.game.slug})
+
+        response = self.another_dev_client.get(url)
+        self.assertNotContains(response, 'game_update_button')
+
+        response = self.dev_client.get(url)
+        self.assertContains(response, 'game_update_button', status_code=200)
