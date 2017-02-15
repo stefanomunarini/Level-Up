@@ -1,0 +1,9 @@
+{% load i18n cloudinary %}
+<meta property="og:url"                         content="{{ request.build_absolute_uri }}">
+<meta property="og:type"                        content="product.item">
+<meta property="og:title"                       content="{{ game.name }}">
+<meta property="og:description"                 content="{{ game.description }}">
+<meta property="og:image"                       content="{% cloudinary_url game.icon %}">
+<meta property="product:brand"                  content="{{ game.dev }}">
+<meta property="product:price:amount"           content="{{ game.price }}">
+<meta property="product:price:currency"         content="EUR">

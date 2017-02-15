@@ -1,0 +1,5 @@
+{% load i18n transactions %}
+<form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
+    {% transaction_form game %}
+    <input class="button success float-right" type="submit" value="{% blocktrans with price=game.price %}Buy for {{ price }} €{% endblocktrans %}">
+</form>

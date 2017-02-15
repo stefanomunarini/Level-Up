@@ -5,12 +5,12 @@ from datetime import datetime, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext
 from django.views.generic import FormView, TemplateView, UpdateView
 from django.views.generic import RedirectView
-from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.detail import SingleObjectMixin, DetailView
 
 from games.models import Game
 from transactions.models import Transaction
@@ -185,3 +185,10 @@ class SignupActivateView(SingleObjectMixin, RedirectView):
         self.obj.is_active = True
         self.obj.save()
         return self.obj
+
+
+class PublicDeveloperPageView(DetailView):
+    model = UserProfile
+    context_object_name = "developer"
+    template_name = "public_developer_page.html"
+    slug_field = "url_slug"

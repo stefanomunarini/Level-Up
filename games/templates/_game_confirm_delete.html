@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<form action="{% url "game:delete" game.pk %}?next={{ request.path }}" method="post">
+    {% csrf_token %}
+    {% if game.is_published %}
+        {% blocktrans asvar confirmation_text %}Are you sure you want to remove {{ game }} from the store?{% endblocktrans %}
+        {% blocktrans asvar submit_text %}Remove {{ game }}{% endblocktrans %}
+    {% else %}
+        {% blocktrans asvar confirmation_text %}Are you sure you want to publish {{ game }}?{% endblocktrans %}
+        {% blocktrans asvar submit_text %}Publish {{ game }}{% endblocktrans %}
+    {% endif %}
+    <p>{{ confirmation_text }}</p>
+    <input class="button success float-right" type="submit" value="{{ submit_text }}">
+</form>
