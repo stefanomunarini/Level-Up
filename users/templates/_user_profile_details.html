@@ -25,9 +25,11 @@
             <small>
                 <a href="{% url 'profile:user-profile-update' %}" class="button success">{% trans 'Update profile' %}</a>
             </small>
-            <small>
-                <a id="game_new" href="{% url 'profile:create-api-key' %}" class="button">New API Key</a>
-            </small>
+            {% if user.profile.is_developer %}
+                <small>
+                    <a id="game_new" href="{% url 'profile:create-api-key' %}" class="button">New API Key</a>
+                </small>
+            {% endif %}
         </p>
     </div>
 {% endblock col-main %}

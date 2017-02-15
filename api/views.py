@@ -3,10 +3,14 @@ from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
 from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import FormMixin
+from django.views.generic.list import MultipleObjectMixin
 
 from api import services
 from api.forms import ApiBaseForm
+from games.forms import GameSearchForm
 from games.models import Game
+from games.utils import GameSearchMixin
 
 
 class ApiBaseView(View):
@@ -81,6 +85,19 @@ class ApiGameStatsView(SingleObjectMixin, ApiBaseView):
         response = {
             'data': {
                 'game': services.get_game_stats(self.get_object())
+            }
+        }
+        return JsonResponse(data=response, status=200)
+
+
+class ApiGameSearchView(GameSearchMixin, MultipleObjectMixin, ApiBaseView):
+    model = Game
+    paginate_by = 30
+
+    def request_valid(self):
+        response = {
+            'data': {
+                'games': services.search_game(self.get_queryset())
             }
         }
         return JsonResponse(data=response, status=200)

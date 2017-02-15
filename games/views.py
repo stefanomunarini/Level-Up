@@ -21,13 +21,14 @@ from django.views.generic.edit import FormMixin
 from games import services
 from games.forms import GameScreenshotModelFormSet, GameUpdateModelForm, GameSearchForm
 from games.models import Game, GameState, GameScore, GameScreenshot
-from games.utils import GameOwnershipRequiredMixin
+from games.utils import GameOwnershipRequiredMixin, GameSearchMixin
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.forms import TransactionForm
 from transactions.models import Transaction
+from transactions.views import save_transaction
 
 
-class GameListView(FormMixin, ListView):
+class GameListView(GameSearchMixin, FormMixin, ListView):
     """
     A view that is used whenever a list of games needs to be shown
     Games to be displayed are controlled by passing attribute values in the url dispatcher
@@ -50,81 +51,6 @@ class GameListView(FormMixin, ListView):
         initial = super(GameListView, self).get_initial()
         initial['q'] = self.request.GET.get('q')
         initial['category'] = self.request.GET.get('category')
-        return initial
-
-    def get_queryset(self):
-        queryset = Game.objects.all()
-
-        if self.show_games_that_are == 'bought-by-the-user':
-            queryset = self.request.user.profile.get_bought_games()
-        elif self.show_games_that_are == 'developed-by-the-user':
-            queryset = self.request.user.profile.get_developed_games()
-
-        search = self.request.GET.get('q')
-        category = self.request.GET.get('category')
-
-        vector = SearchVector('name', 'description')
-        query = None
-
-        if search:
-            for word in search.split():
-                if not query:
-                    query = SearchQuery(word)
-                else:
-                    query = query | SearchQuery(word)
-            queryset = queryset.annotate(rank=SearchRank(vector, query)).order_by('-rank').filter(rank__gt=0)
-
-        if category:
-            queryset = queryset.filter(category=category)
-
-        if not search:
-            queryset = queryset.order_by('-date_added')
-
-        return queryset.filter(is_published=True)
-
-
-class GameBuyView(FormMixin, DetailView):
-    form_class = TransactionForm
-    model = Game
-    context_object_name = 'game'
-    template_name = 'game_buy.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        game = get_object_or_404(Game, slug=kwargs.get(self.slug_url_kwarg))
-        if Transaction.objects.filter(user=self.request.user.profile,
-                                      game=game,
-                                      status=Transaction.SUCCESS_STATUS).exists():
-            return HttpResponseRedirect(
-                reverse_lazy('game:detail', kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}))
-        return super(GameBuyView, self).dispatch(request, *args, **kwargs)
-
-    def get_initial(self):
-        # Fill in the transaction form
-        initial = super(GameBuyView, self).get_initial()
-
-        pid = self.object.slug
-        sid = PAYMENT_SERVICE_SELLER_ID
-        amount = self.object.price
-
-        secret_key = PAYMENT_SERVICE_SECRET_KEY
-        checksum_str = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
-        checksum = md5(checksum_str.encode("ascii")).hexdigest()
-
-        # dynamically build the url so it works for both dev and prod
-        webapp_url = self.request.is_secure() and 'https://' or 'http://'
-        webapp_url += self.request.META['HTTP_HOST']
-
-        redirect_url = webapp_url + reverse('transactions:result')
-
-        initial['pid'] = pid
-        initial['sid'] = sid
-        initial['amount'] = amount
-        initial['checksum'] = checksum
-        initial['success_url'] = redirect_url
-        initial['cancel_url'] = redirect_url
-        initial['error_url'] = redirect_url
-
         return initial
 
 
@@ -293,8 +219,9 @@ class GameUpdateView(GameCreateUpdateMixin, UpdateView):
 
 class GameDeleteView(LoginRequiredMixin, DeleteView):
     model = Game
-    success_url = reverse_lazy('profile:user-profile')
-    template_name = 'game_confirm_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy('game:detail', kwargs={'slug': self.object.slug})
 
     def get_object(self, queryset=None):
         obj = super(GameDeleteView, self).get_object(queryset=queryset)

@@ -1,42 +1,12 @@
 {% load static %}
 {% load i18n cloudinary %}
 
-{% with request.user.profile.get_developed_games as developed_games %}
-{% with request.user.profile.get_bought_games as bought_games %}
 <ul class="small-block-grid-2 large-block-grid-3 game-grid">
     {% for game in games %}
-    <li class="small-text-center">
-        <div class="row">
-            <div class="small-12 columns">
-                <a href="{% url 'game:detail' game.slug %}">
-                    {% if game.icon %}
-                        {% cloudinary game.icon format="jpg" width=250 height=250 crop="fill" %}
-                    {% else %}
-                        <img src="https://screenshotlayer.com/images/assets/placeholder.png">
-                    {% endif %}
-                </a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="small-12 columns">
-                <h2><a href="{% url 'game:detail' game.slug %}">
-                    {% if user.profile.is_developer and not game.is_published %}
-                        <small><strike>{{ game.name }}</strike> <b><small>UNPUBLISHED</small></b></small>
-                    {% else %}
-                        <small>{{ game.name }}</small> <span class="secondary label">{{ game.category }}</span>
-                    {% endif %}
-                </a></h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="small-12 columns">
-                {% include '_game_actions.html' with game=game developed_games=developed_games bought_games=bought_games %}
-            </div>
-        </div>
-    </li>
+        <li>
+            {% include "_game_detail.html" with game=game bought_games=request.user.profile.get_bought_games minimal=True %}
+        </li>
     {% empty %}
         <p>No games found.</p>
     {% endfor %}
 </ul>
-{% endwith %}
-{% endwith %}
