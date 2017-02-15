@@ -17,7 +17,7 @@
         <p>
             {% if game in bought_games %}
                 <a href="{% url 'game:play' game.slug %}" class="button radius tiny">
-                    {% trans "Play" %}
+                    <strong>{% trans "Play" %}</strong>
                 </a>
             {% else %}
                 <div id="reveal-buy-{{ game.slug }}" class="reveal-modal" data-reveal aria-labelledby="modal-title-buy-{{ game.slug }}" aria-hidden="true" role="dialog">
