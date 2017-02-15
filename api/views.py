@@ -40,8 +40,7 @@ class ApiBaseView(View):
     def request_invalid(self, errors=None):
         if not errors:
             errors = self.form.errors
-        return JsonResponse(data={'errors': errors},
-                            status=401)
+        return JsonResponse(data={'errors': errors}, status=401)
 
 
 class ApiDevelopedGamesView(ApiBaseView):
