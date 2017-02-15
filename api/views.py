@@ -3,12 +3,10 @@ from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
 from django.views.generic.detail import SingleObjectMixin
-from django.views.generic.edit import FormMixin
 from django.views.generic.list import MultipleObjectMixin
 
 from api import services
 from api.forms import ApiBaseForm
-from games.forms import GameSearchForm
 from games.models import Game
 from games.utils import GameSearchMixin
 

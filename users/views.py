@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext
 from django.views.generic import FormView, TemplateView, UpdateView
@@ -16,8 +16,7 @@ from games.models import Game
 from transactions.models import Transaction
 from users.forms import (
     SignupPlayerForm, SignupDeveloperForm,
-    UserUpdateModelForm, UserProfileUpdateModelFormset,
-    ApiKeyForm)
+    UserUpdateModelForm, ApiKeyForm, UserProfileUpdateModelForm)
 from users.models import UserProfile
 
 
@@ -128,8 +127,8 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         user_form = self.get_form(self.form_class)
-        user_profile_form = UserProfileUpdateModelFormset(
-            queryset=UserProfile.objects.filter(user=self.get_object())
+        user_profile_form = UserProfileUpdateModelForm(
+            instance=self.get_object().profile
         )
         return self.render_to_response(self.get_context_data(user_form=user_form, user_profile_form=user_profile_form))
 
@@ -139,20 +138,15 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         user_form = self.get_form(self.form_class)
-        user_profile_form = UserProfileUpdateModelFormset(
+        user_profile_form = UserProfileUpdateModelForm(
             request.POST,
-            request.FILES
+            request.FILES,
+            instance=self.object.profile
         )
         if user_form.is_valid():
             user_form.save(commit=False)
             if user_profile_form.is_valid():
-                user_profile_form.save(commit=False)
-                """
-                There is always one and only one formset (one user_profile for every user)
-                hence we only and always save the first formset
-                """
-                user_profile_form[0].instance.user = self.get_object()
-                user_profile_form[0].save()
+                user_profile_form.save()
                 user_form.save()
                 return super(UserProfileUpdateView, self).form_valid(form=user_form)
         return render(request, self.template_name, {'user_form': user_form, 'user_profile_form': user_profile_form})

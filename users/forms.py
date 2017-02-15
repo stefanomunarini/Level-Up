@@ -2,8 +2,7 @@ from allauth.socialaccount.models import SocialAccount
 from django import forms
 from django.contrib.auth.models import User, Group
 from django.forms import (
-    ModelForm, modelformset_factory,
-)
+    ModelForm, )
 from django.template import Context
 from django.utils.translation import ugettext_lazy as _
 
@@ -107,15 +106,6 @@ class UserProfileUpdateModelForm(ModelForm):
         if UserProfile.objects.filter(display_name=self.cleaned_data.get('display_name')).exclude(id=self.instance.id).count() > 0:
             self.add_error('display_name', 'The display name you chose is already taken.')
         return self.cleaned_data.get('display_name')
-
-
-UserProfileUpdateModelFormset = modelformset_factory(
-    model=UserProfile,
-    form=UserProfileUpdateModelForm,
-    extra=1,
-    min_num=1,
-    max_num=1
-)
 
 
 class ApiKeyForm(ModelForm):
