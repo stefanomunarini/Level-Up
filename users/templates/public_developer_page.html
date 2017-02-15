@@ -1,5 +1,5 @@
 {% extends "__base.html" %}
-{% load static i18n %}
+{% load static i18n cloudinary %}
 
 {% block title %}{{ user.profile.display_name }} &ndash; {{ block.super }}{% endblock title %}
 
@@ -7,42 +7,47 @@
 
 
 {% block main %}
-    {% include '_user_profile_details.html' %}
-    {% if user.profile.is_developer %}
-        <div class="row">
-            <h3>My Games</h3>
-            <div class="small-12 columns">
-                <ul class="tabs" data-tab data-options="deep_linking:true">
-                    <li class="tab-title active"><a href="#stats">{% trans 'Statistics' %}</a></li>
-                    <li class="tab-title"><a href="#games">{% trans 'Games' %}</a></li>
+
+    <div itemscope itemtype="http://schema.org/Organization">
+        <div class="row text-center">
+            <p>
+                {% if user.profile.third_party_login %}
+                    <img itemprop="image" src="{{ developer.user.socialaccount_set.all.0.get_avatar_url }}" width="128" height="128">
+                {% else %}
+                    <img itemprop="image" src="{% cloudinary_url developer.profile_picture format="png" width=256 height=256 crop="fit" %}" width="128" height="128">
+                {% endif %}
+            </p>
+            <h3 itemprop="name">{{ developer.display_name }}</h3>
+            <p>
+                <ul class="button-group radius">
+                    {% if developer.support_email %}{# TODO: check if a game is owned #}
+                        <li><a itemprop="email" href="mailto:{{ game.dev.support_email }}" class="button secondary">
+                            <i class="fa fa-envelope"></i> {% trans "Send an email the developer" %}
+                        </a></li>
+                    {% endif %}
+                    {% if developer.website %}
+                        <li><a itemprop="sameAs" href="{{ game.dev.website }}" class="button secondary">
+                            <i class="fa fa-globe"></i> {% trans "Visit the developer’s website" %}
+                        </a></li>
+                    {% endif %}
                 </ul>
-                <div class="tabs-content">
-                    <div class="content active" id="stats">
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <h2>
-                                    {% trans 'Statistics' %}
-                                </h2>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <h3>{% trans "Sales and Profits" %}</h3>
-                                <div id="dev-statistics-chart" class="expanded" style="height: 50%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content" id="games">
-                        <div class="row">
-                            <div class="small-12 columns">
-                                {% include '_game_grid.html' %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </p>
         </div>
-    {% endif %}
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <h2>
+                {% trans 'Games' %}
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            {% include '_game_grid.html' with games=developer.get_developed_games %}
+        </div>
+    </div>
+
 {% endblock main %}
 {% if user_profile.is_developer %}
     {% block body_js %}

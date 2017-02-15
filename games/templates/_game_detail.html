@@ -2,16 +2,16 @@
 <div itemscope itemtype="http://schema.org/Game">
     <div class="row text-center">
         <a href="{% url "game:detail" game.slug %}">
-            <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="fit" %}" width="128" height="128"></p>
+            <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="pad" %}" width="128" height="128"></p>
             <h3 itemprop="name">{{ game.name }}{% if game.dev == user.profile and not game.is_published %} <span class="label warning radius">{% trans "Unpublished" %}</span>{% endif %}</h3>
         </a>
         <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
             <a itemprop="name" href="{% url 'game:developer-page' game.dev.url_slug %}">{{ game.dev }}</a>
             {% if game in bought_games and game.dev.support_email %}
-                <a itemprop="email" href="mailto:{{ game.dev.support_email }}" class="label secondary radius tiny fa fa-envelope" title="{% trans "Send an email to the developer" %}"></a>
+                <a itemprop="email" href="mailto:{{ game.dev.support_email }}" class="label secondary radius fa fa-envelope" title="{% trans "Send an email to the developer" %}"></a>
             {% endif %}
             {% if game.dev.website %}
-                <a itemprop="sameAs" href="{{ game.dev.website }}" class="label secondary radius tiny fa fa-globe" title="{% trans "Visit the developer’s website" %}"></a>
+                <a itemprop="sameAs" href="{{ game.dev.website }}" class="label secondary radius fa fa-globe" title="{% trans "Visit the developer’s website" %}"></a>
             {% endif %}
         </p>
         <p>
@@ -36,9 +36,9 @@
                     </strong>
                 </a>
             {% endif %}
-            <a href="#" class="button radius tiny split">
-                {% trans "Share" %}<span data-dropdown="social-drop-{{ game.slug }}">
-            </span></a>
+            <a href="#" data-dropdown="social-drop-{{ game.slug }}" aria-controls="social-drop-{{ game.slug }}" aria-expanded="false" class="button secondary radius tiny dropdown">
+                {% trans "Share" %}
+            </a>
             {% if game.dev == user.profile %}
                 <a href="{% url 'game:update' game.slug %}" class="button radius tiny secondary split" id="game_update_button">
                     {% trans "Edit" %}
@@ -67,9 +67,12 @@
                 </div>
             {% endif %}
             <ul id="social-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
-                <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank"><i class="fa fa-facebook-square"></i> Facebook</a></li>
-                <li><a href="https://plus.google.com/share?url={{ request.build_absolute_uri|urlencode }}" target="_blank"><i class="fa fa-google-plus-square"></i> Google Plus</a></li>
-                <li><a href="https://twitter.com/home?status={{ request.build_absolute_uri|urlencode }}" target="_blank"><i class="fa fa-twitter-square"></i> Twitter</a></li>
+                {% url "game:detail" game.slug as game_path %}
+                {% with request.get_host|add:game_path as game_url %}
+                    <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ game_url }}" target="_blank"><i class="fa fa-facebook-square"></i> Facebook</a></li>
+                    <li><a href="https://plus.google.com/share?url={{ game_url }}" target="_blank"><i class="fa fa-google-plus-square"></i> Google Plus</a></li>
+                    <li><a href="https://twitter.com/home?status={{ game_url }}" target="_blank"><i class="fa fa-twitter-square"></i> Twitter</a></li>
+                {% endwith %}
             </ul>
         </p>
     </div>
