@@ -3,7 +3,15 @@
     <div class="row text-center">
         <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="fit" %}" width="128" height="128"></p>
         <h3 itemprop="name">{{ game.name }}</h3>
-        <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><a itemprop="name" href="{% url 'game:developer-page' game.dev.url_slug %}">{{ game.dev }}</a></p>
+        <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+            <a itemprop="name" href="{% url 'game:developer-page' game.dev.url_slug %}">{{ game.dev }}</a>
+            {% if game in bought_games and game.dev.support_email %}
+                <a href="mailto:{{ game.dev.support_email }}" class="label secondary radius tiny fa fa-envelope" title="{% trans "Send an email to the developer" %}"></a>
+            {% endif %}
+            {% if game.dev.website %}
+                <a href="{{ game.dev.website }}" class="label secondary radius tiny fa fa-globe" title="{% trans "Visit the developer’s website" %}"></a>
+            {% endif %}
+        </p>
         <p>
             {% if game in bought_games %}
                 <a href="{% url 'game:play' game.slug %}" class="button radius tiny split">
@@ -47,20 +55,60 @@
         </p>
     </div>
 
-    <div class="small-6 large-6 columns">
-        <img itemprop="image" src="{% cloudinary_url game.icon format="jpg" width=250 height=250 crop="fill" %}" width="250" height="250">
-    </div>
-    <div class="small-6 large-6 columns">
-        {% if game.screenshots.all %}
-            <span>Screenshots:</span>
-        {% endif %}
-        <ul data-orbit>
-            {% for screenshot in game.screenshots.all %}
-                <li data-orbit-slide="headline-1">
-                    {% cloudinary screenshot.image format="jpg" width=250 height=250 crop="fill" %}
-                    <div class="orbit-caption">Screenshot {{ forloop.counter }}</div>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+    {% if not minimal %}
+        <div class="row">
+            {% if game.screenshots.all %}
+                <div class="small-12 large-6 columns">
+                    <ul data-orbit>
+                        {% for screenshot in game.screenshots.all %}
+                            <li data-orbit-slide="headline-1">
+                                <img itemprop="image" src="{% cloudinary_url screenshot.image format="jpg" width=512 height=384 crop="pad" gravity="center" %}" width="512" height="384">
+                                <div class="orbit-caption">Screenshot {{ forloop.counter }}</div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <div class="small-12 {% if game.screenshots.all %}large-6{% endif %} columns">
+                <p>{{ game.description }}</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{% trans "Added" %}</th>
+                            <th>{% trans "Sold" %}</th>
+                            <th>{% trans "Played" %}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>{{ game.date_added|date }}</th>
+                            <th>&times; {{ game.downloads }}</th>
+                            <th>&times; {{ game.plays }}</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 columns">
+                {% include '_results_list.html' with scores=global_scores title=_('Global Scores') %}
+            </div>
+
+            {%  if game in request.user.profile.get_developed_games %}
+                <div class="small-12 columns">
+                   <table>
+                        <tr>
+                            <th>{% trans "Earnings" %}</th>
+                            <th>{% trans "First sale" %}</th>
+                        </tr>
+                        <tr>
+                            <td>{{ game_stats.amount_earned }} &euro;</td>
+                            <td>{{ game_stats.first_sell }}</td>
+                        </tr>
+                   </table>
+                </div>
+            {%  endif %}
+        </div>
+    {% endif %}
 </div>
