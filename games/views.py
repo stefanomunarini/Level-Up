@@ -268,8 +268,10 @@ class GameUpdateView(GameCreateUpdateMixin, UpdateView):
 
 class GameDeleteView(LoginRequiredMixin, DeleteView):
     model = Game
-    success_url = reverse_lazy('profile:user-profile')
     template_name = 'game_confirm_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy('game:detail', kwargs={'slug': self.object.slug})
 
     def get_object(self, queryset=None):
         obj = super(GameDeleteView, self).get_object(queryset=queryset)

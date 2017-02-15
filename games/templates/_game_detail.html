@@ -3,22 +3,22 @@
     <div class="row text-center">
         <a href="{% url "game:detail" game.slug %}">
             <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="fit" %}" width="128" height="128"></p>
-            <h3 itemprop="name">{{ game.name }}</h3>
+            <h3 itemprop="name">{{ game.name }}{% if game.dev == user.profile and not game.is_published %} <span class="label warning radius">{% trans "Unpublished" %}</span>{% endif %}</h3>
         </a>
         <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
             <a itemprop="name" href="{% url 'game:developer-page' game.dev.url_slug %}">{{ game.dev }}</a>
             {% if game in bought_games and game.dev.support_email %}
-                <a href="mailto:{{ game.dev.support_email }}" class="label secondary radius tiny fa fa-envelope" title="{% trans "Send an email to the developer" %}"></a>
+                <a itemprop="email" href="mailto:{{ game.dev.support_email }}" class="label secondary radius tiny fa fa-envelope" title="{% trans "Send an email to the developer" %}"></a>
             {% endif %}
             {% if game.dev.website %}
-                <a href="{{ game.dev.website }}" class="label secondary radius tiny fa fa-globe" title="{% trans "Visit the developer’s website" %}"></a>
+                <a itemprop="sameAs" href="{{ game.dev.website }}" class="label secondary radius tiny fa fa-globe" title="{% trans "Visit the developer’s website" %}"></a>
             {% endif %}
         </p>
         <p>
             {% if game in bought_games %}
                 <a href="{% url 'game:play' game.slug %}" class="button radius tiny">
                     {% trans "Play" %}
-                </span></a>
+                </a>
             {% else %}
                 <div id="reveal-buy-{{ game.slug }}" class="reveal-modal" data-reveal aria-labelledby="modal-title-buy-{{ game.slug }}" aria-hidden="true" role="dialog">
                     <h2 id="modal-title-buy-{{ game.slug }}">{% blocktrans with name=game.name %}Buy {{ name }}{% endblocktrans %}</h2>
@@ -46,7 +46,7 @@
                 </a>
                 <br>
                 <ul id="dev-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
-                    <li><a href="{% url 'game:delete' game.pk %}">
+                    <li><a  href="#" data-reveal-id="reveal-delete-{{ game.slug }}">
                         {% if game.is_published %}
                             {% trans "Remove from store" %}
                         {% else %}
@@ -54,6 +54,17 @@
                         {% endif %}
                     </a></li>
                 </ul>
+                <div id="reveal-delete-{{ game.slug }}" class="reveal-modal" data-reveal aria-labelledby="modal-title-delete-{{ game.slug }}" aria-hidden="true" role="dialog">
+                    {% if game.is_published %}
+                        {% blocktrans asvar modal_title with name=game.name %}Remove {{ name }} from store{% endblocktrans %}
+                    {% else %}
+                        {% trans 'Publish' as modal_title %}
+                        {% blocktrans asvar modal_title with name=game.name %}Publish {{ name }}{% endblocktrans %}
+                    {% endif %}
+                    <h2 id="modal-title-delete-{{ game.slug }}">{{ modal_title }}</h2>
+                    {% include "_game_confirm_delete.html" %}
+                    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                </div>
             {% endif %}
             <ul id="social-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
                 <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank"><i class="fa fa-facebook-square"></i> Facebook</a></li>
