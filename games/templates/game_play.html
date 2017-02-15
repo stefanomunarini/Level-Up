@@ -11,15 +11,23 @@
 
 {% block main %}
 
-    <h3><a href="{% url 'game:detail' game.slug %}">{{ game.name|title }}</a></h3>
+    <div class="row">
+        <h3><a href="{% url 'game:detail' game.slug %}">{{ game.name|title }}</a></h3>
+    </div>
 
-    <div id="game_play">
-        <iframe id="game_frame" src="{% if game.url %}{{ game.url }}{% else %}https://grader-host.cs.hut.fi/static/wsd/example_game.html{% endif %}"
-                {% if game_state.state %}style="filter: blur(5px)"{% endif %}></iframe>
-        <p>
-            <input type="submit" id="game_new" class="button" value="New Game" style="display: none;">
-            <input type="submit" id="game_resume" class="button" value="Resume" style="display: none;">
-        </p>
+    <div class="row">
+        <div class="small-12 large-12 columns">
+            <div id="game_play">
+                <iframe id="game_frame" src="{% if game.url %}{{ game.url }}{% else %}https://grader-host.cs.hut.fi/static/wsd/example_game.html{% endif %}"
+                    {% if game_state.state %}style="filter: blur(5px)"{% endif %}></iframe>
+                <div class="row">
+                    <div class="small-12 large-12 columns">
+                        <input type="submit" id="game_new" class="button" value="New Game" style="display: none;">
+                        <input type="submit" id="game_resume" class="button" value="Resume" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row" id="scores">

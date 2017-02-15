@@ -9,18 +9,17 @@
         <div class="small-12 columns">
             <br>
             <h3>{{ game.name|title }}</h3>
-            <br>
-            <div class="small-6 large-6 columns">
+            <div class="small-12 medium-6 large-6 columns">
                 {% cloudinary game.icon format="jpg" width=250 height=250 crop="fill" %}
             </div>
-            <div class="small-6 large-6 columns">
+            <div class="small-12 medium-6 large-6 columns">
                 {% if game.screenshots.all %}
-                    <span>Screenshots:</span>
+                    <span>Screenshots</span>
                 {% endif %}
                 <ul data-orbit>
                     {% for screenshot in game.screenshots.all %}
                         <li data-orbit-slide="headline-1">
-                            {% cloudinary screenshot.image format="jpg" width=250 height=250 crop="fill" %}
+                            {% cloudinary screenshot.image format="jpg" width=200 height=200 crop="fill" %}
                             <div class="orbit-caption">Screenshot {{ forloop.counter }}</div>
                         </li>
                     {% endfor %}
@@ -28,20 +27,16 @@
             </div>
         </div>
     </div>
-
+    <br>
+    {% with request.user.profile.get_developed_games as developed_games %}
+        {% include '_game_actions.html' with game=game developed_games=developed_games bought_games=bought_games %}
+    {%  endwith %}
+    <br>
     <div class="row">
-        <div class="small-12 columns">
-            {% with request.user.profile.get_developed_games as developed_games %}
-                {% include '_game_actions.html' with game=game developed_games=developed_games bought_games=bought_games %}
-            {%  endwith %}
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="small-12 large-7 columns">
+        <div class="small-12 large-6 columns">
             {% include '_game_details.html' %}
         </div>
-        <div class="small-12 large-5 columns">
+        <div class="small-12 large-5 large-offset-1 columns">
             {% include '_results_list.html' with scores=global_scores title=_('Global Scores') %}
         </div>
         <div class="small-12 columns">

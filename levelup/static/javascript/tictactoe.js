@@ -9,8 +9,8 @@ $(document).ready( function () {
 
     $('#pause-game').click(function () {
         enabled = false;
-        save_game_state();
         clearInterval(print_timer);
+        setTimeout(save_game_state, 500);
     });
 
     $('#load-game').click(function () {
@@ -21,30 +21,26 @@ $(document).ready( function () {
     $('.row>span').click(function () {
         if (!clicked) {
             // if first click in the grid, start the timer
-            start_timer();
+            start_time = new Date().getTime();
             clicked = true;
             print_timer = setInterval(print_score, 200);
         }
         if (enabled && $(this).text().length == 0 && counter % 2 == 0) {
-            // only clicks in free cells and wait for the oppo to make the move
+            // accepts only clicks in free cells and wait for the oppo to make the move
 
+            counter++;
             $(this).text('X');
             board_dict[this.id] = $(this).text();
-            counter++;
+            enabled = false;
 
             var winner = check_board();
             if (!winner && counter < 9) {
-                enabled = false; // Disable the board while the AI is thinking the next move
-                setTimeout(make_ai_move, 750);
+                make_ai_move();
             } else if (winner == 'X') {
-                clearInterval(print_timer);
                 terminate_game('You win!');
-                setTimeout(send_score, 500);
+                send_score();
             } else if (counter == 9) {
-                $('#winner').text('It\'s a tie!');
-                $("#pause-game").hide();
-                clearInterval(print_timer);
-                enabled = false;
+                terminate_game('It\'s a tie!');
             }
 
         }
@@ -71,17 +67,19 @@ function init_board(board){
 }
 
 function print_score(){
-    var score = calculate_score();
-    $('#score').text(score);
+    $('#score').text(calculate_score());
 }
 
 function terminate_game(message){
     enabled = false;
+    clearInterval(print_timer);
     $('#winner').text(message);
     $("#pause-game").hide();
 }
 
 function make_ai_move(){
+
+    enabled = false;
 
     if (counter >= 8){ // The game is finished. No more cells are free
         return;
@@ -89,31 +87,26 @@ function make_ai_move(){
 
     counter++;
 
-    var next_move = calculate_next_move();
-    if (next_move.win){
-        $('.wrapper').find('span#' + next_move.win).text('O');
-        board_dict[next_move.win] = 'O';
-    } else if (next_move.stop_oppo){
-        $('.wrapper').find('span#' + next_move.stop_oppo).text('O');
-        board_dict[next_move.stop_oppo] = 'O';
+    var decision = calculate_next_move();
+    console.log(decision)
+    if (decision.win){
+        $('.wrapper').find('span#' + decision.win).text('O');
+        board_dict[decision.win] = 'O';
+        check_O_winner();
+    } else if (decision.stop_oppo){
+        $('.wrapper').find('span#' + decision.stop_oppo).text('O');
+        board_dict[decision.stop_oppo] = 'O';
+        check_O_winner();
+    } else if (decision.next_move){
+        $('.wrapper').find('span#' + decision.next_move).text('O');
+        board_dict[decision.next_move] = 'O';
+        check_O_winner();
+    } else if (decision.new_move){
+        $('.wrapper').find('span#' + decision.new_move).text('O');
+        board_dict[decision.new_move] = 'O';
+        check_O_winner();
     } else {
-        var random_cell = Math.floor(Math.random() * (8 + 1));
-        var cell_id = _int_to_string_value(random_cell);
-        if (board_dict[cell_id]) { // if the cell is already occupied try again
-            make_ai_move();
-        } else {
-            $('.wrapper').find('span#' + cell_id).text('O');
-            board_dict[cell_id] = 'O';
-        }
-    }
-
-    // print_score();
-
-    var winner = check_board();
-    if (winner == 'O') {
-        terminate_game('You lose!');
-    } else {
-        enabled = true;
+        make_random_move()
     }
 }
 
@@ -124,7 +117,7 @@ function calculate_next_move() {
     //              but one or more chances for the opponent to win with
     //              the next move, then block it;
     // - RANDOM_MOVE make a random move if none of the above applies
-    var decision = {'win': null, 'stop_oppo': null};
+    var decision = {'win': null, 'stop_oppo': null, 'next_move': null, 'new_move': null};
     for (var i=0; i<3; i++) {
         var row = {};
         for (var j=0; j<3; j++){
@@ -169,6 +162,18 @@ function calculate_next_move() {
     return decision;
 }
 
+function make_random_move(){
+    var random_cell = Math.floor(Math.random() * (8 + 1));
+    var cell_id = _int_to_string_value(random_cell);
+    if (board_dict[cell_id]) { // if the cell is already occupied try again
+        make_random_move();
+    } else {
+        $('.wrapper').find('span#' + cell_id).text('O');
+        board_dict[cell_id] = 'O';
+    }
+    check_O_winner();
+}
+
 function calculate_triplet_occurrences(triplet){
     // Return a dictionary containing the number of occurrences
     // for every Xs and Os in the triplet
@@ -183,16 +188,17 @@ function calculate_next_cell(row, row_occurrences){
     // Return a dictionary containing the two possible next moves
     // Return null values if no win or block_oppo moves are found
     var decision = {'win': null, 'stop_oppo': null};
-
-    decision['win'] = _take_next_decision(row, row_occurrences, 'O', 'X');
-    decision['stop_oppo'] = _take_next_decision(row, row_occurrences, 'X', 'O');
+    decision['win'] = _elaborate_next_move(row, row_occurrences, 'O', 'X', 2);
+    decision['stop_oppo'] = _elaborate_next_move(row, row_occurrences, 'X', 'O', 2);
+    decision['next_move'] = _elaborate_next_move(row, row_occurrences, 'O', 'X', 1);
+    decision['new_move'] = _elaborate_next_move(row, row_occurrences, 'O', 'X', 0);
     return decision;
 }
 
-function _take_next_decision(row, row_occurrences, player, opponent){
-    if (row_occurrences[player] == 2 && row_occurrences[opponent] == 0){
+function _elaborate_next_move(row, row_occurrences, player, opponent, occurrences){
+    if (row_occurrences[player] == occurrences && row_occurrences[opponent] == 0){
         for (var key in row){
-            if (row[key] == null){
+            if (row[key] == '' || row[key] == null){
                 return key;
             }
         }
@@ -201,20 +207,35 @@ function _take_next_decision(row, row_occurrences, player, opponent){
 
 function _update_decision(decision, next_decision){
     // Update the decision dictionary
-    decision['win'] = next_decision['win'];
+    decision['win'] = next_decision['win']; // win is always null, because otherwise it would have been already returned
     if (next_decision['stop_oppo'] != null){
         decision['stop_oppo'] = next_decision['stop_oppo']
+    }
+    if (next_decision['next_move'] != null){
+        decision['next_move'] = next_decision['next_move']
+    }
+    if (next_decision['new_move'] != null){
+        decision['new_move'] = next_decision['new_move']
     }
     return decision;
 }
 
+function check_O_winner(){
+    var winner = check_board();
+    if (winner == 'O') {
+        terminate_game('You lose!');
+    } else {
+        enabled = true;
+    }
+}
+
 function check_board() {
     // Check if there is a winner with the board at the current status,
-    for ( var i=0; i<3; i++ ) {
+    for (var i=0; i<3; i++) {
         var row = [board_dict[_int_to_string_value(3*i)],
                     board_dict[_int_to_string_value(3*i+1)],
                     board_dict[_int_to_string_value(3*i+2)]];
-        if ( check_triplet(row, 0) ) {
+        if (check_triplet(row, 0)) {
             color_winner_cells_triplet([3*i,3*i+1,3*i+2]);
             return row[0];
         }
@@ -222,7 +243,7 @@ function check_board() {
         var column = [board_dict[_int_to_string_value(i)],
                         board_dict[_int_to_string_value(i+3)],
                         board_dict[_int_to_string_value(i+6)]];
-        if ( check_triplet(column, 0) ) {
+        if (check_triplet(column, 0)) {
             color_winner_cells_triplet([i,i+3,i+6]);
             return row[0];
         }
@@ -231,7 +252,7 @@ function check_board() {
     var diagonal = [board_dict[_int_to_string_value(0)],
                     board_dict[_int_to_string_value(4)],
                     board_dict[_int_to_string_value(8)]];
-    if ( check_triplet(diagonal, 0) ) {
+    if (check_triplet(diagonal, 0)) {
         color_winner_cells_triplet([0,4,8]);
         return diagonal[0];
     }
@@ -239,7 +260,7 @@ function check_board() {
     diagonal = [board_dict[_int_to_string_value(2)],
                 board_dict[_int_to_string_value(4)],
                 board_dict[_int_to_string_value(6)]];
-    if ( check_triplet(diagonal, 0) ) {
+    if (check_triplet(diagonal, 0)) {
         color_winner_cells_triplet([2,4,6]);
         return diagonal[0];
     }
@@ -248,8 +269,8 @@ function check_board() {
 
 function check_triplet(row, index) {
     // Check if the triplet of values are all the same
-    if ( row[index] == row[index+1] && row[index] == 'X' || row[index] == row[index+1] && row[index] == 'O') {
-        if ( index == 1 ) {
+    if (row[index] == row[index+1] && row[index] == 'X' || row[index] == row[index+1] && row[index] == 'O') {
+        if (index == 1) {
             return true;
         }
         return check_triplet(row, index + 1);
@@ -284,22 +305,6 @@ function _int_to_string_value(int_value){
     } else if (int_value == 8) {
         return 'ninth';
     }
-}
-
-function start_timer() {
-    start_time = new Date().getTime();
-}
-
-function calculate_total_time() {
-    if (start_time == 0){
-        start_time = new Date().getTime();
-    }
-    if (end_time == 0){
-        end_time = new Date().getTime();
-    }
-    var total_time = ((end_time - start_time) / 1000) % 60 + previous_time;
-    end_time = 0;
-    return total_time;
 }
 
 function calculate_score(){
@@ -349,6 +354,19 @@ function calculate_time_score(){
     return 10 - x;
 }
 
+function calculate_total_time() {
+    if (start_time == 0){
+        start_time = new Date().getTime();
+        end_time = start_time + 1
+    }
+    if (end_time == 0){
+        end_time = new Date().getTime();
+    }
+    var total_time = ((end_time - start_time) / 1000) % 60 + previous_time;
+    end_time = 0;
+    return total_time;
+}
+
 function addWebAppMessageListener(){
     window.addEventListener("message", function(evt) {
         if(evt.data.messageType === "LOAD") {
@@ -387,7 +405,7 @@ function save_game_state(){
 function send_score (){
     var msg = {
         "messageType": "SCORE",
-        "score": score
+        "score": calculate_score()
     };
     window.parent.postMessage(msg, "*");
 }
@@ -398,7 +416,7 @@ function set_frame_resolution(){
         messageType: "SETTING",
         options: {
             "width": 400, //Integer
-            "height": 500 //Integer
+            "height": 420 //Integer
         }
     };
     window.parent.postMessage(message, "*");

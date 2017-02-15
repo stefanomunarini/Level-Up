@@ -20,7 +20,7 @@ def get_best_sellers(games):
 
 def get_trending_this_week(games, today):
     one_week_ago = today - timedelta(7)
-    return games.filter(transactions__datetime__gte=one_week_ago).order_by()
+    return games.filter(transactions__datetime__gte=one_week_ago)
 
 
 def get_trending_this_month(games, today):
