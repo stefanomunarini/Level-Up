@@ -19,8 +19,7 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
 
     {% block css %}
         {% block foundation_css %}
-            <link href="{% static "foundation/css/normalize.css" %}" rel="stylesheet"/>
-            <link href="{% static "foundation/css/foundation.css" %}" rel="stylesheet"/>
+            <link href="{% static "foundation/css/app.css" %}" rel="stylesheet"/>
         {% endblock foundation_css %}
         {% block fontawesome_css %}
             <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet"/>
@@ -32,10 +31,6 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
     {% endblock css %}
 
     {% block head_js %}
-        {% block foundation_modernizer %}
-            <script src="{% static "foundation/js/vendor/modernizr.js" %}"></script>
-        {% endblock foundation_modernizer %}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     {% endblock head_js %}
 
 </head>
@@ -69,10 +64,12 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
 
     {% block body_js %}
         {% block foundation_jquery %}
-            <script src="{% static "foundation/js/vendor/jquery.js" %}"></script>
+            <script src="{% static "foundation/bower_components/jquery/dist/jquery.js" %}"></script>
         {% endblock foundation_jquery %}
         {% block foundation_js %}
-            <script src="{% static "foundation/js/foundation.min.js" %}"></script>
+            <script src="{% static "foundation/bower_components/what-input/dist/what-input.js" %}"></script>
+            <script src="{% static "foundation/bower_components/foundation-sites/dist/js/foundation.js" %}"></script>
+            <script src="{% static "foundation/js/app.js" %}"></script>
         {% endblock foundation_js %}
         {% block canvasjs %}
             <script src="{% static "javascript/jquery.canvasjs.min.js" %}"></script>

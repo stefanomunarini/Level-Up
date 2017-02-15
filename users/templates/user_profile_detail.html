@@ -9,13 +9,13 @@
     {% if user.profile.is_developer %}
         <div class="row">
             <div class="small-12 columns">
-                <ul class="tabs" data-tab data-options="deep_linking:true">
-                    <li class="tab-title active"><a href="#stats">{% trans 'Statistics' %}</a></li>
-                    <li class="tab-title"><a href="#games">{% trans 'Games' %}</a></li>
-                    <li class="tab-title"><a href="#api-keys">{% trans 'API Keys' %}</a></li>
+                <ul class="tabs" data-tabs id="profile-tabs">
+                    <li class="tabs-title is-active"><a href="#stats" aria-selected="true">{% trans 'Statistics' %}</a></li>
+                    <li class="tabs-title"><a href="#games">{% trans 'Games' %}</a></li>
+                    <li class="tabs-title"><a href="#api-keys">{% trans 'API Keys' %}</a></li>
                 </ul>
-                <div class="tabs-content">
-                    <div class="content active" id="stats">
+                <div class="tabs-content" data-tabs-content="profile-tabs">
+                    <div class="tabs-panel is-active" id="stats">
                         <div class="row">
                             <div class="small-12 columns">
                             </div>
@@ -27,14 +27,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="content" id="games">
+                    <div class="tabs-panel" id="games">
                         <div class="row">
                             <div class="small-12 columns">
                                 {% include '_game_grid.html' %}
                             </div>
                         </div>
                     </div>
-                    <div class="content" id="api-keys">
+                    <div class="tabs-panel" id="api-keys">
                         <div class="row">
                             <ul>
                             {% for api_token in request.user.profile.api_tokens.all %}

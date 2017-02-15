@@ -36,7 +36,7 @@
                     </strong>
                 </a>
             {% endif %}
-            <a href="#" data-dropdown="social-drop-{{ game.slug }}" aria-controls="social-drop-{{ game.slug }}" aria-expanded="false" class="button secondary radius tiny dropdown">
+            <a href="#" data-toggle="social-drop-{{ game.slug }}" aria-controls="social-drop-{{ game.slug }}" aria-expanded="false" class="button secondary radius tiny dropdown">
                 {% trans "Share" %}
             </a>
             {% if game.dev == user.profile %}
@@ -45,7 +45,7 @@
                     <span data-dropdown="dev-drop-{{ game.slug }}"></span>
                 </a>
                 <br>
-                <ul id="dev-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
+                <ul id="dev-drop-{{ game.slug }}" class="dropdown-pane" data-dropdown>
                     <li><a  href="#" data-reveal-id="reveal-delete-{{ game.slug }}">
                         {% if game.is_published %}
                             {% trans "Remove from store" %}
@@ -66,7 +66,7 @@
                     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                 </div>
             {% endif %}
-            <ul id="social-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
+            <ul id="social-drop-{{ game.slug }}" class="dropdown-pane" data-dropdown>
                 {% url "game:detail" game.slug as game_path %}
                 {% with request.get_host|add:game_path as game_url %}
                     <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ game_url }}" target="_blank"><i class="fa fa-facebook-square"></i> Facebook</a></li>
