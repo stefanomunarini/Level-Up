@@ -1,8 +1,10 @@
 {% load i18n cloudinary %}
 <div itemscope itemtype="http://schema.org/Game">
     <div class="row text-center">
-        <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="fit" %}" width="128" height="128"></p>
-        <h3 itemprop="name">{{ game.name }}</h3>
+        <a href="{% url "game:detail" game.slug %}">
+            <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="fit" %}" width="128" height="128"></p>
+            <h3 itemprop="name">{{ game.name }}</h3>
+        </a>
         <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
             <a itemprop="name" href="{% url 'game:developer-page' game.dev.url_slug %}">{{ game.dev }}</a>
             {% if game in bought_games and game.dev.support_email %}
@@ -14,8 +16,8 @@
         </p>
         <p>
             {% if game in bought_games %}
-                <a href="{% url 'game:play' game.slug %}" class="button radius tiny split">
-                    {% trans "Play" %}<span data-dropdown="social-drop-{{ game.slug }}">
+                <a href="{% url 'game:play' game.slug %}" class="button radius tiny">
+                    {% trans "Play" %}
                 </span></a>
             {% else %}
                 <div id="reveal-buy-{{ game.slug }}" class="reveal-modal" data-reveal aria-labelledby="modal-title-buy-{{ game.slug }}" aria-hidden="true" role="dialog">
@@ -24,15 +26,19 @@
                     {% include "_game_confirm_buy.html" %}
                     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                 </div>
-                <a href="#" data-reveal-id="reveal-buy-{{ game.slug }}" class="button radius tiny split success">
-                    {% if game.price == 0 %}
-                        {% trans "Free" %}
-                    {% else %}
-                        {% trans "Buy" %}: {{ game.price }} &euro;
-                    {% endif %}
-                    <span data-dropdown="social-drop-{{ game.slug }}"></span>
+                <a href="#" data-reveal-id="reveal-buy-{{ game.slug }}" class="button radius tiny success">
+                    <strong>
+                        {% if game.price == 0 %}
+                            {% trans "Free" %}
+                        {% else %}
+                            {{ game.price }} &euro;
+                        {% endif %}
+                    </strong>
                 </a>
             {% endif %}
+            <a href="#" class="button radius tiny split">
+                {% trans "Share" %}<span data-dropdown="social-drop-{{ game.slug }}">
+            </span></a>
             {% if game.dev == user.profile %}
                 <a href="{% url 'game:update' game.slug %}" class="button radius tiny secondary split">
                     {% trans "Edit" %}
@@ -50,7 +56,9 @@
                 </ul>
             {% endif %}
             <ul id="social-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
-                <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank">{% trans "Share on Facebook or something!" %}</a></li>
+                <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank"><i class="fa fa-facebook-square"></i> Facebook</a></li>
+                <li><a href="https://plus.google.com/share?url={{ request.build_absolute_uri|urlencode }}" target="_blank"><i class="fa fa-google-plus-square"></i> Google Plus</a></li>
+                <li><a href="https://twitter.com/home?status={{ request.build_absolute_uri|urlencode }}" target="_blank"><i class="fa fa-twitter-square"></i> Twitter</a></li>
             </ul>
         </p>
     </div>
