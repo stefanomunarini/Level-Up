@@ -14,7 +14,9 @@ def get_developed_games(api_token_obj):
             'slug': game.slug,
             'price': game.price,
             'downloads': game.downloads,
-            'plays': game.plays
+            'plays': game.plays,
+            'description': game.description,
+            'category': game.category
         })
     return serialized_games
 
@@ -47,6 +49,7 @@ def get_game_stats(game):
         'name': game.name,
         'slug': game.slug,
         'price': game.price,
+        'category': game.category,
         'developer': {
             'name': dev.display_name,
             'url_slug': dev.url_slug,
@@ -56,3 +59,19 @@ def get_game_stats(game):
         'played': game.plays
     }
     return stats
+
+
+def search_game(filtered_games):
+    serialized_games = []
+    for game in filtered_games:
+        serialized_games.append({
+            'name': game.name,
+            'slug': game.slug,
+            'price': game.price,
+            'downloads': game.downloads,
+            'plays': game.plays,
+            'description': game.description,
+            'developer': game.dev.display_name,
+            'category': game.category
+        })
+    return serialized_games
