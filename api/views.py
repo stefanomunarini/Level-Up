@@ -99,3 +99,13 @@ class ApiGameSearchView(GameSearchMixin, MultipleObjectMixin, ApiBaseView):
             }
         }
         return JsonResponse(data=response, status=200)
+
+
+class ApiTopGamesView(ApiBaseView):
+    def request_valid(self):
+        response = {
+            'data': {
+                'games': services.get_top_games()
+            }
+        }
+        return JsonResponse(data=response, status=200)
