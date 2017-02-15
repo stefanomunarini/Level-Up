@@ -50,7 +50,7 @@
                 </ul>
             {% endif %}
             <ul id="social-drop-{{ game.slug }}" class="f-dropdown" data-dropdown-content>
-                <li><a href="#">{% trans "Share on Facebook or something!" %}</a></li>
+                <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank">{% trans "Share on Facebook or something!" %}</a></li>
             </ul>
         </p>
     </div>
