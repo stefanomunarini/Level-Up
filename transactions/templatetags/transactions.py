@@ -1,12 +1,9 @@
 from __future__ import absolute_import
 
-import json
 from _md5 import md5
 
 from django import template
-from django.forms import Form
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 
 from levelup.settings import PAYMENT_SERVICE_SELLER_ID, PAYMENT_SERVICE_SECRET_KEY
 from transactions.forms import TransactionForm

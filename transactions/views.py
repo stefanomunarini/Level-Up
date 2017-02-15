@@ -50,6 +50,7 @@ def send_email_after_transaction(sender, instance, **kwargs):
                         'game': instance.game,
                         'url': 'https://' + HEROKU_HOST})
 
+
 def save_transaction(game, user, status, payment_ref=None):
     transaction = Transaction()
     transaction.game = game

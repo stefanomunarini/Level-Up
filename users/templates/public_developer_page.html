@@ -1,7 +1,9 @@
 {% extends "__base.html" %}
 {% load static i18n %}
 
-{% block title %}{% trans 'My Profile' %} &ndash; {{ block.super }}{% endblock title %}
+{% block title %}{{ user.profile.display_name }} &ndash; {{ block.super }}{% endblock title %}
+
+{# TODO: Modify this to be a public developer page #}
 
 
 {% block main %}
