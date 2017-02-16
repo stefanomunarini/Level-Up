@@ -9,42 +9,46 @@
     {% if user.profile.is_developer %}
         <div class="row">
             <div class="small-12 columns">
-                <ul class="tabs" data-tabs id="profile-tabs">
-                    <li class="tabs-title is-active"><a href="#stats" aria-selected="true">{% trans 'Statistics' %}</a></li>
-                    <li class="tabs-title"><a href="#games">{% trans 'Games' %}</a></li>
-                    <li class="tabs-title"><a href="#api-keys">{% trans 'API Keys' %}</a></li>
-                </ul>
-                <div class="tabs-content" data-tabs-content="profile-tabs">
-                    <div class="tabs-panel is-active" id="stats">
-                        <div class="row">
-                            <div class="small-12 columns">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <h3>{% trans "Sales and Profits" %}</h3>
-                                <div id="dev-statistics-chart" class="expanded" style="height: 50%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tabs-panel" id="games">
-                        <div class="row">
-                            <div class="small-12 columns">
-                                {% include '_game_grid.html' %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tabs-panel" id="api-keys">
-                        <div class="row">
-                            <ul>
-                            {% for api_token in request.user.profile.api_tokens.all %}
-                                <li><b>{{ api_token.token }}</b> - {{ api_token.website_url }}</li>
-                            {% empty %}
-                                <p>No keys found.</p>
-                            {% endfor %}
+                <div data-sticky-container>
+                    <div class="sticky" id="profile-nav" data-sticky data-margin-top="0" style="width:100%;" data-margin-bottom="0" data-top-anchor="stats">
+                        <nav data-magellan>
+                            <ul class="horizontal menu expanded">
+                                <li><a href="#stats">{% trans 'Statistics' %}</a></li>
+                                <li><a href="#api-keys">{% trans 'API Keys' %}</a></li>
+                                <li><a href="#games">{% trans 'Games' %}</a></li>
                             </ul>
-                        </div>
+                        </nav>
                     </div>
+                </div>
+                <div class="sections">
+                    <section id="stats" data-magellan-target="stats">
+                        <h3>{% trans "Sales and Profits" %}</h3>
+                        <div id="dev-statistics-chart" class="expanded" style="height: 480px;"></div>
+                    </section>
+                    <hr>
+                    <section id="api-keys" data-magellan-target="api-keys">
+                        <h3>{% trans "API Keys" %}</h3>
+                        <a href="{% url 'profile:create-api-key' %}" class="button">{% trans "Create a new API key" %}</a>
+                        <table>
+                            <tr>
+                                <th>{% trans "Token" %}</th>
+                                <th>{% trans "Website" %}</th>
+                            </tr>
+                            {% for api_token in request.user.profile.api_tokens.all %}
+                                <tr>
+                                    <td>{{ api_token.token }}</td>
+                                    <td>{{ api_token.website_url }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="2">{% trans "No API keys found" %}</td></tr>
+                            {% endfor %}
+                        </table>
+                    </section>
+                    <hr>
+                    <section id="games" data-magellan-target="games">
+                        <h3>{% trans "Games" %}</h3>
+                        {% include '_game_grid.html' %}
+                    </section>
                 </div>
             </div>
         </div>

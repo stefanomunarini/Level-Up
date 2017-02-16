@@ -17,6 +17,10 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
     
     <title>{% block title %}LevelUp{% endblock title %}</title>
 
+    {% block fonts %}
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Noto+Serif|Overpass+Mono" rel="stylesheet">
+    {% endblock fonts %}
+
     {% block css %}
         {% block foundation_css %}
             <link href="{% static "foundation/css/app.css" %}" rel="stylesheet"/>
@@ -36,26 +40,36 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
 </head>
 <body {% block body_attr %}{% endblock %}>
     {% block body %}
-        <header class="row">
-            {% block header %}
-                {% include "_header.html" %}
-            {% endblock header %}
-        </header>
-        {% block navigation %}
-            {% include "_navigation.html" %}
-        {% endblock navigation %}
-        <div class="row">
-            {% block messages %}
-                {% include "_messages.html" %}
-            {% endblock messages %}
+        <div class="expanded row collapse" data-equalizer>
+            <div id="sidebar" class="small-12 medium-4 large-3 columns" data-equalizer-watch>
+                <header class="row">
+                    {% block header %}
+                        {% include "_header.html" %}
+                    {% endblock header %}
+                </header>
+                <nav class="row">
+                    {% block navigation %}
+                        {% include "_navigation.html" %}
+                    {% endblock navigation %}
+                </nav>
+            </div>
+            <main class="small-12 medium-8 large-9 columns" data-equalizer-watch>
+                <div class="row">
+                    <div class="small-12 columns">
+                        {% block messages %}
+                            {% include "_messages.html" %}
+                        {% endblock messages %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 columns">
+                        {% block main %}
+                        {% endblock main %}
+                    </div>
+                </div>
+            </main>
         </div>
-        <main class="row"><div class="small-12 columns">
-            {% block main %}
-            {% endblock main %}
-            {% block content %}
-            {% endblock %}
-        </div></main>
-        <footer>
+        <footer class="expanded row">
             {% block footer %}
                 {% include "_footer.html" %}
             {% endblock footer %}
@@ -69,7 +83,6 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
         {% block foundation_js %}
             <script src="{% static "foundation/bower_components/what-input/dist/what-input.js" %}"></script>
             <script src="{% static "foundation/bower_components/foundation-sites/dist/js/foundation.js" %}"></script>
-            <script src="{% static "foundation/js/app.js" %}"></script>
         {% endblock foundation_js %}
         {% block canvasjs %}
             <script src="{% static "javascript/jquery.canvasjs.min.js" %}"></script>

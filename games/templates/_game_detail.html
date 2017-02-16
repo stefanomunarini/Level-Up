@@ -1,10 +1,14 @@
 {% load i18n cloudinary %}
+
 <div itemscope itemtype="http://schema.org/Game">
     <div class="row text-center">
         <a href="{% url "game:detail" game.slug %}">
+            {# Game icon #}
             <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="pad" %}" width="128" height="128"></p>
+            {# Game name #}
             <h3 itemprop="name">{{ game.name }}{% if game.dev == user.profile and not game.is_published %} <span class="label warning radius">{% trans "Unpublished" %}</span>{% endif %}</h3>
         </a>
+        {# Game developer #}
         <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
             <a itemprop="name" href="{% url 'game:developer-page' game.dev.url_slug %}">{{ game.dev }}</a>
             {% if game in bought_games and game.dev.support_email %}
@@ -14,67 +18,76 @@
                 <a itemprop="sameAs" href="{{ game.dev.website }}" class="label secondary radius fa fa-globe" title="{% trans "Visit the developer’s website" %}"></a>
             {% endif %}
         </p>
-        <p>
+        {# Game actions #}
+        <div class="button-group">
             {% if game in bought_games %}
-                <a href="{% url 'game:play' game.slug %}" class="button radius tiny">
-                    <strong>{% trans "Play" %}</strong>
+                <a href="{% url 'game:play' game.slug %}" class="button">
+                    {% trans "Play" %}
                 </a>
             {% else %}
-                <div id="reveal-buy-{{ game.slug }}" class="reveal-modal" data-reveal aria-labelledby="modal-title-buy-{{ game.slug }}" aria-hidden="true" role="dialog">
-                    <h2 id="modal-title-buy-{{ game.slug }}">{% blocktrans with name=game.name %}Buy {{ name }}{% endblocktrans %}</h2>
+                <div id="dialog-buy-{{ game.slug }}" class="reveal" data-reveal aria-labelledby="dialog-title-buy-{{ game.slug }}">
+                    <h2 id="dialog-title-buy-{{ game.slug }}">{% blocktrans with name=game.name %}Buy {{ name }}{% endblocktrans %}</h2>
                     <p>{% trans "The payment will be processed by Simple Payments&trade;." %}</p>
                     {% include "_game_confirm_buy.html" %}
-                    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                    <button class="close-button" data-close aria-label="{% trans "Close dialog" %}" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <a href="#" data-reveal-id="reveal-buy-{{ game.slug }}" class="button radius tiny success">
-                    <strong>
-                        {% if game.price == 0 %}
-                            {% trans "Free" %}
-                        {% else %}
-                            <i class="fa fa-cart-arrow-down"></i> {{ game.price }} &euro;
-                        {% endif %}
-                    </strong>
+                <a data-open="dialog-buy-{{ game.slug }}" class="button success">
+                    <i class="fa fa-cart-arrow-down"></i>
+                    {% if game.price == 0 %}
+                        {% trans "Free" %}
+                    {% else %}
+                        {{ game.price }} &euro;
+                    {% endif %}
                 </a>
             {% endif %}
-            <a href="#" data-toggle="social-drop-{{ game.slug }}" aria-controls="social-drop-{{ game.slug }}" aria-expanded="false" class="button secondary radius tiny dropdown">
-                {% trans "Share" %}
+            <a data-toggle="social-drop-{{ game.slug }}" class="button hollow">
+                {# Screen readers #}<span class="show-for-sr">{% trans "Show sharing menu" %}</span>
+                {# Visual users #}<span aria-hidden="true"><i class="fa fa-share-square-o"></i></span>
             </a>
             {% if game.dev == user.profile %}
-                <a href="{% url 'game:update' game.slug %}" class="button radius tiny secondary split" id="game_update_button">
-                    {% trans "Edit" %}
-                    <span data-dropdown="dev-drop-{{ game.slug }}"></span>
+                {# TODO: FIX DELETE/PUBLISH BUTTON #}
+
+                <a data-toggle="dev-drop-{{ game.slug }}" class="button">
+                    {# Screen readers #}<span class="show-for-sr">{% trans "Show developer actions menu" %}</span>
+                    {# Visual users #}<span aria-hidden="true"><i class="fa fa-cog"></i></span>
                 </a>
-                <br>
-                <ul id="dev-drop-{{ game.slug }}" class="dropdown-pane" data-dropdown>
-                    <li><a  href="#" data-reveal-id="reveal-delete-{{ game.slug }}">
+                <div id="dev-drop-{{ game.slug }}" class="dropdown-pane stacked button-group" data-dropdown>
+                    <a href="{% url 'game:update' game.slug %}" class="button">
+                        {% trans "Edit" %}
+                    </a>
+                    <a data-open="dialog-delete-{{ game.slug }}" class="button">
                         {% if game.is_published %}
                             {% trans "Remove from store" %}
                         {% else %}
                             {% trans 'Publish' %}
                         {% endif %}
-                    </a></li>
-                </ul>
-                <div id="reveal-delete-{{ game.slug }}" class="reveal-modal" data-reveal aria-labelledby="modal-title-delete-{{ game.slug }}" aria-hidden="true" role="dialog">
+                    </a>
+                </div>
+                <div id="dialog-delete-{{ game.slug }}" class="reveal" data-reveal aria-labelledby="dialog-title-delete-{{ game.slug }}">
                     {% if game.is_published %}
                         {% blocktrans asvar modal_title with name=game.name %}Remove {{ name }} from store{% endblocktrans %}
                     {% else %}
                         {% trans 'Publish' as modal_title %}
                         {% blocktrans asvar modal_title with name=game.name %}Publish {{ name }}{% endblocktrans %}
                     {% endif %}
-                    <h2 id="modal-title-delete-{{ game.slug }}">{{ modal_title }}</h2>
+                    <h2 id="dialog-title-delete-{{ game.slug }}">{{ modal_title }}</h2>
                     {% include "_game_confirm_delete.html" %}
-                    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                    <button class="close-button" data-close aria-label="{% trans "Close dialog" %}" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             {% endif %}
-            <ul id="social-drop-{{ game.slug }}" class="dropdown-pane" data-dropdown>
+            <div id="social-drop-{{ game.slug }}" class="dropdown-pane stacked button-group" data-dropdown>
                 {% url "game:detail" game.slug as game_path %}
                 {% with request.get_host|add:game_path as game_url %}
-                    <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ game_url }}" target="_blank"><i class="fa fa-facebook-square"></i> Facebook</a></li>
-                    <li><a href="https://plus.google.com/share?url={{ game_url }}" target="_blank"><i class="fa fa-google-plus-square"></i> Google Plus</a></li>
-                    <li><a href="https://twitter.com/home?status={{ game_url }}" target="_blank"><i class="fa fa-twitter-square"></i> Twitter</a></li>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ game_url }}" target="_blank" class="button"><i class="fa fa-facebook-square"></i> Facebook</a>
+                    <a href="https://plus.google.com/share?url={{ game_url }}" target="_blank" class="button"><i class="fa fa-google-plus-square"></i> Google Plus</a>
+                    <a href="https://twitter.com/home?status={{ game_url }}" target="_blank" class="button"><i class="fa fa-twitter-square"></i> Twitter</a>
                 {% endwith %}
-            </ul>
-        </p>
+            </div>
+        </div>
     </div>
 
     {% if not minimal %}
