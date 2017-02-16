@@ -1,23 +1,25 @@
+{% load i18n %}
+
 {# A number to set how many page numbers are shown around the current page and at the ends of the range #}
 {% with max_distance_from_current_or_ends=1 %}
 {% if is_paginated %}
-    <ul class="pagination">
+    <ul class="pagination text-center" role="navigation" aria-label="{% trans "Pagination" %}">
         {% if page_obj.has_previous %}
-            <li class="arrow"><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+            <li class="pagination-previous"><a href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}<span class="show-for-sr"> {% trans "page" %}</span></a></li>
         {% else %}
-            <li class="arrow unavailable"><a href="">&laquo;</a></li>
+            <li class="pagination-previous disabled">{% trans "Previous" %}<span class="show-for-sr"> {% trans "page" %}</span></li>
         {% endif %}
         {% for i in paginator.page_range %}
             {% if page_obj.number == i %}
-                <li class="current"><a href="">{{ i }}</a></li>
+                <li class="current">{{ i }}</li>
             {% else %}
                 <li><a href="?page={{ i }}">{{ i }}</a></li>
             {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-            <li class="arrow"><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            <li class="pagination-next"><a href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}<span class="show-for-sr"> {% trans "page" %}</span></a></li>
         {% else %}
-            <li class="arrow unavailable"><a href="">&raquo;</a></li>
+            <li class="pagination-next disabled">{% trans "Next" %}<span class="show-for-sr"> {% trans "page" %}</span></li>
         {% endif %}
     </ul>
 {% endif %}

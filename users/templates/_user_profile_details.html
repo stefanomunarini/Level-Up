@@ -27,7 +27,7 @@
             </small>
             {% if user.profile.is_developer %}
                 <small>
-                    <a id="game_new" href="{% url 'profile:create-api-key' %}" class="button">New API Key</a>
+                    <a href="{% url 'profile:create-api-key' %}" class="button">New API Key</a>
                 </small>
             {% endif %}
         </p>
