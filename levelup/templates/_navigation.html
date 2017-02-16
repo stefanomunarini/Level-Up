@@ -5,7 +5,7 @@
 {% url 'profile:login' as login_url %}
 
 
-<ul class="vertical menu icon-top" data-accordion-menu>
+<ul class="vertical menu" data-accordion-menu>
     {% for link in main_menu.left %}{% if not link.hide %}
         {% url link.view as href %}
         <li class="{% if href == request.path %}active{% endif %}">

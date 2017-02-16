@@ -13,7 +13,7 @@
                 <h2>{% trans 'Most Played' %}</h2>
             </div>
         </div>
-        {% include "_game_grid.html" with games=most_played %}
+        {% include "_game_grid.html" with games=most_played type="most-played" %}
     {% endif %}
 
     {% if best_sellers %}
@@ -22,7 +22,7 @@
                 <h2>{% trans 'Best Sellers' %}</h2>
             </div>
         </div>
-        {% include "_game_grid.html" with games=best_sellers %}
+        {% include "_game_grid.html" with games=best_sellers type="best-sellers" %}
     {% endif %}
 
     {% if trending_this_month %}
@@ -31,7 +31,7 @@
                 <h2>{% trans 'Trending this month' %}</h2>
             </div>
         </div>
-        {% include "_game_grid.html" with games=trending_this_month %}
+        {% include "_game_grid.html" with games=trending_this_month type="trending-month" %}
     {% endif %}
 
     {% if trending_this_week %}
@@ -40,7 +40,7 @@
         <h2>{% trans 'Trending this week' %}</h2>
             </div>
         </div>
-        {% include "_game_grid.html" with games=trending_this_week %}
+        {% include "_game_grid.html" with games=trending_this_week type="trending-week" %}
     {% endif %}
 
 {% endblock main %}

@@ -15,3 +15,14 @@
     color: white;
     text-align: center;
 }
+
+.action-dropdown {
+    padding: 0;
+}
+
+.action-dropdown .button {
+    text-align: left;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
