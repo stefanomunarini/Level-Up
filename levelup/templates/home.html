@@ -4,39 +4,39 @@
 {% block main %}
     <h1>{% trans 'Welcome!' %}</h1>
     {% if most_played %}
-        <h2>{% trans 'Most Played' %}</h2>
         <div class="row">
             <div class="small-12 columns">
-                {% include "_game_grid.html" with games=most_played %}
+                <h2>{% trans 'Most Played' %}</h2>
             </div>
         </div>
+        {% include "_game_grid.html" with games=most_played %}
     {% endif %}
 
     {% if best_sellers %}
-        <h2>{% trans 'Best Sellers' %}</h2>
         <div class="row">
             <div class="small-12 columns">
-                {% include "_game_grid.html" with games=best_sellers %}
+                <h2>{% trans 'Best Sellers' %}</h2>
             </div>
         </div>
+        {% include "_game_grid.html" with games=best_sellers %}
     {% endif %}
 
     {% if trending_this_month %}
-        <h2>{% trans 'Trending this month' %}</h2>
         <div class="row">
             <div class="small-12 columns">
-                {% include "_game_grid.html" with games=trending_this_month %}
+                <h2>{% trans 'Trending this month' %}</h2>
             </div>
         </div>
+        {% include "_game_grid.html" with games=trending_this_month %}
     {% endif %}
 
     {% if trending_this_week %}
-        <h2>{% trans 'Trending this week' %}</h2>
         <div class="row">
             <div class="small-12 columns">
-                {% include "_game_grid.html" with games=trending_this_week %}
+        <h2>{% trans 'Trending this week' %}</h2>
             </div>
         </div>
+        {% include "_game_grid.html" with games=trending_this_week %}
     {% endif %}
 
 {% endblock main %}

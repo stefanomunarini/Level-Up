@@ -19,18 +19,18 @@
             </p>
             <h3 itemprop="name">{{ developer.display_name }}</h3>
             <p>
-                <ul class="button-group radius">
+                <div class="button-group">
                     {% if developer.support_email %}{# TODO: check if a game is owned #}
-                        <li><a itemprop="email" href="mailto:{{ game.dev.support_email }}" class="button secondary">
-                            <i class="fa fa-envelope"></i> {% trans "Send an email the developer" %}
-                        </a></li>
+                        <a itemprop="email" href="mailto:{{ game.dev.support_email }}" class="button secondary">
+                            <i class="fa fa-envelope"></i> {% trans "Send an email to the developer" %}
+                        </a>
                     {% endif %}
                     {% if developer.website %}
-                        <li><a itemprop="sameAs" href="{{ game.dev.website }}" class="button secondary">
+                        <a itemprop="sameAs" href="{{ game.dev.website }}" class="button secondary">
                             <i class="fa fa-globe"></i> {% trans "Visit the developer’s website" %}
-                        </a></li>
+                        </a>
                     {% endif %}
-                </ul>
+                </div>
             </p>
         </div>
     </div>
@@ -42,11 +42,7 @@
             </h2>
         </div>
     </div>
-    <div class="row">
-        <div class="small-12 columns">
-            {% include '_game_grid.html' with games=developer.get_developed_games %}
-        </div>
-    </div>
+    {% include '_game_grid.html' with games=developer.get_developed_games %}
 
 {% endblock main %}
 {% if user_profile.is_developer %}
