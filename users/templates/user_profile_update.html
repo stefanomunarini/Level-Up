@@ -7,9 +7,10 @@
     <h3>{% trans "Update Profile" %} <small><a href="{% url 'profile:user-profile' %}">{{ user.username }}</a></small></h3>
     <form action="{% url 'profile:user-profile-update' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+
         {% include "_input_grid.html" with form=user_profile_form.management_form %}<hr>
         {% include "_input_grid.html" with form=user_form %}<hr>
-        {% include "_input_grid.html" with form=user_profile_form submit_text=_('Update') %}
+        {% include "_input_grid.html" with form=user_profile_form form_update=True submit_text=_('Update') %}
     </form>
 
 {% endblock %}

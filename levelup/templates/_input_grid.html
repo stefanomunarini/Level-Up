@@ -14,7 +14,7 @@
         </div>
     {% endif %}
     {% for field in form %}
-        {% if field.field|get_class == 'CloudinaryFileField' %}
+        {% if field.field|get_class == 'CloudinaryFileField' and form_update %}
             <div class="profile-pic">
                 {% if user.profile.third_party_login %}
                     {# TODO: create a method that returns profile pic in model#}
