@@ -53,6 +53,10 @@
 
 // LevelUp customizations
 
+a .label {
+  cursor: pointer;
+}
+
 #sidebar {
   background: $primary-color;
   color: $white;
@@ -94,10 +98,15 @@
 }
 
 main {
+  padding-top: $global-padding;
   background: $white;
 
   #profile-nav {
     background: $white;
+  }
+
+  .game-actions {
+    margin-top: $global-margin;
   }
 }
 

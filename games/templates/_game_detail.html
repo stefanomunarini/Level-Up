@@ -1,91 +1,104 @@
 {% load i18n cloudinary %}
 
 <div itemscope itemtype="http://schema.org/Game">
-    <div class="row text-center">
-        <a href="{% url "game:detail" game.slug %}">
-            {# Game icon #}
-            <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="pad" %}" width="128" height="128"></p>
-            {# Game name #}
-            <h3 itemprop="name">{{ game.name }}{% if game.dev == user.profile and not game.is_published %} <span class="label warning radius">{% trans "Unpublished" %}</span>{% endif %}</h3>
-        </a>
-        {# Game developer #}
-        <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-            <a itemprop="name" href="{% url 'game:developer-page' game.dev.url_slug %}">{{ game.dev }}</a>
-            {% if game in bought_games and game.dev.support_email %}
-                <a itemprop="email" href="mailto:{{ game.dev.support_email }}" class="label secondary radius fa fa-envelope" title="{% trans "Send an email to the developer" %}"></a>
-            {% endif %}
-            {% if game.dev.website %}
-                <a itemprop="sameAs" href="{{ game.dev.website }}" class="label secondary radius fa fa-globe" title="{% trans "Visit the developer’s website" %}"></a>
-            {% endif %}
-        </p>
-        {# Game actions #}
-        <div class="button-group">
-            {% if game in bought_games %}
-                <a href="{% url 'game:play' game.slug %}" class="button">
-                    {% trans "Play" %}
+    <div class="card">
+        <div class="row">
+            <div class="small-centered small-12 {% if not minimal %}medium-6 large-4{% endif %} columns text-center">
+                <a href="{% url "game:detail" game.slug %}">
+                    {# Game icon #}
+                    <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="pad" %}" width="128" height="128"></p>
+                    {# If the game is not published, add a badge #}
+                    {% if game.dev == user.profile and not game.is_published %}<span class="label warning">{% trans "Unpublished" %}</span>{% endif %}
+                    {# Game name #}
+                    <h3>
+                        <span itemprop="name">{{ game.name }}</span>
+                    </h3>
                 </a>
-            {% else %}
-                <div id="dialog-buy-{{ game.slug }}" class="reveal" data-reveal aria-labelledby="dialog-title-buy-{{ game.slug }}">
-                    <h2 id="dialog-title-buy-{{ game.slug }}">{% blocktrans with name=game.name %}Buy {{ name }}{% endblocktrans %}</h2>
-                    <p>{% trans "The payment will be processed by Simple Payments&trade;." %}</p>
-                    {% include "_game_confirm_buy.html" %}
-                    <button class="close-button" data-close aria-label="{% trans "Close dialog" %}" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <a data-open="dialog-buy-{{ game.slug }}" class="button success">
-                    <i class="fa fa-cart-arrow-down"></i>
-                    {% if game.price == 0 %}
-                        {% trans "Free" %}
+                {# Game developer #}
+                <a itemprop="publisher" itemscope itemtype="http://schema.org/Organization" href="{% url 'game:developer-page' game.dev.url_slug %}">
+                    <span class="label secondary" itemprop="name">{{ game.dev }}</span>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 columns text-center">
+                {# Game actions #}
+                <div class="game-actions">
+                    {% if game in bought_games %}
+                        {# Play button #}
+                        <a href="{% url 'game:play' game.slug %}" class="button small">
+                            {% trans "Play" %}
+                        </a>
                     {% else %}
-                        {{ game.price }} &euro;
+                        {# Buy button #}
+                        <a data-open="dialog-buy-{{ game.slug }}" class="button small success">
+                            <i class="fa fa-cart-arrow-down"></i>
+                            {% if game.price == 0 %}
+                                {% trans "Free" %}
+                            {% else %}
+                                {{ game.price }} &euro;
+                            {% endif %}
+                        </a>
+                        {# Buy dialog #}
+                        <div id="dialog-buy-{{ game.slug }}" class="reveal" data-reveal aria-labelledby="dialog-title-buy-{{ game.slug }}">
+                            <h2 id="dialog-title-buy-{{ game.slug }}">{% blocktrans with name=game.name %}Buy {{ name }}{% endblocktrans %}</h2>
+                            <p>{% trans "The payment will be processed by Simple Payments&trade;." %}</p>
+                            {% include "_game_confirm_buy.html" %}
+                            <button class="close-button" data-close aria-label="{% trans "Close dialog" %}" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     {% endif %}
-                </a>
-            {% endif %}
-            <a data-toggle="social-drop-{{ game.slug }}" class="button hollow">
-                {# Screen readers #}<span class="show-for-sr">{% trans "Show sharing menu" %}</span>
-                {# Visual users #}<span aria-hidden="true"><i class="fa fa-share-square-o"></i></span>
-            </a>
-            {% if game.dev == user.profile %}
-                {# TODO: FIX DELETE/PUBLISH BUTTON #}
-
-                <a data-toggle="dev-drop-{{ game.slug }}" class="button">
-                    {# Screen readers #}<span class="show-for-sr">{% trans "Show developer actions menu" %}</span>
-                    {# Visual users #}<span aria-hidden="true"><i class="fa fa-cog"></i></span>
-                </a>
-                <div id="dev-drop-{{ game.slug }}" class="dropdown-pane stacked button-group" data-dropdown>
-                    <a href="{% url 'game:update' game.slug %}" class="button">
-                        {% trans "Edit" %}
+                    {# Share button #}
+                    <a data-toggle="social-drop-{{ game.slug }}" class="button small hollow">
+                        {# Screen readers #}<span class="show-for-sr">{% trans "Show sharing menu" %}</span>
+                        {# Visual users #}<span aria-hidden="true"><i class="fa fa-share-square-o"></i></span>
                     </a>
-                    <a data-open="dialog-delete-{{ game.slug }}" class="button">
-                        {% if game.is_published %}
-                            {% trans "Remove from store" %}
-                        {% else %}
-                            {% trans 'Publish' %}
-                        {% endif %}
-                    </a>
-                </div>
-                <div id="dialog-delete-{{ game.slug }}" class="reveal" data-reveal aria-labelledby="dialog-title-delete-{{ game.slug }}">
-                    {% if game.is_published %}
-                        {% blocktrans asvar modal_title with name=game.name %}Remove {{ name }} from store{% endblocktrans %}
-                    {% else %}
-                        {% trans 'Publish' as modal_title %}
-                        {% blocktrans asvar modal_title with name=game.name %}Publish {{ name }}{% endblocktrans %}
+                    {# Share dropdown #}
+                    <div id="social-drop-{{ game.slug }}" class="dropdown-pane stacked small button-group" data-dropdown>
+                        {% url "game:detail" game.slug as game_path %}
+                        {% with request.get_host|add:game_path as game_url %}
+                            <a class="button" href="https://www.facebook.com/sharer/sharer.php?u={{ game_url }}" target="_blank"><i class="fa fa-facebook-square"></i> Facebook</a>
+                            <a class="button" href="https://plus.google.com/share?url={{ game_url }}" target="_blank"><i class="fa fa-google-plus-square"></i> Google Plus</a>
+                            <a class="button" href="https://twitter.com/home?status={{ game_url }}" target="_blank"><i class="fa fa-twitter-square"></i> Twitter</a>
+                        {% endwith %}
+                    </div>
+                    {# Developer actions #}
+                    {% if game.dev == user.profile %}
+                        {# Developer options button #}
+                        <a data-toggle="dev-drop-{{ game.slug }}" class="button small hollow">
+                            {# Screen readers #}<span class="show-for-sr">{% trans "Show developer actions menu" %}</span>
+                            {# Visual users #}<span aria-hidden="true"><i class="fa fa-cog"></i></span>
+                        </a>
+                        {# Developer dropdown #}
+                        <div id="dev-drop-{{ game.slug }}" class="dropdown-pane stacked small button-group" data-dropdown>
+                            <a class="button" href="{% url 'game:update' game.slug %}">
+                                {% trans "Edit" %}
+                            </a>
+                            <a class="button" data-open="dialog-delete-{{ game.slug }}">
+                                {% if game.is_published %}
+                                    {% trans "Remove from store" %}
+                                {% else %}
+                                    {% trans 'Publish' %}
+                                {% endif %}
+                            </a>
+                        </div>
+                        {# Delete / Publish game dialog #}
+                        <div id="dialog-delete-{{ game.slug }}" class="reveal" data-reveal aria-labelledby="dialog-title-delete-{{ game.slug }}">
+                            {% if game.is_published %}
+                                {% blocktrans asvar modal_title with name=game.name %}Remove {{ name }} from store{% endblocktrans %}
+                            {% else %}
+                                {% trans 'Publish' as modal_title %}
+                                {% blocktrans asvar modal_title with name=game.name %}Publish {{ name }}{% endblocktrans %}
+                            {% endif %}
+                            <h2 id="dialog-title-delete-{{ game.slug }}">{{ modal_title }}</h2>
+                            {% include "_game_confirm_delete.html" %}
+                            <button class="close-button" data-close aria-label="{% trans "Close dialog" %}" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     {% endif %}
-                    <h2 id="dialog-title-delete-{{ game.slug }}">{{ modal_title }}</h2>
-                    {% include "_game_confirm_delete.html" %}
-                    <button class="close-button" data-close aria-label="{% trans "Close dialog" %}" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
-            {% endif %}
-            <div id="social-drop-{{ game.slug }}" class="dropdown-pane stacked button-group" data-dropdown>
-                {% url "game:detail" game.slug as game_path %}
-                {% with request.get_host|add:game_path as game_url %}
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ game_url }}" target="_blank" class="button"><i class="fa fa-facebook-square"></i> Facebook</a>
-                    <a href="https://plus.google.com/share?url={{ game_url }}" target="_blank" class="button"><i class="fa fa-google-plus-square"></i> Google Plus</a>
-                    <a href="https://twitter.com/home?status={{ game_url }}" target="_blank" class="button"><i class="fa fa-twitter-square"></i> Twitter</a>
-                {% endwith %}
             </div>
         </div>
     </div>
