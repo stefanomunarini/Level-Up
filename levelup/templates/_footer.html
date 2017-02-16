@@ -1,6 +1,6 @@
-<div class="row">
-    <div class="small-12 columns">
-        <h4>Made with <i class="fa fa-heart"></i> by the LevelUp team</h4>
-        <p class="copyright">Copyright LevelUp © 2017</p>
-    </div>
+{% load i18n %}
+
+<div class="small-12 columns text-center">
+    <p>{% blocktrans with '<i class="fa fa-heart"></i>' as love %}Made with {{ love }} by the LevelUp team{% endblocktrans %}</p>
+    <p class="copyright">&copy; LevelUp 2017</p>
 </div>

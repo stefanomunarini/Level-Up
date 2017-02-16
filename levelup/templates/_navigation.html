@@ -4,55 +4,43 @@
 
 {% url 'profile:login' as login_url %}
 
-<nav class="top-bar" data-topbar role="navigation" data-options="is_hover: false">
-    <ul class="title-area">
-        <li class="name">
-            <h1><a href="{% url 'home' %}">LevelUp</a></h1>
+
+<ul class="vertical menu icon-top" data-accordion-menu>
+    {% for link in main_menu.left %}{% if not link.hide %}
+        {% url link.view as href %}
+        <li class="{% if href == request.path %}active{% endif %}">
+            <a href="{{ href }}" >{% if link.icon %}<i class="fa fa-{{ link.icon }}"></i> {% endif %}<span>{{ link.label }}</span></a>
         </li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span>{% trans "Menu" %}</span></a></li>
-    </ul>
-    <section class="top-bar-section">
-        <!-- Right Nav Section -->
-        <ul class="right">
-            {% if user.is_authenticated %}
-                <li class="has-dropdown">
-                    <a href="#"><i class="fa fa-id-card"></i> {{ user.username }}</a>
-                    <ul class="dropdown">
-                        <li><a href="{% url 'profile:user-profile' %}"><i class="fa fa-user-circle-o"></i> {% trans "My Profile" %}</a></li>
-                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> {% trans "Log Out" %}</a></li>
-                    </ul>
-                </li>
-            {% elif request.path != login_url %}
-                {% url 'login' as href %}
-                <li{% if href == request.path %} class="active"{% endif %}><a href="{% url 'login' %}?next={{request.path}}"><i class="fa fa-sign-in"></i> {% trans "Log In" %}</a></li>
-                {% url 'profile:signup' as href %}
-                <li{% if href == request.path %} class="active"{% endif %}><a href="{{ href }}"><i class="fa fa-user-plus"></i> {% trans "Sign Up" %}</a></li>
-            {% endif %}
-            {% if langs|length > 1 %}
-            <li class="has-dropdown">
-                <a href="#"><i class="fa fa-globe"></i> {{ lang.name_translated }}</a>
-                <ul class="dropdown">
-                    <form action="{% url 'set_language' %}" method="post">
-                        <input name="next" value="{{ request.path }}" type="hidden"/>
-                        {% csrf_token %}
-                        {% for l in langs %}
-                            {% if l.code != lang.code %}
-                            <li><button class="link-button" type="submit" name="language" value="{{ l.code }}">{{ l.name_local }}</button></li>
-                            {% endif %}
-                        {% endfor %}
-                    </form>
-                </ul>
-            </li>
-            {% endif %}
-        </ul>
-        <!-- Left Nav Section -->
-        <ul class="left">
-            {% for link in main_menu.left %}{% if not link.hide %}
-                {% url link.view as href %}
-                <li class="{% if href == request.path %}active{% endif %}">
-                    <a href="{{ href }}" >{% if link.icon %}<i class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.label }}</a>
-                </li>
-            {% endif %}{% endfor %}
-        </ul>
-  </section>
-</nav>
+    {% endif %}{% endfor %}
+    {% if user.is_authenticated %}
+        <li>
+            {% url 'profile:user-profile' as href %}
+            <a href="#"><i class="fa fa-id-card"></i> <span>{{ user.username }}</span></a>
+            <ul class="menu vertical{% if href == request.path %} is-active{% endif %}">
+                <li class="{% if href == request.path %}active{% endif %}"><a href="{{ href }}"><i class="fa fa-user-circle-o"></i> <span>{% trans "My Profile" %}</span></a></li>
+                <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> <span>{% trans "Log Out" %}</span></a></li>
+            </ul>
+        </li>
+    {% elif request.path != login_url %}
+        {% url 'login' as href %}
+        <li{% if href == request.path %} class="active"{% endif %}><a href="{% url 'login' %}?next={{request.path}}"><i class="fa fa-sign-in"></i> <span>{% trans "Log In" %}</span></a></li>
+        {% url 'profile:signup' as href %}
+        <li{% if href == request.path %} class="active"{% endif %}><a href="{{ href }}"><i class="fa fa-user-plus"></i> <span>{% trans "Sign Up" %}</span></a></li>
+    {% endif %}
+    {% if langs|length > 1 %}
+        <li>
+            <a href="#"><i class="fa fa-globe"></i> {{ lang.name_translated }}</a>
+            <ul class="menu vertical">
+                {% for l in langs %}
+                    {% if l.code != lang.code %}
+                    <li><button form="language-form" class="language-menu-button button expanded" type="submit" name="language" value="{{ l.code }}">{{ l.name_local }}</button></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+        <form id="language-form" action="{% url 'set_language' %}" method="post">
+            <input name="next" value="{{ request.path }}" type="hidden"/>
+            {% csrf_token %}
+        </form>
+    {% endif %}
+</ul>
