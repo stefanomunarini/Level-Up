@@ -1,9 +1,13 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 
-from games.models import Game
+from games.forms import GameScreenshotModelFormSet
+from games.models import Game, GameScreenshot
 
 
 class GameOwnershipRequiredMixin(object):
@@ -15,7 +19,7 @@ class GameOwnershipRequiredMixin(object):
             if self.object not in request.user.profile.get_bought_games():
                 messages.error(request,
                                'Hey {}, you must buy the game before being able to play!'.format(request.user.profile))
-                return HttpResponseRedirect(reverse_lazy('game:buy', kwargs={'slug': self.object.slug}))
+                return HttpResponseRedirect(reverse_lazy('game:detail', kwargs={'slug': self.object.slug}))
             return dispatcher
         messages.error(request, 'You must be authenticated to perform this action!')
         return HttpResponseRedirect(
@@ -54,3 +58,38 @@ class GameSearchMixin(object):
             queryset = queryset.order_by('-date_added')
 
         return queryset.filter(is_published=True)
+
+
+class GameCreateUpdateMixin(object):
+    """
+    This mixin provides shared functionality for creating and updating a game. In particular, it checks that the user
+    is authenticated and has a 'Developer' profile.
+    Moreover, provide functionality to save/update screenshot
+    """
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and not request.user.profile.is_developer:
+            raise PermissionDenied
+        return super(GameCreateUpdateMixin, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        game = form.instance
+        game.dev = self.request.user.profile
+        game.save()
+        game_screenshot_formset = GameScreenshotModelFormSet(self.request.POST,
+                                                             self.request.FILES)
+        game_screenshot_instances = game_screenshot_formset.save(commit=False)
+        for game_screenshot_instance in game_screenshot_instances:
+            game_screenshot_instance.game = game
+            game_screenshot_instance.save()
+
+        return super(GameCreateUpdateMixin, self).form_valid(form)
+
+    def get_screenshot_formset(self, game_filter=None):
+        formset = GameScreenshotModelFormSet()
+        if game_filter:
+            formset.queryset = GameScreenshot.objects.filter(game=game_filter)
+        else:
+            formset.queryset = GameScreenshot.objects.none()
+        return formset

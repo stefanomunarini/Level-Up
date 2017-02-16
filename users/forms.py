@@ -17,13 +17,13 @@ class AbstractSignupUserForm(ModelForm):
     password1 = forms.CharField(
         label=_("Password"),
         strip=False,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput
     )
     password2 = forms.CharField(
         label=_("Password confirmation"),
         widget=forms.PasswordInput,
         strip=False,
-        help_text=_("Enter the same password as before, for verification."),
+        help_text=_("Enter the same password as before, for verification.")
     )
 
     def clean_password2(self):

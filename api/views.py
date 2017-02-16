@@ -40,8 +40,7 @@ class ApiBaseView(View):
     def request_invalid(self, errors=None):
         if not errors:
             errors = self.form.errors
-        return JsonResponse(data={'errors': errors},
-                            status=401)
+        return JsonResponse(data={'errors': errors}, status=401)
 
 
 class ApiDevelopedGamesView(ApiBaseView):
@@ -96,6 +95,16 @@ class ApiGameSearchView(GameSearchMixin, MultipleObjectMixin, ApiBaseView):
         response = {
             'data': {
                 'games': services.search_game(self.get_queryset())
+            }
+        }
+        return JsonResponse(data=response, status=200)
+
+
+class ApiTopGamesView(ApiBaseView):
+    def request_valid(self):
+        response = {
+            'data': {
+                'games': services.get_top_games()
             }
         }
         return JsonResponse(data=response, status=200)

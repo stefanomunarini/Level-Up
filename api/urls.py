@@ -15,13 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from api.views import ApiDevelopedGamesView, ApiSaleStatsView, ApiGameStatsView, ApiGameSearchView
+from api.views import ApiDevelopedGamesView, ApiSaleStatsView, ApiGameStatsView, ApiGameSearchView, ApiTopGamesView
 
 urlpatterns = [
 
     url(r'^developed-games/$', ApiDevelopedGamesView.as_view(), name='developed-games'),
     url(r'^sales-stats/$', ApiSaleStatsView.as_view(), name='sales-stats'),
     url(r'^game-stats/(?P<slug>[-\w]+)/$', ApiGameStatsView.as_view(), name='game-stats'),
-    url(r'^game-search/$', ApiGameSearchView.as_view(), name='game-stats'),
+    url(r'^game-search/$', ApiGameSearchView.as_view(), name='game-search'),
+    url(r'^top-games/$', ApiTopGamesView.as_view(), name='top-games'),
     
 ]

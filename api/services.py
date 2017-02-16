@@ -2,23 +2,8 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 
 from games import services
+from levelup import services as levelup_services
 from transactions.models import Transaction
-
-
-def get_developed_games(api_token_obj):
-    developed_games = api_token_obj.developer.get_developed_games()
-    serialized_games = []
-    for game in developed_games:
-        serialized_games.append({
-            'name': game.name,
-            'slug': game.slug,
-            'price': game.price,
-            'downloads': game.downloads,
-            'plays': game.plays,
-            'description': game.description,
-            'category': game.category
-        })
-    return serialized_games
 
 
 def get_sale_stats(developer):
@@ -43,6 +28,11 @@ def get_sale_stats(developer):
     return stats
 
 
+def get_developed_games(api_token_obj):
+    developed_games = api_token_obj.developer.get_developed_games()
+    return _serialize_games(developed_games)
+
+
 def get_game_stats(game):
     dev = game.dev
     stats = {
@@ -62,8 +52,21 @@ def get_game_stats(game):
 
 
 def search_game(filtered_games):
+    return _serialize_games(filtered_games)
+
+
+def get_top_games():
+    top_games = {}
+    game_categories = levelup_services.get_homepage_games(10)
+    for game_category_list in game_categories:
+        games = game_categories[game_category_list]
+        top_games[game_category_list] = _serialize_games(games)
+    return top_games
+
+
+def _serialize_games(games):
     serialized_games = []
-    for game in filtered_games:
+    for game in games:
         serialized_games.append({
             'name': game.name,
             'slug': game.slug,
