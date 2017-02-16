@@ -40,7 +40,7 @@
                 {% trans "Share" %}<span data-dropdown="social-drop-{{ game.slug }}">
             </span></a>
             {% if game.dev == user.profile %}
-                <a href="{% url 'game:update' game.slug %}" class="button radius tiny secondary split">
+                <a href="{% url 'game:update' game.slug %}" class="button radius tiny secondary split" id="game_update_button">
                     {% trans "Edit" %}
                     <span data-dropdown="dev-drop-{{ game.slug }}"></span>
                 </a>
