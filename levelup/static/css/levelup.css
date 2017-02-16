@@ -16,12 +16,12 @@ footer h4, footer p {
 }
 
 /*Profile*/
-.profile-pic {
+.cloudinary-image {
     position: relative;
     margin-bottom: 15px;
 }
 
-.profile-pic label {
+.cloudinary-image label {
     position: absolute;
     bottom: 0;
     left: 0;
