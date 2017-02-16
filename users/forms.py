@@ -104,7 +104,7 @@ class UserProfileUpdateModelForm(ModelForm):
 
     def clean_display_name(self):
         if UserProfile.objects.filter(display_name=self.cleaned_data.get('display_name')).exclude(id=self.instance.id).count() > 0:
-            self.add_error('display_name', 'The display name you chose is already taken.')
+            self.add_error('display_name', _('The display name you chose is already taken.'))
         return self.cleaned_data.get('display_name')
 
 

@@ -1,35 +1,56 @@
+{% load class_tag cloudinary %}
+
 {% if form %}
     {% if form.non_field_errors %}
         <div class="row">
             <div class="small-12 columns">
                 {% for error in form.non_field_errors %}
-                <div data-alert class="alert-box alert">
-                    {{ error }}
-                    <a href="#" class="close">&times;</a>
-                </div>
+                    <div data-alert class="alert-box alert">
+                        {{ error }}
+                        <a href="#" class="close">&times;</a>
+                    </div>
                 {% endfor %}
             </div>
         </div>
     {% endif %}
     {% for field in form %}
-        <div class="row{% if field.is_hidden %} hide{% endif %}">
-            <div class="small-12 columns">
-                <div class="input-wrapper{% if field.errors %} error{% endif %}">
-                    <label>{{ field.label }}{% if field.help_text %} <small>{{ field.help_text|safe }}</small>{% endif %}
-                        {{ field }}
-                    </label>
-                    {% for error in field.errors %}
-                        <small class="error">{{ error }}</small>
-                    {% endfor %}
+        {% if field.field|get_class == 'CloudinaryFileField' and form_update %}
+            <div class="profile-pic">
+                {% if user.profile.third_party_login %}
+                    {# TODO: create a method that returns profile pic in model#}
+                    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" />
+                {% else %}
+                    {% cloudinary request.user.profile.profile_picture format="jpg" width=250 height=250 crop="fill" %}
+                {% endif %}
+                <label for="id_profile_picture">
+                    <i class="fa fa-camera" aria-hidden="true"></i>
+                    Change picture
+                </label>
+                <input id="id_profile_picture"
+                       class="hide"
+                       name="profile_picture"
+                       type="file">
+            </div>
+        {% else %}
+            <div class="row{% if field.is_hidden %} hide{% endif %}">
+                <div class="small-12 columns">
+                    <div class="input-wrapper{% if field.errors %} error{% endif %}">
+                        <label>{{ field.label }}{% if field.help_text %} <small>{{ field.help_text|safe }}</small>{% endif %}
+                            {{ field }}
+                        </label>
+                        {% for error in field.errors %}
+                            <small class="error">{{ error }}</small>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     {% endfor %}
 {% endif %}
 {% if submit_text %}
-<div class="row">
-    <div class="small-12 columns">
-        <input type="submit" class="button" value="{{ submit_text }}">
+    <div class="row">
+        <div class="small-12 columns">
+            <input type="submit" class="button" value="{{ submit_text }}">
+        </div>
     </div>
-</div>
 {% endif %}

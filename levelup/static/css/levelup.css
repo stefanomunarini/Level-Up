@@ -14,3 +14,21 @@ footer h4, footer p {
 .tbody.tr {
     font-style: normal;
 }
+
+/*Profile*/
+.profile-pic {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.profile-pic label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 250px;
+    margin: 0;
+    background: rgba(0,0,0, 0.5);
+    padding: 10px;
+    color: white;
+    text-align: center;
+}
