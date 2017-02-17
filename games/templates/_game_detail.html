@@ -21,12 +21,12 @@
                 {# Game actions #}
                 <div class="game-actions">
                     {% if game in bought_games %}
-                        {# Play button #}
+                        {# Play button if the user has bought the game #}
                         <a href="{% url 'game:play' game.slug %}" class="button small">
                             {% trans "Play" %}
                         </a>
-                    {% else %}
-                        {# Buy button #}
+                    {% elif user.is_authenticated %}
+                        {# Buy button if the user is logged in #}
                         <a data-open="dialog-buy-{{ type }}-{{ game.slug }}" class="button small success">
                             <i class="fa fa-cart-arrow-down"></i>
                             {% if game.price == 0 %}

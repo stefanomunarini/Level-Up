@@ -10,7 +10,6 @@ from transactions.forms import TransactionForm
 
 register = template.Library()
 
-
 @register.simple_tag(takes_context=True)
 def transaction_form(context, game):
     pid = game.slug
