@@ -1,9 +1,9 @@
-{% load i18n cloudinary %}
+{% load i18n humanize cloudinary %}
 
 <div itemscope itemtype="http://schema.org/Game">
-    <div class="card">
-        <div class="row">
-            <div class="small-centered small-12 {% if not minimal %}medium-6 large-4{% endif %} columns text-center">
+    <div class="row">
+        <div class="small-centered small-12 {% if not minimal %}medium-6 large-4{% endif %} columns text-center">
+            <div class="card game-card">
                 <a href="{% url "game:detail" game.slug %}">
                     {# Game icon #}
                     <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="pad" %}" width="128" height="128"></p>
@@ -18,20 +18,16 @@
                 <a itemprop="publisher" itemscope itemtype="http://schema.org/Organization" href="{% url 'game:developer-page' game.dev.url_slug %}">
                     <span class="label secondary" itemprop="name">{{ game.dev }}</span>
                 </a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="small-12 columns text-center">
                 {# Game actions #}
                 <div class="game-actions">
                     {% if game in bought_games %}
-                        {# Play button #}
+                        {# Play button if the user has bought the game #}
                         <a href="{% url 'game:play' game.slug %}" class="button small">
                             {% trans "Play" %}
                         </a>
-                    {% else %}
-                        {# Buy button #}
-                        <a data-open="dialog-buy-{{ game.slug }}" class="button small success">
+                    {% elif user.is_authenticated %}
+                        {# Buy button if the user is logged in #}
+                        <a data-open="dialog-buy-{{ type }}-{{ game.slug }}" class="button small success">
                             <i class="fa fa-cart-arrow-down"></i>
                             {% if game.price == 0 %}
                                 {% trans "Free" %}
@@ -40,8 +36,8 @@
                             {% endif %}
                         </a>
                         {# Buy dialog #}
-                        <div id="dialog-buy-{{ game.slug }}" class="reveal" data-reveal aria-labelledby="dialog-title-buy-{{ game.slug }}">
-                            <h2 id="dialog-title-buy-{{ game.slug }}">{% blocktrans with name=game.name %}Buy {{ name }}{% endblocktrans %}</h2>
+                        <div id="dialog-buy-{{ type }}-{{ game.slug }}" class="reveal" data-reveal aria-labelledby="dialog-title-buy-{{ type }}-{{ game.slug }}">
+                            <h2 id="dialog-title-buy-{{ type }}-{{ game.slug }}">{% blocktrans with name=game.name %}Buy {{ name }}{% endblocktrans %}</h2>
                             <p>{% trans "The payment will be processed by Simple Payments&trade;." %}</p>
                             {% include "_game_confirm_buy.html" %}
                             <button class="close-button" data-close aria-label="{% trans "Close dialog" %}" type="button">
@@ -84,7 +80,7 @@
                                 <i class="fa fa-edit"></i>
                                 {% trans "Edit" %}
                             </a>
-                            <a class="button" data-open="dialog-delete-{{ game.slug }}">
+                            <a class="button" data-open="dialog-delete-{{ type }}-{{ game.slug }}">
                                 {% if game.is_published %}
                                     <i class="fa fa-trash-o"></i>
                                     {% trans "Remove from store" %}
@@ -95,14 +91,14 @@
                             </a>
                         </div>
                         {# Delete / Publish game dialog #}
-                        <div id="dialog-delete-{{ game.slug }}" class="reveal" data-reveal aria-labelledby="dialog-title-delete-{{ game.slug }}">
+                        <div id="dialog-delete-{{ type }}-{{ game.slug }}" class="reveal" data-reveal aria-labelledby="dialog-title-delete-{{ type }}-{{ game.slug }}">
                             {% if game.is_published %}
                                 {% blocktrans asvar modal_title with name=game.name %}Remove {{ name }} from store{% endblocktrans %}
                             {% else %}
                                 {% trans 'Publish' as modal_title %}
                                 {% blocktrans asvar modal_title with name=game.name %}Publish {{ name }}{% endblocktrans %}
                             {% endif %}
-                            <h2 id="dialog-title-delete-{{ game.slug }}">{{ modal_title }}</h2>
+                            <h2 id="dialog-title-delete-{{ type }}-{{ game.slug }}">{{ modal_title }}</h2>
                             {% include "_game_confirm_delete.html" %}
                             <button class="close-button" data-close aria-label="{% trans "Close dialog" %}" type="button">
                                 <span aria-hidden="true">&times;</span>
@@ -118,14 +114,22 @@
         <div class="row">
             {% if game.screenshots.all %}
                 <div class="small-12 large-6 columns">
-                    <ul data-orbit>
-                        {% for screenshot in game.screenshots.all %}
-                            <li data-orbit-slide="headline-1">
-                                <img itemprop="image" src="{% cloudinary_url screenshot.image format="jpg" width=512 height=384 crop="pad" gravity="center" %}" width="512" height="384">
-                                <div class="orbit-caption">Screenshot {{ forloop.counter }}</div>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    <div class="orbit" role="region" aria-label="{% trans "Screenshots" %}" data-orbit>
+                        <ul class="orbit-container">
+                            <button class="orbit-previous"><span class="show-for-sr">{% trans "Previous screenshot" %}</span>&#9664;&#xFE0E;</button>
+                            <button class="orbit-next"><span class="show-for-sr">{% trans "Next screenshot" %}</span>&#9654;&#xFE0E;</button>
+                            {% for screenshot in game.screenshots.all %}
+                                <li class="orbit-slide {% if forloop.first %}is-active{% endif %}">
+                                    <img class="orbit-image" itemprop="image" src="{% cloudinary_url screenshot.image format="jpg" width=512 height=384 crop="pad" gravity="center" %}" width="512" height="384">
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <nav class="orbit-bullets">
+                            {% for screenshot in game.screenshots.all %}
+                                <button class="{% if forloop.first %}is-active{% endif %}" data-slide="{{ forloop.counter0 }}"><span class="show-for-sr">{% blocktrans with i=forloop.counter|ordinal %}Show {{ i }} screenshot{% endblocktrans %}</span></button>
+                            {% endfor %}
+                        </nav>
+                    </div>
                 </div>
             {% endif %}
             <div class="small-12 {% if game.screenshots.all %}large-6{% endif %} columns">
