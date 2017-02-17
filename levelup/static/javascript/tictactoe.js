@@ -88,7 +88,6 @@ function make_ai_move(){
     counter++;
 
     var decision = calculate_next_move();
-    console.log(decision)
     if (decision.win){
         $('.wrapper').find('span#' + decision.win).text('O');
         board_dict[decision.win] = 'O';
