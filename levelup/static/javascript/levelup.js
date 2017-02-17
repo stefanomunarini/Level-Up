@@ -1,10 +1,11 @@
 $(document).ready(function() {
-    $('#id_profile_picture').change(function(event) {
-        updatePreview(this.files[0]);
+    $('.cloudinary-image input').change(function(event) {
+        var elemName = this.name;
+        var preview = $('.preview[data_id=' + elemName);
+        updatePreview(this.files[0], preview);
     });
 
-    function updatePreview(file) {
-        var preview = $('.profile-pic img');
+    function updatePreview(file, preview) {
         var reader  = new FileReader();
 
         reader.addEventListener("load", function () {

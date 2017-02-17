@@ -50,12 +50,16 @@
                         </div>
                     {% endif %}
                     {# Share button #}
-                    <a data-toggle="social-drop-{{ game.slug }}" class="button small hollow">
+                    <a data-toggle="social-drop-{{ type }}-{{ game.slug }}" class="button small hollow">
                         {# Screen readers #}<span class="show-for-sr">{% trans "Show sharing menu" %}</span>
                         {# Visual users #}<span aria-hidden="true"><i class="fa fa-share-square-o"></i></span>
                     </a>
                     {# Share dropdown #}
-                    <div id="social-drop-{{ game.slug }}" class="dropdown-pane stacked small button-group" data-dropdown>
+                    <div id="social-drop-{{ type }}-{{ game.slug }}"
+                         data-hover="true"
+                         data-hover-pane="true"
+                         class="dropdown-pane stacked small button-group action-dropdown"
+                         data-dropdown>
                         {% url "game:detail" game.slug as game_path %}
                         {% with request.get_host|add:game_path as game_url %}
                             <a class="button" href="https://www.facebook.com/sharer/sharer.php?u={{ game_url }}" target="_blank"><i class="fa fa-facebook-square"></i> Facebook</a>
@@ -66,20 +70,27 @@
                     {# Developer actions #}
                     {% if game.dev == user.profile %}
                         {# Developer options button #}
-                        <a data-toggle="dev-drop-{{ game.slug }}" class="button small hollow">
+                        <a data-toggle="dev-drop-{{ type }}-{{ game.slug }}" class="button small hollow">
                             {# Screen readers #}<span class="show-for-sr">{% trans "Show developer actions menu" %}</span>
                             {# Visual users #}<span aria-hidden="true"><i class="fa fa-cog"></i></span>
                         </a>
                         {# Developer dropdown #}
-                        <div id="dev-drop-{{ game.slug }}" class="dropdown-pane stacked small button-group" data-dropdown>
+                        <div id="dev-drop-{{ type }}-{{ game.slug }}"
+                             data-hover="true"
+                             data-hover-pane="true"
+                             class="dropdown-pane stacked small button-group action-dropdown"
+                             data-dropdown>
                             <a class="button" href="{% url 'game:update' game.slug %}">
+                                <i class="fa fa-edit"></i>
                                 {% trans "Edit" %}
                             </a>
                             <a class="button" data-open="dialog-delete-{{ game.slug }}">
                                 {% if game.is_published %}
+                                    <i class="fa fa-trash-o"></i>
                                     {% trans "Remove from store" %}
                                 {% else %}
-                                    {% trans 'Publish' %}
+                                    <i class="fa fa-globe"></i>
+                                    {% trans "Publish" %}
                                 {% endif %}
                             </a>
                         </div>
