@@ -1,4 +1,4 @@
-{% load class_tag cloudinary %}
+{% load i18n class_tag cloudinary %}
 
 {% if form %}
     {% if form.non_field_errors %}
@@ -15,16 +15,18 @@
     {% endif %}
     {% for field in form %}
         {% if field.field|get_class == 'CloudinaryFileField' and form_update %}
-            <div class="cloudinary-image">
-                {% cloudinary field.initial width=250 height=250 crop="fill" class="preview" data_id=field.html_name %}
-                <label for="id_{{ field.html_name }}">
-                    <i class="fa fa-camera" aria-hidden="true"></i>
-                    Change picture
-                </label>
-                <input id="id_{{ field.html_name }}"
-                       class="hide"
-                       name="{{ field.html_name }}"
-                       type="file">
+            <div class="row">
+                <div class="cloudinary-image columns">
+                    {% cloudinary field.initial width=250 height=250 crop="fill" class="preview" data_id=field.html_name %}
+                    <label for="id_{{ field.html_name }}">
+                        <i class="fa fa-camera" aria-hidden="true"></i>
+                        {% trans "Update" %}
+                    </label>
+                    <input id="id_{{ field.html_name }}"
+                           class="hide"
+                           name="{{ field.html_name }}"
+                           type="file">
+                </div>
             </div>
         {% else %}
             <div class="row{% if field.is_hidden %} hide{% endif %}">

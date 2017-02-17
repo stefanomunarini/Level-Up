@@ -1,13 +1,17 @@
+main {
+    overflow: auto;
+}
 /*Profile*/
 .cloudinary-image {
     position: relative;
-    margin-bottom: 15px;
+    min-height: 45px;
+    margin-bottom: 10px;
 }
 
 .cloudinary-image label {
     position: absolute;
     bottom: 0;
-    left: 0;
+    left: 15px;
     width: 250px;
     margin: 0;
     background: rgba(0,0,0, 0.5);
