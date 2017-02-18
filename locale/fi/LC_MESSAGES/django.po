@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-15 14:19+0000\n"
-"PO-Revision-Date: 2017-02-15 16:27+0200\n"
+"POT-Creation-Date: 2017-02-18 18:48+0000\n"
+"PO-Revision-Date: 2017-02-18 21:00+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -22,14 +22,15 @@ msgstr ""
 msgid "The website in where you will use this token"
 msgstr "Verkkosivusto, jolla käytät tunnistetta"
 
-#: api/views.py:21
+#: api/views.py:19
 msgid ""
 "Unauthorized! The token you are trying to use is invalid. Format should be: "
 "Bearer <TOKEN>"
 msgstr ""
-"Pääsy estetty! Käyttämäsi tunniste on kelvoton. Sen muoto tulisi olla <TOKEN>"
+"Pääsy estetty! Käyttämäsi tunniste on kelvoton. Sen muoto tulisi olla: "
+"Bearer <TOKEN>"
 
-#: games/forms.py:39 games/templates/game_list.html:11
+#: games/forms.py:39 games/templates/game_list.html:15
 msgid "Search"
 msgstr "Hae"
 
@@ -37,60 +38,60 @@ msgstr "Hae"
 msgid "Category"
 msgstr "Kategoria"
 
-#: games/models.py:33
+#: games/models.py:28
 msgid "Action"
 msgstr "Toiminta"
 
-#: games/models.py:34
+#: games/models.py:29
 msgid "Adventure"
 msgstr "Seikkailu"
 
-#: games/models.py:35
+#: games/models.py:30
 msgid "Arcade"
 msgstr "Arcade"
 
-#: games/models.py:36
+#: games/models.py:31
 msgid "Kids"
 msgstr "Lapset"
 
-#: games/models.py:37
+#: games/models.py:32
 msgid "RPG"
 msgstr "Roolipelit"
 
-#: games/models.py:38
+#: games/models.py:33
 msgid "Sport"
 msgstr "Urheilu"
 
-#: games/models.py:39
+#: games/models.py:34
 msgid "Strategy"
 msgstr "Strategia"
 
-#: games/models.py:42
+#: games/models.py:37
 msgid "Game name"
 msgstr "Pelin nimi"
 
-#: games/models.py:43
+#: games/models.py:38
 msgid "Game URL slug"
 msgstr "Pelin URL-tunniste"
 
-#: games/models.py:44
+#: games/models.py:39
 msgid "Part of the game page address on LevelUp, cannot be changed later"
 msgstr "Osa pelisivun osoitetta LevelUpissa, et voi muuttaa tätä myöhemmin"
 
-#: games/models.py:50
+#: games/models.py:45
 msgid "Source URL"
 msgstr "Lähde-URL"
 
-#: games/models.py:50
+#: games/models.py:45
 msgid "Where is the game hosted?"
 msgstr "Mistä osoitteesta peli ladataan?"
 
-#: games/models.py:51
+#: games/models.py:46
 msgid "Game icon"
 msgstr "Pelin kuvake"
 
-#: games/models.py:72
-msgid "Screen shot"
+#: games/models.py:67
+msgid "Screenshot"
 msgstr "Näyttökuva"
 
 #: games/templates/_game_confirm_buy.html:4
@@ -118,98 +119,133 @@ msgstr "Oletko varma, että haluat julkaista pelin %(game)s?"
 msgid "Publish %(game)s"
 msgstr "Julkaise %(game)s"
 
-#: games/templates/_game_detail.html:6
-msgid "Unpublished"
-msgstr "Julkaisematon"
-
-#: games/templates/_game_detail.html:11
-msgid "Send an email to the developer"
-msgstr "Lähetä sähköposti kehittäjälle"
-
-#: games/templates/_game_detail.html:14
-#: users/templates/public_developer_page.html:30
-msgid "Visit the developer’s website"
-msgstr "Vieraile kehittäjän verkkosivustolla"
-
-#: games/templates/_game_detail.html:20
+#: games/templates/_game_detail.html:24 games/templates/game_play.html:12
 msgid "Play"
 msgstr "Pelaa"
 
-#: games/templates/_game_detail.html:24
+#: games/templates/_game_detail.html:29 games/templates/_game_detail.html:88
+#: games/templates/_game_detail.html:97
+msgid "Publish"
+msgstr "Julkaise"
+
+#: games/templates/_game_detail.html:36
+msgid "Free"
+msgstr "Ilmainen"
+
+#: games/templates/_game_detail.html:43
 #, python-format
 msgid "Buy %(name)s"
 msgstr "Osta %(name)s"
 
-#: games/templates/_game_detail.html:25
+#: games/templates/_game_detail.html:44
 msgid "The payment will be processed by Simple Payments&trade;."
 msgstr "Maksu suoritetaan Simple Payments&trade; -palvelussa."
 
-#: games/templates/_game_detail.html:32
-msgid "Free"
-msgstr "Ilmainen"
+#: games/templates/_game_detail.html:46 games/templates/_game_detail.html:102
+#: users/templates/user_profile_detail.html:47
+#: users/templates/user_profile_detail.html:65
+msgid "Close dialog"
+msgstr "Sulje paneeli"
 
-#: games/templates/_game_detail.html:40
-msgid "Share"
-msgstr "Jaa"
+#: games/templates/_game_detail.html:53
+msgid "Show sharing menu"
+msgstr "Näytä jakovalikko"
 
-#: games/templates/_game_detail.html:44
+#: games/templates/_game_detail.html:71
+msgid "Show developer actions menu"
+msgstr "Näytä kehittäjän toimintovalikko"
+
+#: games/templates/_game_detail.html:80
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: games/templates/_game_detail.html:51
+#: games/templates/_game_detail.html:85
 msgid "Remove from store"
 msgstr "Poista kaupasta"
 
-#: games/templates/_game_detail.html:53 games/templates/_game_detail.html:61
-msgid "Publish"
-msgstr "Julkaise"
-
-#: games/templates/_game_detail.html:59
+#: games/templates/_game_detail.html:95
 #, python-format
 msgid "Remove %(name)s from store"
 msgstr "Poista %(name)s kaupasta"
 
-#: games/templates/_game_detail.html:62
+#: games/templates/_game_detail.html:98
 #, python-format
 msgid "Publish %(name)s"
 msgstr "Julkaise %(name)s"
 
-#: games/templates/_game_detail.html:99
-msgid "Added"
-msgstr "Lisätty"
+#: games/templates/_game_detail.html:116
+msgid "Screenshots"
+msgstr "Näyttökuvat"
 
-#: games/templates/_game_detail.html:100
-msgid "Sold"
-msgstr "Myyty"
+#: games/templates/_game_detail.html:118
+msgid "Previous screenshot"
+msgstr "Edellinen näyttökuva"
 
-#: games/templates/_game_detail.html:101
-msgid "Played"
-msgstr "Pelattu"
+#: games/templates/_game_detail.html:119
+msgid "Next screenshot"
+msgstr "Seuraava näyttökuva"
 
-#: games/templates/_game_detail.html:117 games/templates/game_play.html:38
+#: games/templates/_game_detail.html:128
+#, python-format
+msgid "Show %(i)s screenshot"
+msgstr "Näytä %(i)s näyttökuva"
+
+#: games/templates/_game_detail.html:140 games/templates/game_play.html:37
 msgid "Global Scores"
-msgstr "Tulokset"
+msgstr "Kaikki tulokset"
 
-#: games/templates/_game_detail.html:124
+#: games/templates/_game_detail.html:147
 msgid "Earnings"
 msgstr "Ansiot"
 
-#: games/templates/_game_detail.html:125
+#: games/templates/_game_detail.html:149
+msgid "Sold"
+msgstr "Myyty"
+
+#: games/templates/_game_detail.html:151
+msgid "Played"
+msgstr "Pelattu"
+
+#: games/templates/_game_detail.html:155
+msgid "Added"
+msgstr "Lisätty"
+
+#: games/templates/_game_detail.html:157
 msgid "First sale"
 msgstr "Ensimmäinen myynti"
 
-#: games/templates/game_create.html:4 games/templates/game_create.html:13
-#: levelup/context_processors.py:12
+#: games/templates/_results_list.html:8
+msgid "Player"
+msgstr "Pelaaja"
+
+#: games/templates/_results_list.html:9
+msgid "Score"
+msgstr "Tulos"
+
+#: games/templates/_results_list.html:10
+msgid "Date"
+msgstr "Päivämäärä"
+
+#: games/templates/game_create.html:4
+msgid "Create a Game"
+msgstr "Luo peli"
+
+#: games/templates/game_create.html:13 levelup/context_processors.py:12
 msgid "Add Game"
 msgstr "Lisää peli"
 
-#: games/templates/game_play.html:35
-msgid "Your Scores"
-msgstr "Tuloksesi"
+#: games/templates/game_play.html:18
+msgid "Playing"
+msgstr "Pelataan"
+
+#: games/templates/game_play.html:34
+msgid "My Scores"
+msgstr "Omat tulokset"
 
 #: games/templates/game_update.html:4
-msgid "Update Game Details"
-msgstr "Päivitä pelin tiedot"
+#: users/templates/user_profile_update.html:13
+msgid "Update"
+msgstr "Päivitä"
 
 #: games/templates/game_update.html:7
 #, python-format
@@ -228,64 +264,93 @@ msgstr "Omat pelit"
 msgid "Store"
 msgstr "Kauppa"
 
-#: games/views.py:39 users/templates/public_developer_page.html:39
-#: users/templates/user_profile_detail.html:14
+#: games/utils.py:22
+msgid "Hey {}, you must buy the game before being able to play!"
+msgstr "Hei {}, sinun täytyy ostaa peli ennen kuin voit pelata!"
+
+#: games/utils.py:25
+msgid "You must be authenticated to perform this action!"
+msgstr "Sinun täytyy olla kirjautunut sisään tehdäksesi tämän toiminnon!"
+
+#: games/views.py:28 users/templates/public_developer_page.html:39
+#: users/templates/user_profile_detail.html:19
+#: users/templates/user_profile_detail.html:81
 msgid "Games"
 msgstr "Pelit"
 
-#: levelup/context_processors.py:8
+#: levelup/context_processors.py:8 levelup/templates/home.html:4
 msgid "Home"
 msgstr "Etusivu"
 
-#: levelup/settings.py:151
+#: levelup/settings.py:152
 msgid "English"
 msgstr "Englanti"
 
-#: levelup/settings.py:152
-msgid "Finnish"
-msgstr "Suomi"
-
 #: levelup/settings.py:153
-msgid "Italian"
-msgstr "Italia"
+msgid "Finnish"
+msgstr "suomi"
 
-#: levelup/templates/_footer.html:5
+#: levelup/templates/403.html:9
+msgid "Oops! Seems like you don't have permissions to access this page."
+msgstr "Hups! Näyttää siltä, ettei sinulla ole oikeuksia päästä tälle sivulle."
+
+#: levelup/templates/_footer.html:4
 #, python-format
 msgid "Made with %(love)s by the LevelUp team"
 msgstr "Tehty %(love)s LevelUp -tiimin toimesta"
 
-#: levelup/templates/_navigation.html:12
+#: levelup/templates/_input_grid.html:38
+#: levelup/templates/_input_wrapper.html:14
+msgid "Select"
+msgstr "Valitse"
+
+#: levelup/templates/_navigation.html:9
 msgid "Menu"
 msgstr "Valikko"
 
-#: levelup/templates/_navigation.html:21
-#: users/templates/user_profile_detail.html:4
+#: levelup/templates/_navigation.html:24
 msgid "My Profile"
 msgstr "Profiili"
 
-#: levelup/templates/_navigation.html:22
+#: levelup/templates/_navigation.html:25
 msgid "Log Out"
 msgstr "Kirjaudu ulos"
 
-#: levelup/templates/_navigation.html:27
+#: levelup/templates/_navigation.html:30
 #: levelup/templates/auth/_login_form.html:6
 #: levelup/templates/auth/login.html:4
 msgid "Log In"
 msgstr "Kirjaudu sisään"
 
-#: levelup/templates/_navigation.html:29
+#: levelup/templates/_navigation.html:32
 #: levelup/templates/account/signup.html:8
 #: levelup/templates/account/signup.html:18
 #: levelup/templates/auth/_login_form.html:10
 #: levelup/templates/socialaccount/signup.html:9
 #: levelup/templates/socialaccount/signup.html:20
-#: users/templates/new_api_key.html:4 users/templates/signup_developer.html:5
 #: users/templates/signup_developer.html:22
-#: users/templates/signup_player.html:5 users/templates/signup_player.html:22
+#: users/templates/signup_player.html:22
 #: users/templates/signup_user_group_selection.html:4
-#: users/templates/signup_user_group_selection.html:9
+#: users/templates/signup_user_group_selection.html:7
 msgid "Sign Up"
 msgstr "Rekisteröidy"
+
+#: levelup/templates/_pagination.html:6
+msgid "Pagination"
+msgstr "Sivutus"
+
+#: levelup/templates/_pagination.html:8 levelup/templates/_pagination.html:10
+msgid "Previous"
+msgstr "Edellinen"
+
+#: levelup/templates/_pagination.html:8 levelup/templates/_pagination.html:10
+#: levelup/templates/_pagination.html:20 levelup/templates/_pagination.html:22
+msgid "page"
+msgstr "sivu"
+
+#: levelup/templates/_pagination.html:20 levelup/templates/_pagination.html:22
+msgid "Next"
+msgstr "Seuraava"
 
 #: levelup/templates/_social_login.html:12
 #: levelup/templates/_social_login.html:24
@@ -295,10 +360,8 @@ msgstr "Kirjaudu sisään käyttäen palvelua "
 #: levelup/templates/account/login.html:6
 #: levelup/templates/account/login.html:10
 #: levelup/templates/account/login.html:43
-#, fuzzy
-#| msgid "Sign Up"
 msgid "Sign In"
-msgstr "Rekisteröidy"
+msgstr "Kirjaudu sisään"
 
 #: levelup/templates/account/login.html:15
 #, python-format
@@ -308,6 +371,8 @@ msgid ""
 "up</a>\n"
 "for a %(site_name)s account and sign in below:"
 msgstr ""
+"Kirjaudu sisään kolmannen osapuolen tililläsi tai <a href=\"%(signup_url)s"
+"\">rekisteröidy %(site_name)s -palveluun</a> ja kirjaudu sisään alla:"
 
 #: levelup/templates/account/login.html:25
 msgid "or"
@@ -319,12 +384,12 @@ msgid ""
 "If you have not created an account yet, then please\n"
 "<a href=\"%(signup_url)s\">sign up</a> first."
 msgstr ""
+"Jos et ole vielä luonut tiliä, <a href=\"%(signup_url)s\">rekisteröidy</a> "
+"ensin."
 
 #: levelup/templates/account/login.html:42
-#, fuzzy
-#| msgid "Lost password?"
 msgid "Forgot Password?"
-msgstr "Salasana hukassa?"
+msgstr "Unohtunut salasana?"
 
 #: levelup/templates/account/logout.html:5
 #: levelup/templates/account/logout.html:8
@@ -388,6 +453,9 @@ msgid ""
 "used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
 "a>."
 msgstr ""
+"Salasananpalautuslinkki oli virheellinen, koska se oli mahdollisesti jo "
+"käytetty. <a href=\"%(passwd_reset_url)s\">Yritä salasanan palautusta "
+"uudestaan</a>."
 
 #: levelup/templates/account/password_reset_from_key.html:17
 msgid "change password"
@@ -413,21 +481,21 @@ msgstr "Rekisteröityminen"
 #, python-format
 msgid ""
 "Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
-msgstr ""
+msgstr "Onko sinulla jo tili? <a href=\"%(login_url)s\">Kirjaudu sisään</a>."
 
 #: levelup/templates/account/signup_closed.html:5
 #: levelup/templates/account/signup_closed.html:8
-msgid "Sign Up Closed"
-msgstr ""
+msgid "Signup Closed"
+msgstr "Rekisteröityminen suljettu"
 
 #: levelup/templates/account/signup_closed.html:10
-msgid "We are sorry, but the sign up is currently closed."
-msgstr ""
+msgid "We are sorry, but the signup is currently closed."
+msgstr "Pahoittelemme, mutta rekisteröityminen on tällä hetkellä suljettu."
 
 #: levelup/templates/account/verified_email_required.html:5
 #: levelup/templates/account/verified_email_required.html:8
 msgid "Verify Your E-mail Address"
-msgstr ""
+msgstr "Vahvista sähköpostiosoitteesi"
 
 #: levelup/templates/account/verified_email_required.html:12
 msgid ""
@@ -435,6 +503,8 @@ msgid ""
 "you are who you claim to be. For this purpose, we require that you\n"
 "verify ownership of your e-mail address. "
 msgstr ""
+"Tämä sivuston osa vaatii, että vahvistat henkilöllisyytesi. Siksi pyydämme, "
+"että vahvistat sähköpostiosoitteesi."
 
 #: levelup/templates/account/verified_email_required.html:16
 msgid ""
@@ -442,6 +512,9 @@ msgid ""
 "verification. Please click on the link inside this e-mail. Please\n"
 "contact us if you do not receive it within a few minutes."
 msgstr ""
+"Olemme lähettäneet sinulle vahvistussähköpostin. Klikkaa saamassasi "
+"viestissä olevaa linkkiä. Ota yhteyttä, jos et saa sähköpostia muutaman "
+"minuutin kuluessa."
 
 #: levelup/templates/account/verified_email_required.html:20
 #, python-format
@@ -449,65 +522,75 @@ msgid ""
 "<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
 "mail address</a>."
 msgstr ""
+"<strong>Huom.,</strong> voit yhä <a href=\"%(email_url)s\">vaihtaa "
+"sähköpostiosoitteesi</a>."
 
 #: levelup/templates/auth/_login_form.html:9
 msgid "Lost password?"
 msgstr "Salasana hukassa?"
 
-#: levelup/templates/home.html:6
+#: levelup/templates/home.html:9
+msgid "Welcome!"
+msgstr "Tervetuloa!"
+
+#: levelup/templates/home.html:15
 msgid "Most Played"
 msgstr "Eniten pelatut"
 
-#: levelup/templates/home.html:15
+#: levelup/templates/home.html:24
 msgid "Best Sellers"
 msgstr "Myydyimmät"
 
-#: levelup/templates/home.html:24
+#: levelup/templates/home.html:33
 msgid "Trending this month"
 msgstr "Kuukauden suosituimmat"
 
-#: levelup/templates/home.html:33
+#: levelup/templates/home.html:42
 msgid "Trending this week"
 msgstr "Viikon suosituimmat"
 
 #: levelup/templates/socialaccount/authentication_error.html:5
 #: levelup/templates/socialaccount/authentication_error.html:8
 msgid "Social Network Login Failure"
-msgstr ""
+msgstr "Sosiaalisen verkon kirjautumisvirhe"
 
 #: levelup/templates/socialaccount/authentication_error.html:10
 msgid ""
 "An error occurred while attempting to login via your social network account."
 msgstr ""
+"Tapahtui virhe yritettäessä kirjautua sosiaalisen verkoston tunnuksella."
 
 #: levelup/templates/socialaccount/connections.html:5
 #: levelup/templates/socialaccount/connections.html:8
 msgid "Account Connections"
-msgstr ""
+msgstr "Liitetyt tilit"
 
 #: levelup/templates/socialaccount/connections.html:11
 msgid ""
 "You can sign in to your account using any of the following third party "
 "accounts:"
 msgstr ""
+"Voit kirjautua tilillesi käyttäen jotain seuraavista kolmannen osapuolen "
+"tileistä:"
 
 #: levelup/templates/socialaccount/connections.html:35
 msgid "Remove"
-msgstr ""
+msgstr "Poista"
 
 #: levelup/templates/socialaccount/connections.html:43
 msgid ""
 "You currently have no social network accounts connected to this account."
 msgstr ""
+"Sinulla ei tällä hetkellä ole sosiaalisia verkostoja liitettynä tähän tiliin."
 
 #: levelup/templates/socialaccount/connections.html:46
 msgid "Add a 3rd Party Account"
-msgstr ""
+msgstr "Lisää kolmannen osapuolen käyttäjätili"
 
 #: levelup/templates/socialaccount/login_cancelled.html:5
 #: levelup/templates/socialaccount/login_cancelled.html:9
 msgid "Login Cancelled"
-msgstr ""
+msgstr "Sisäänkirjautuminen peruutettu"
 
 #: levelup/templates/socialaccount/login_cancelled.html:13
 #, python-format
@@ -516,13 +599,17 @@ msgid ""
 "accounts. If this was a mistake, please proceed to <a href=\"%(login_url)s"
 "\">sign in</a>."
 msgstr ""
+"Päätit peruuttaa kirjautumisen käyttämällä olemassaolevaa tunnustasi. Jos "
+"tämä oli virhe, jatka <a href=\"%(login_url)s\">kirjautumalla sisään</a>."
 
 #: levelup/templates/socialaccount/signup.html:11
 #, python-format
 msgid ""
-"You are about to use your %(provider_name)s account to login to\n"
+"You are about to use your %(provider_name)s account to log in to\n"
 "%(site_name)s. As a final step, please complete the following form:"
 msgstr ""
+"Olet käyttämässä %(provider_name)s-palvelun tunnusta kirjautuaksesi sivulle\n"
+"%(site_name)s. Täytä vielä seuraava lomake:"
 
 #: transactions/models.py:13
 msgid "Success"
@@ -536,45 +623,67 @@ msgstr "Peruuta"
 msgid "Error"
 msgstr "Virhe"
 
+#: transactions/templates/game_bought_email.html:6
+#, python-format
+msgid "Congratulations %(username)s!"
+msgstr "Onnittelut, %(username)s!"
+
+#: transactions/templates/game_bought_email.html:8
+#, python-format
+msgid "You have just bought %(game.name)s!"
+msgstr "Olet juuri ostanut pelin %(game.name)s!"
+
+#: transactions/templates/game_bought_email.html:9
+msgid "Start playing now!"
+msgstr "Aloita pelaaminen nyt!"
+
+#: transactions/templates/game_bought_email.html:10
+msgid "We hope to see you soon on our platform."
+msgstr "Toivomme näkevämme sinut pian palvelussamme."
+
+#: transactions/templates/game_bought_email.html:11
+msgid "The LevelUp team"
+msgstr "LevelUp-tiimi"
+
 #: transactions/views.py:47
 msgid "Congratulations, you have bought {}!"
-msgstr ""
+msgstr "Onnittelut, olet ostanut {}!"
 
-#: users/forms.py:19
+#: users/forms.py:18
 msgid "Password"
 msgstr "Salasana"
 
-#: users/forms.py:24
+#: users/forms.py:23
 msgid "Password confirmation"
 msgstr "Vahvista salasana"
 
-#: users/forms.py:27
+#: users/forms.py:26
 msgid "Enter the same password as before, for verification."
 msgstr "Kirjoita salasana uudestaan."
 
-#: users/forms.py:35
+#: users/forms.py:34
 msgid "The passwords do not match."
 msgstr "Salasanat eivät täsmää."
 
-#: users/forms.py:43
+#: users/forms.py:42
 msgid "This username is already in use."
 msgstr "Käyttäjätunnus on jo käytössä."
 
-#: users/forms.py:130
-#, fuzzy
-#| msgid "I’m a developer!"
+#: users/forms.py:107
+msgid "The display name you chose is already taken."
+msgstr "Valitsemasi nimi on jo käytössä."
+
+#: users/forms.py:120
 msgid "I am a developer"
-msgstr "Olen kehittäjä!"
+msgstr "Olen kehittäjä"
 
-#: users/forms.py:131
-#, fuzzy
-#| msgid "I’m a player!"
+#: users/forms.py:121
 msgid "I am a player"
-msgstr "Olen pelaaja!"
+msgstr "Olen pelaaja"
 
-#: users/forms.py:137
+#: users/forms.py:127
 msgid "Select your role"
-msgstr ""
+msgstr "Valitse roolisi"
 
 #: users/models.py:21
 msgid "Name"
@@ -607,19 +716,34 @@ msgstr "Kehittäjän tukisähköpostiosoite"
 msgid "Visible to those users that have bought your games"
 msgstr "Näkyy niille käyttäjille, jotka ovat ostaneet pelejäsi"
 
-#: users/templates/_user_profile_details.html:26
+#: users/templates/_api-token_confirm_delete.html:5
+#: users/templates/user_profile_detail.html:41
+msgid "Delete token"
+msgstr "Poista avain"
+
+#: users/templates/_create_api_key.html:6
+msgid "Create token"
+msgstr "Luo avain"
+
+#: users/templates/_user_profile_details.html:23
+msgid "Last login:"
+msgstr "Viimeinen sisäänkirjautuminen:"
+
+#: users/templates/_user_profile_details.html:25
 msgid "Update profile"
 msgstr "Päivitä profiili"
 
-#: users/templates/new_api_key.html:10
-msgid "Create New Key"
-msgstr "Luo uusi avain"
+#: users/templates/public_developer_page.html:23
+msgid "Send an email to the developer"
+msgstr "Lähetä sähköposti kehittäjälle"
 
-#: users/templates/public_developer_page.html:25
-#, fuzzy
-#| msgid "Sign up as a developer"
-msgid "Send an email the developer"
-msgstr "Rekisteröidy kehittäjänä"
+#: users/templates/public_developer_page.html:28
+msgid "Visit the developer’s website"
+msgstr "Vieraile kehittäjän verkkosivustolla"
+
+#: users/templates/signup_developer.html:5
+msgid "New Developer"
+msgstr "Uusi kehittäjä"
 
 #: users/templates/signup_developer.html:11
 #: users/templates/signup_player.html:13
@@ -631,23 +755,58 @@ msgstr "Rekisteröidy kehittäjänä"
 msgid "Sign up as a player"
 msgstr "Rekisteröidy pelaajana"
 
-#: users/templates/signup_user_group_selection.html:16
+#: users/templates/signup_player.html:5
+msgid "New Player"
+msgstr "Uusi pelaaja"
+
+#: users/templates/signup_user_group_selection.html:10
 msgid "I’m a player!"
 msgstr "Olen pelaaja!"
 
-#: users/templates/signup_user_group_selection.html:23
+#: users/templates/signup_user_group_selection.html:13
 msgid "I’m a developer!"
 msgstr "Olen kehittäjä!"
 
-#: users/templates/user_profile_detail.html:13
+#: users/templates/user_profile_detail.html:17
+#: users/templates/user_profile_detail.html:26
+msgid "API Keys"
+msgstr "Rajapinta-avaimet"
+
+#: users/templates/user_profile_detail.html:18
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: users/templates/user_profile_detail.html:15
-msgid "API Keys"
-msgstr ""
+#: users/templates/user_profile_detail.html:30
+msgid "Token"
+msgstr "Tunnus"
 
-#: users/templates/user_profile_detail.html:25
+#: users/templates/user_profile_detail.html:31
+msgid "Website"
+msgstr "Verkkosivu"
+
+#: users/templates/user_profile_detail.html:32
+msgid "Delete"
+msgstr "Poista"
+
+#: users/templates/user_profile_detail.html:44
+#, python-format
+msgid "Delete API token for %(website)s"
+msgstr "Poista rajapinta-avain sivustolle %(website)s"
+
+#: users/templates/user_profile_detail.html:45
+msgid "Are you sure you want to delete this token?"
+msgstr "Oletko varma, että haluat poistaa tämän tunnuksen?"
+
+#: users/templates/user_profile_detail.html:54
+msgid "No API keys found"
+msgstr "Rajapinta-avaimia ei löytynyt"
+
+#: users/templates/user_profile_detail.html:60
+#: users/templates/user_profile_detail.html:63
+msgid "Create a new API token"
+msgstr "Luo uusi rajapinta-avain"
+
+#: users/templates/user_profile_detail.html:76
 msgid "Sales and Profits"
 msgstr "Myynti ja tuotot"
 
@@ -656,17 +815,36 @@ msgstr "Myynti ja tuotot"
 msgid "Update Profile"
 msgstr "Päivitä profiili"
 
-#: users/templates/user_profile_update.html:12
-msgid "Update"
-msgstr "Päivitä"
-
-#: users/views.py:105
+#: users/views.py:108
 msgid "Sales"
 msgstr "Myynti"
 
-#: users/views.py:110
+#: users/views.py:113
 msgid "Profits"
 msgstr "Tuotot"
+
+#~ msgid "Create a new API key"
+#~ msgstr "Luo uusi rajapintatunnus"
+
+#~ msgid "Screen shot"
+#~ msgstr "Näyttökuva"
+
+#~ msgid "Unpublished"
+#~ msgstr "Julkaisematon"
+
+#~ msgid "Share"
+#~ msgstr "Jaa"
+
+#~ msgid "Update Game Details"
+#~ msgstr "Päivitä pelin tiedot"
+
+#~ msgid "Italian"
+#~ msgstr "Italia"
+
+#, fuzzy
+#~| msgid "Sign up as a developer"
+#~ msgid "Send an email the developer"
+#~ msgstr "Rekisteröidy kehittäjänä"
 
 #~ msgid "Buy"
 #~ msgstr "Osta"
@@ -811,9 +989,6 @@ msgstr "Tuotot"
 
 #~ msgid "Dec"
 #~ msgstr "Joulu"
-
-#~ msgid "Welcome!"
-#~ msgstr "Tervetuloa!"
 
 #~ msgid "Add game"
 #~ msgstr "Lisää peli"

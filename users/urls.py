@@ -13,7 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
+from django.contrib.auth.views import login
 
 from users.views import (
     SignupUserGroupSelectionView, SignupPlayerView, SignupDeveloperView,
@@ -21,7 +22,7 @@ from users.views import (
     SignupActivateView, DeleteApiKeyView)
 
 urlpatterns = [
-    
+
     # Profile
     url(r'^signup/$', SignupUserGroupSelectionView.as_view(), name='signup'),
     url(r'^signup/player$', SignupPlayerView.as_view(), name='signup-player'),

@@ -3,7 +3,9 @@
 <div class="input-wrapper{% if field.errors %} error{% endif %}">
     <label>
         {{ field.label }}{% if field.help_text %} <small>{{ field.help_text|safe }}</small>{% endif %}
-
+        {% for error in field.errors %}
+            <small class="label warning small">{{ error }}</small>
+        {% endfor %}
         {% if field.field.widget|get_class == "Select" %}
             <select name="{{ field.name }}">
                 {% for choice in field.field.choices %}
@@ -20,7 +22,4 @@
             {{ field }}
         {% endif %}
     </label>
-    {% for error in field.errors %}
-        <small class="error">{{ error }}</small>
-    {% endfor %}
 </div>
