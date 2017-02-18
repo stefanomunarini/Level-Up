@@ -55,8 +55,6 @@
                     </a>
                     {# Share dropdown #}
                     <div id="social-drop-{{ type }}-{{ game.slug }}"
-                         data-hover="true"
-                         data-hover-pane="true"
                          class="dropdown-pane stacked small button-group action-dropdown"
                          data-dropdown>
                         {% url "game:detail" game.slug as game_path %}
@@ -75,8 +73,6 @@
                         </a>
                         {# Developer dropdown #}
                         <div id="dev-drop-{{ type }}-{{ game.slug }}"
-                             data-hover="true"
-                             data-hover-pane="true"
                              class="dropdown-pane stacked small button-group action-dropdown"
                              data-dropdown>
                             <a class="button" href="{% url 'game:update' game.slug %}">

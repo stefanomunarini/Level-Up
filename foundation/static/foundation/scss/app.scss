@@ -98,6 +98,7 @@ a .label {
 }
 
 main {
+  overflow: auto;
   padding-top: $global-padding;
   background: $white;
 
