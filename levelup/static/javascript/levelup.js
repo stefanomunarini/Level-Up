@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('.cloudinary-image input').change(function(event) {
         var elemName = this.name;
-        var preview = $('.preview[data_id=' + elemName);
+        var preview = $('.preview[data-id=' + elemName+']');
         updatePreview(this.files[0], preview);
     });
 

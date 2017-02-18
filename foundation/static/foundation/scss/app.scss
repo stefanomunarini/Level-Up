@@ -137,6 +137,10 @@ main {
   table.scores tr.self {
     color: $success-color;
   }
+
+  .cloudinary-image .preview {
+    margin-bottom: $global-padding;
+  }
 }
 
 footer {

@@ -1,24 +1,6 @@
 main {
     overflow: auto;
 }
-/*Profile*/
-.cloudinary-image {
-    position: relative;
-    min-height: 45px;
-    margin-bottom: 10px;
-}
-
-.cloudinary-image label {
-    position: absolute;
-    bottom: 0;
-    left: 15px;
-    width: 250px;
-    margin: 0;
-    background: rgba(0,0,0, 0.5);
-    padding: 10px;
-    color: white;
-    text-align: center;
-}
 
 .action-dropdown {
     padding: 0;

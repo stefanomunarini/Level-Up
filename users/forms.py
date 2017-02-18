@@ -89,7 +89,7 @@ class SignupDeveloperForm(AbstractSignupUserForm):
 class UserUpdateModelForm(ModelForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email')
+        fields = ('email',)
 
     def save(self, commit=True):
         if not User.objects.filter(username=self.cleaned_data.get('email')).count() > 0:

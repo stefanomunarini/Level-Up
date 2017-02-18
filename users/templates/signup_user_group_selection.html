@@ -4,26 +4,14 @@
 {% block title %}{% trans "Sign Up" %} &ndash; {{ block.super }}{% endblock title %}
 
 {% block main %}
-    <div class="row">
-        <div class="small-12 columns">
-            <h1>{% trans "Sign Up" %}</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-12 medium-6 columns">
-            <a href="{% url 'profile:signup-player' %}">
-                <div class="panel callout radius">
-                    <h2>{% trans 'I’m a player!' %}</h2>
-                </div>
-            </a>
-        </div>
-        <div class="small-12 medium-6 columns">
-            <a href="{% url 'profile:signup-developer' %}">
-                <div class="panel radius">
-                    <h2>{% trans 'I’m a developer!' %}</h2>
-                </div>
-            </a>
-        </div>
+    <h2>{% trans "Sign Up" %}</h2>
+    <div class="button-group large expanded">
+        <a class="button" href="{% url 'profile:signup-player' %}">
+                <span>{% trans 'I’m a player!' %}</span>
+        </a>
+        <a class="button secondary" href="{% url 'profile:signup-developer' %}">
+            {% trans 'I’m a developer!' %}
+        </a>
     </div>
 
 {% endblock %}

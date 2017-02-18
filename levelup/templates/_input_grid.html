@@ -14,18 +14,26 @@
         </div>
     {% endif %}
     {% for field in form %}
-        {% if field.field|get_class == 'CloudinaryFileField' and form_update %}
+        {% if field.field|get_class == 'CloudinaryFileField' %}
             <div class="row">
-                <div class="cloudinary-image columns">
-                    {% cloudinary field.initial width=250 height=250 crop="fill" class="preview" data_id=field.html_name %}
-                    <label for="id_{{ field.html_name }}">
-                        <i class="fa fa-camera" aria-hidden="true"></i>
-                        {% trans "Update" %}
-                    </label>
-                    <input id="id_{{ field.html_name }}"
-                           class="hide"
-                           name="{{ field.html_name }}"
-                           type="file">
+                <div class="small-12 columns">
+                    <div class="cloudinary-image clearfix">
+                        <div class="callout float-left text-center">
+                            {% if field.initial %}
+                                <img class="preview" data-id="{{ field.html_name }}" width="128" height="128" src="{% cloudinary_url field.initial width=256 height=256 crop="fill" %}">
+                            {% else %}
+                                <img class="preview" data-id="{{ field.html_name }}" width="128" height="128">
+                            {% endif %}
+                            <label class="button expanded" for="id_{{ field.html_name }}">
+                                <i class="fa fa-file-photo-o" aria-hidden="true"></i>
+                                {% trans "Select" %} {{ field.label }}
+                            </label>
+                        </div>
+                        <input id="id_{{ field.html_name }}"
+                               class="hide"
+                               name="{{ field.html_name }}"
+                               type="file">
+                    </div>
                 </div>
             </div>
         {% else %}
