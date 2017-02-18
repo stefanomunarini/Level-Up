@@ -4,8 +4,12 @@
 
 {% url 'profile:login' as login_url %}
 
+<div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
+    <button class="menu-icon" type="button" data-toggle="main-menu"></button>
+    <div class="title-bar-title">{% trans "Menu" %}</div>
+</div>
 
-<ul class="vertical menu" data-accordion-menu>
+<ul id="main-menu" class="vertical menu" data-accordion-menu>
     {% for link in main_menu.left %}{% if not link.hide %}
         {% url link.view as href %}
         <li class="{% if href == request.path %}active{% endif %}">
