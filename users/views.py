@@ -156,10 +156,13 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
         return render(request, self.template_name, {'user_form': user_form, 'user_profile_form': user_profile_form})
 
 
-class NewApiKeyView(FormView):
+class CreateApiKeyView(FormView):
     form_class = ApiKeyForm
     success_url = reverse_lazy('profile:user-profile')
-    template_name = 'new_api_key.html'
+
+    # Don’t use a template
+    def get(self, request, *args, **kwargs):
+        return HttpResponseRedirect(self.success_url)
 
     def form_valid(self, form):
         form.save(commit=False)
@@ -167,7 +170,8 @@ class NewApiKeyView(FormView):
         form.instance.developer_id = self.request.user.profile.id
         form.instance.token = str(uuid.uuid4())
         form.save()
-        return super(NewApiKeyView, self).form_valid(self)
+        return super(CreateApiKeyView, self).form_valid(self)
+
 
 
 class DeleteApiKeyView(DeleteView, LoginRequiredMixin):

@@ -1,0 +1,7 @@
+{% load i18n users %}
+
+<form action="{% url "profile:create-api-key" %}" method="post">
+    {% csrf_token %}
+    {% api_key_form %}
+    <input class="button success float-right" type="submit" value="{% trans "Create token" %}">
+</form>
