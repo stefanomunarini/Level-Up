@@ -6,15 +6,17 @@
 {% block main %}
 
     <div class="row center">
-        <div class="small-12 medium-6 medium-centered columns">
-            <form action="" method="get">
-                {% include "_input_grid.html" with submit_text=_('Search')%}
-            </form>
-        </div>
-    </div>
-
-    <div class="row">
         <div class="small-12 columns">
+            <h2>{{ page_title }}</h2>
+            <form action="" method="get">
+                {% include "_input_grid.html" %}
+                <div class="row expanded">
+                    <div class="small-12 medium-6 large-4 small-centered columns">
+                        <input class="button expanded" type="submit" value="{% trans "Search" %}">
+                    </div>
+                </div>
+            </form>
+            <hr>
             {% include "_game_grid.html" with games=games %}
         </div>
     </div>
