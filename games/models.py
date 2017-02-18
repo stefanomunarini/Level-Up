@@ -64,7 +64,7 @@ class Game(models.Model):
 
 
 class GameScreenshot(models.Model):
-    image = CloudinaryField(_('Screen shot'))
+    image = CloudinaryField(_('Screenshot'))
     game = models.ForeignKey(Game, related_name='screenshots')
 
 
