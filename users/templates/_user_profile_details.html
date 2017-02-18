@@ -16,20 +16,13 @@
 
 {% block col-main %}
     <div>
-        <h3>
+        <h3 class="text-left">
             {{ user.profile.display_name }}
         </h3>
         <p>{{ user.profile.user.email }}</p>
-        <p>Last login: {{ user.profile.user.last_login }}</p>
+        <p>{% trans "Last login:" %} {{ user.profile.user.last_login }}</p>
         <p>
-            <small>
-                <a href="{% url 'profile:user-profile-update' %}" class="button success">{% trans 'Update profile' %}</a>
-            </small>
-            {% if user.profile.is_developer %}
-                <small>
-                    <a href="{% url 'profile:create-api-key' %}" class="button">New API Key</a>
-                </small>
-            {% endif %}
+            <a href="{% url 'profile:user-profile-update' %}" class="button success">{% trans 'Update profile' %}</a>
         </p>
     </div>
 {% endblock col-main %}

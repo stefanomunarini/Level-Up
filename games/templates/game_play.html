@@ -5,7 +5,6 @@
 
 {%  block head_js %}
     {{ block.super }}
-    <script src="{% static "foundation/bower_components/jquery/dist/jquery.js" %}"></script>
     <script type="text/javascript" src={% static "javascript/game_services.js" %}></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.min.js"></script>
 {% endblock head_js %}
@@ -13,12 +12,10 @@
 {% block main %}
 
     <div class="row">
-        <h3><a href="{% url 'game:detail' game.slug %}">{{ game.name|title }}</a></h3>
-    </div>
+        <div class="small-12 columns text-center">
+            <h2>{% trans "Playing" %} <a href="{% url 'game:detail' game.slug %}">{{ game.name }}</a></h2>
 
-    <div class="row">
-        <div class="small-12 large-12 columns">
-            <div id="game_play">
+            <div id="game_play" class="callout">
                 <iframe id="game_frame" src="{% if game.url %}{{ game.url }}{% else %}https://grader-host.cs.hut.fi/static/wsd/example_game.html{% endif %}"
                     {% if game_state.state %}style="filter: blur(5px)"{% endif %}></iframe>
                 <div class="row">
@@ -30,10 +27,9 @@
             </div>
         </div>
     </div>
-
     <div class="row" id="scores">
         <div class="small-12 large-6 columns" id="my_scores">
-            {% include '_results_list.html' with scores=my_scores title=_('Your Scores') %}
+            {% include '_results_list.html' with scores=my_scores title=_('My Scores') %}
         </div>
         <div class="small-12 large-6 columns">
             {% include '_results_list.html' with scores=global_scores title=_('Global Scores')%}

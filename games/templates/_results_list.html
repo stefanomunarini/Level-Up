@@ -1,23 +1,23 @@
+{% load i18n %}
+
 {% if scores %}
-<table>
-<caption>{{ title }}</caption>
-    <thead>
-        <tr>
-            <th>Player</th>
-            <th>Scores</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for score in scores %}
-        <tr>
-            <th {% if score.player == request.user.profile %}style="color: #3a945b"{% endif %}>
-                {{ score.player }}
-            </th>
-            <th>{{ score.score }}</th>
-            <th>{{ score.timestamp }}</th>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    <h3>{{ title }}</h3>
+    <table class="scores hover">
+        <thead>
+            <tr>
+                <th>{% trans "Player" %}</th>
+                <th>{% trans "Score" %}</th>
+                <th>{% trans "Date" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for score in scores %}
+            <tr {% if score.player == request.user.profile %}class="self"{% endif %}>
+                <td>{{ score.player }}</td>
+                <td>{{ score.score }}</td>
+                <td>{{ score.timestamp|date:"SHORT_DATETIME_FORMAT" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endif %}

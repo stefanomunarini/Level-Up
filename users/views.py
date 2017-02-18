@@ -2,16 +2,20 @@ import json
 import uuid
 from datetime import datetime, timedelta
 
+from django.core.exceptions import PermissionDenied
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext
+from django.views.generic import DeleteView
 from django.views.generic import FormView, TemplateView, UpdateView
 from django.views.generic import RedirectView
 from django.views.generic.detail import SingleObjectMixin, DetailView
 
+from api.models import ApiToken
 from games.models import Game
 from transactions.models import Transaction
 from users.forms import (
@@ -164,6 +168,22 @@ class NewApiKeyView(FormView):
         form.instance.token = str(uuid.uuid4())
         form.save()
         return super(NewApiKeyView, self).form_valid(self)
+
+
+class DeleteApiKeyView(DeleteView, LoginRequiredMixin):
+    success_url = reverse_lazy('profile:user-profile')
+    model = ApiToken
+
+    # Don’t use confirmation page
+    def get(self, request, *args, **kwargs):
+        return HttpResponseRedirect(self.success_url)
+
+    # Allow developers remove only their own API keys
+    def get_object(self, queryset=None):
+        obj = super(DeleteApiKeyView, self).get_object(queryset=queryset)
+        if not obj.developer == self.request.user.profile:
+            raise PermissionDenied
+        return obj
 
 
 class SignupActivateView(SingleObjectMixin, RedirectView):

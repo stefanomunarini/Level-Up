@@ -18,7 +18,7 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
     <title>{% block title %}LevelUp{% endblock title %}</title>
 
     {% block fonts %}
-        <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Noto+Serif|Overpass+Mono" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Noto+Serif:400,700|Overpass+Mono" rel="stylesheet">
     {% endblock fonts %}
 
     {% block css %}
@@ -35,6 +35,9 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
     {% endblock css %}
 
     {% block head_js %}
+        {% block foundation_jquery %}
+            <script src="{% static "foundation/bower_components/jquery/dist/jquery.js" %}"></script>
+        {% endblock foundation_jquery %}
     {% endblock head_js %}
 
 </head>
@@ -77,9 +80,6 @@ https://oncampus.oberlin.edu/webteam/2012/09/architecture-django-templates
     {% endblock body %}
 
     {% block body_js %}
-        {% block foundation_jquery %}
-            <script src="{% static "foundation/bower_components/jquery/dist/jquery.js" %}"></script>
-        {% endblock foundation_jquery %}
         {% block foundation_js %}
             <script src="{% static "foundation/bower_components/what-input/dist/what-input.js" %}"></script>
             <script src="{% static "foundation/bower_components/foundation-sites/dist/js/foundation.js" %}"></script>
