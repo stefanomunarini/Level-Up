@@ -4,12 +4,12 @@
     <label>
         {{ field.label }}{% if field.help_text %} <small>{{ field.help_text|safe }}</small>{% endif %}
 
-        {% if field.field|get_class == "ChoiceField" %}
+        {% if field.field.widget|get_class == "Select" %}
             <select name="{{ field.name }}">
                 {% for choice in field.field.choices %}
                     <option value="{% firstof choice.0 "" %}" {% if choice.0 == field.value %}selected{% endif %}>
-                        {% if choice.0 == None %}
-                            {% trans "Choose" %} {{ field.label|lower }}
+                        {% if not choice.0 %}
+                            {% trans "Select" %} {{ field.label|lower }}
                         {% else %}
                             {{ choice.1 }}
                         {% endif %}

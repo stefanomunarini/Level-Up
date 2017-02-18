@@ -35,7 +35,7 @@
                                 {% endif %}
                                 <label class="button expanded" for="id_{{ field.html_name }}">
                                     <i class="fa fa-file-photo-o" aria-hidden="true"></i>
-                                    {% trans "Select" %} {{ field.label }}
+                                    {% trans "Select" %} {{ field.label|lower }}
                                 </label>
                             </div>
                             <input id="id_{{ field.html_name }}"
