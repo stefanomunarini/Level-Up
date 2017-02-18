@@ -1,14 +1,13 @@
+{% load i18n %}
+
 <!doctype html>
 <html>
     <body>
-        <h3>Congratulations {{ username }}!</h3>
+        <h3>{% blocktrans %}Congratulations {{ username }}!{% endblocktrans %}</h3>
         <br>
-        <p>You have just bought {{ game.name }}!</p>
-        <p>Start playing now!</p>
-        <br>
-        <a href="{{ url }}{% url 'game:play' game.slug %}" class="button radius tiny success split">Play<span data-dropdown="social-drop-{{ game.slug }}"></span></a>
-        <br>
-        <p>We hope to see you soon on our platform.</p>
-        <p>The LevelUp team</p>
+        <p>{% blocktrans %}You have just bought {{ game.name }}!{% endblocktrans %}</p>
+        <p><a href="{% url 'game:play' game.slug %}">{% trans "Start playing now!" %}</a></p>
+        <p>{% blocktrans %}We hope to see you soon on our platform.{% endblocktrans %}</p>
+        <p>{% trans "The LevelUp team" %}</p>
     </body>
 </html>

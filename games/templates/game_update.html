@@ -1,7 +1,7 @@
 {% extends "__base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Update Game Details" %} &ndash; {{ block.super }}{% endblock title %}
+{% block title %}{% trans "Update" %} {{ game.name }} &ndash; {{ block.super }}{% endblock title %}
 
 {% block main %}
     <h1>{% blocktrans with name=game.name %}Update {{ name }} details{% endblocktrans %}</h1>

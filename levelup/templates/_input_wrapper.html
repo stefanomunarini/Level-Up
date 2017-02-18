@@ -1,0 +1,26 @@
+{% load i18n users %}
+
+<div class="input-wrapper{% if field.errors %} error{% endif %}">
+    <label>
+        {{ field.label }}{% if field.help_text %} <small>{{ field.help_text|safe }}</small>{% endif %}
+
+        {% if field.field.widget|get_class == "Select" %}
+            <select name="{{ field.name }}">
+                {% for choice in field.field.choices %}
+                    <option value="{% firstof choice.0 "" %}" {% if choice.0 == field.value %}selected{% endif %}>
+                        {% if not choice.0 %}
+                            {% trans "Select" %} {{ field.label|lower }}
+                        {% else %}
+                            {{ choice.1 }}
+                        {% endif %}
+                    </option>
+                {% endfor %}
+            </select>
+        {% else %}
+            {{ field }}
+        {% endif %}
+    </label>
+    {% for error in field.errors %}
+        <small class="error">{{ error }}</small>
+    {% endfor %}
+</div>

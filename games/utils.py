@@ -5,6 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext as _
 
 from games.forms import GameScreenshotModelFormSet
 from games.models import Game, GameScreenshot
@@ -18,10 +19,10 @@ class GameOwnershipRequiredMixin(object):
             self.object = self.get_object()
             if self.object not in request.user.profile.get_bought_games():
                 messages.error(request,
-                               'Hey {}, you must buy the game before being able to play!'.format(request.user.profile))
+                               _('Hey {}, you must buy the game before being able to play!'.format(request.user.profile)))
                 return HttpResponseRedirect(reverse_lazy('game:detail', kwargs={'slug': self.object.slug}))
             return dispatcher
-        messages.error(request, 'You must be authenticated to perform this action!')
+        messages.error(request, _('You must be authenticated to perform this action!'))
         return HttpResponseRedirect(
                 reverse_lazy('game:detail', kwargs={'slug': self.kwargs.get(self.slug_url_kwarg)}))
 

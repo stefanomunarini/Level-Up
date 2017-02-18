@@ -21,7 +21,7 @@ class UserProfile(models.Model):
     display_name = models.CharField(_('Name'), max_length=50, unique=True)
     # A profile picture for the user or a logo for the developer
     profile_picture = CloudinaryField(
-        _('Profile picture'), null=True, blank=True, default='image/upload/v1485194129/default/Ninja-icon.jpg'
+        _('Profile picture'), null=True, blank=True,
     )
     # End date for limited time bans
     deactivated_until = models.DateTimeField(null=True, blank=True)

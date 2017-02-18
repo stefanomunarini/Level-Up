@@ -98,8 +98,22 @@ a .label {
 }
 
 main {
+  overflow: auto;
   padding-top: $global-padding;
   background: $white;
+
+  h2 {
+    margin-bottom: 2*$global-margin;
+    padding-bottom: $global-padding;
+    border-bottom: 1px solid $secondary-color;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  h3 {
+    text-align: center;
+  }
 
   #profile-nav {
     background: $white;
@@ -111,6 +125,22 @@ main {
 
   .game-actions {
     margin-top: $global-margin;
+  }
+
+  #game_play iframe {
+    border: 0;
+  }
+
+  table .button {
+    margin-bottom: 0;
+  }
+
+  table.scores tr.self {
+    color: $success-color;
+  }
+
+  .cloudinary-image .preview {
+    margin-bottom: $global-padding;
   }
 }
 

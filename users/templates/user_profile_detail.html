@@ -1,48 +1,80 @@
 {% extends "__base.html" %}
 {% load static i18n %}
 
-{% block title %}{% trans 'My Profile' %} &ndash; {{ block.super }}{% endblock title %}
+{% block title %}{{ user.profile.display_name }} &ndash; {{ block.super }}{% endblock title %}
 
 
 {% block main %}
     {% include '_user_profile_details.html' %}
     {% if user.profile.is_developer %}
+        <hr>
         <div class="row">
             <div class="small-12 columns">
                 <div data-sticky-container>
-                    <div class="sticky" id="profile-nav" data-sticky data-margin-top="0" style="width:100%;" data-margin-bottom="0" data-top-anchor="stats">
+                    <div class="sticky card" id="profile-nav" data-sticky data-margin-top="1" style="width:100%;" data-margin-bottom="0" data-top-anchor="stats">
                         <nav data-magellan>
                             <ul class="horizontal menu expanded">
-                                <li><a href="#stats">{% trans 'Statistics' %}</a></li>
                                 <li><a href="#api-keys">{% trans 'API Keys' %}</a></li>
+                                <li><a href="#stats">{% trans 'Statistics' %}</a></li>
                                 <li><a href="#games">{% trans 'Games' %}</a></li>
                             </ul>
                         </nav>
                     </div>
                 </div>
                 <div class="sections">
+                    <section id="api-keys" data-magellan-target="api-keys">
+                        <h3>{% trans "API Keys" %}</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>{% trans "Token" %}</th>
+                                    <th>{% trans "Website" %}</th>
+                                    <th>{% trans "Delete" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for api_token in request.user.profile.api_tokens.all %}
+                                    <tr>
+                                        <td>{{ api_token.token }}</td>
+                                        <td>{{ api_token.website_url }}</td>
+                                        <td>
+                                            <a data-open="dialog-delete-token-{{ api_token.pk }}" class="button expanded"><i class="fa fa-times-circle"></i> {% trans "Delete token" %}</a>
+                                            {# Delete token dialog #}
+                                            <div id="dialog-delete-token-{{ api_token.pk }}" class="reveal" data-reveal aria-labelledby="dialog-title-delete-token-{{ api_token.pk }}">
+                                                <h2 id="dialog-title-delete-token-{{ api_token.pk }}">{% blocktrans with website=api_token.website_url %}Delete API token for {{ website }}{% endblocktrans %}</h2>
+                                                <p>{% trans "Are you sure you want to delete this token?" %}</p>
+                                                {% include "_api-token_confirm_delete.html" %}
+                                                <button class="close-button" data-close aria-label="{% trans "Close dialog" %}" type="button">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr><td colspan="3">{% trans "No API keys found" %}</td></tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">
+                                        <a data-open="dialog-create-token" class="button expanded"><i class="fa fa-plus-circle"></i> {% trans "Create a new API key" %}</a>
+                                        {# Create token dialog #}
+                                        <div id="dialog-create-token" class="reveal" data-reveal aria-labelledby="dialog-title-create-token">
+                                            <h2 id="dialog-title-create-token">{% blocktrans with website=api_token.website_url %}Create a new API token{% endblocktrans %}</h2>
+                                            {% include "_create_api_key.html" %}
+                                            <button class="close-button" data-close aria-label="{% trans "Close dialog" %}" type="button">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </section>
+                    <hr>
                     <section id="stats" data-magellan-target="stats">
                         <h3>{% trans "Sales and Profits" %}</h3>
                         <div id="dev-statistics-chart" class="expanded" style="height: 480px;"></div>
-                    </section>
-                    <hr>
-                    <section id="api-keys" data-magellan-target="api-keys">
-                        <h3>{% trans "API Keys" %}</h3>
-                        <a href="{% url 'profile:create-api-key' %}" class="button">{% trans "Create a new API key" %}</a>
-                        <table>
-                            <tr>
-                                <th>{% trans "Token" %}</th>
-                                <th>{% trans "Website" %}</th>
-                            </tr>
-                            {% for api_token in request.user.profile.api_tokens.all %}
-                                <tr>
-                                    <td>{{ api_token.token }}</td>
-                                    <td>{{ api_token.website_url }}</td>
-                                </tr>
-                            {% empty %}
-                                <tr><td colspan="2">{% trans "No API keys found" %}</td></tr>
-                            {% endfor %}
-                        </table>
                     </section>
                     <hr>
                     <section id="games" data-magellan-target="games">

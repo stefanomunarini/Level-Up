@@ -171,6 +171,11 @@ class GameUpdateView(GameCreateUpdateMixin, UpdateView):
 
 
 class GameDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    This view doesn’t actually delete the game, but rather only unpublishes it.
+    This is because actually deleting the game would cause problems with other
+    data that is linked to the game, such as transactions.
+    """
     model = Game
     template_name = '_game_confirm_delete.html'
 

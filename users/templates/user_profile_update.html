@@ -8,8 +8,8 @@
     <form action="{% url 'profile:user-profile-update' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        {% include "_input_grid.html" with form=user_profile_form.management_form %}<hr>
-        {% include "_input_grid.html" with form=user_form %}<hr>
+        {% include "_input_grid.html" with form=user_profile_form.management_form %}
+        {% include "_input_grid.html" with form=user_form %}
         {% include "_input_grid.html" with form=user_profile_form form_update=True submit_text=_('Update') %}
     </form>
 

@@ -7,8 +7,6 @@
                 <a href="{% url "game:detail" game.slug %}">
                     {# Game icon #}
                     <p><img itemprop="image" src="{% cloudinary_url game.icon format="png" width=256 height=256 crop="pad" %}" width="128" height="128"></p>
-                    {# If the game is not published, add a badge #}
-                    {% if game.dev == user.profile and not game.is_published %}<span class="label warning">{% trans "Unpublished" %}</span>{% endif %}
                     {# Game name #}
                     <h3>
                         <span itemprop="name">{{ game.name }}</span>
@@ -24,6 +22,11 @@
                         {# Play button if the user has bought the game #}
                         <a href="{% url 'game:play' game.slug %}" class="button small">
                             {% trans "Play" %}
+                        </a>
+                    {% elif game.dev == user.profile and not game.is_published %}
+                        {# If the game is not published, add a publish button for the developer #}
+                        <a data-open="dialog-delete-{{ type }}-{{ game.slug }}" class="button small warning">
+                            {% trans "Publish" %}
                         </a>
                     {% elif user.is_authenticated %}
                         {# Buy button if the user is logged in #}
@@ -52,8 +55,6 @@
                     </a>
                     {# Share dropdown #}
                     <div id="social-drop-{{ type }}-{{ game.slug }}"
-                         data-hover="true"
-                         data-hover-pane="true"
                          class="dropdown-pane stacked small button-group action-dropdown"
                          data-dropdown>
                         {% url "game:detail" game.slug as game_path %}
@@ -72,8 +73,6 @@
                         </a>
                         {# Developer dropdown #}
                         <div id="dev-drop-{{ type }}-{{ game.slug }}"
-                             data-hover="true"
-                             data-hover-pane="true"
                              class="dropdown-pane stacked small button-group action-dropdown"
                              data-dropdown>
                             <a class="button" href="{% url 'game:update' game.slug %}">
@@ -134,23 +133,6 @@
             {% endif %}
             <div class="small-12 {% if game.screenshots.all %}large-6{% endif %} columns">
                 <p>{{ game.description }}</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>{% trans "Added" %}</th>
-                            <th>{% trans "Sold" %}</th>
-                            <th>{% trans "Played" %}</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>{{ game.date_added|date }}</th>
-                            <th>&times; {{ game.downloads }}</th>
-                            <th>&times; {{ game.plays }}</th>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
         <div class="row">
@@ -160,16 +142,22 @@
 
             {%  if game in request.user.profile.get_developed_games %}
                 <div class="small-12 columns">
-                   <table>
+                    <table class="unstriped">
                         <tr>
-                            <th>{% trans "Earnings" %}</th>
-                            <th>{% trans "First sale" %}</th>
+                            <th colspan="2">{% trans "Earnings" %}</th>
+                            <td colspan="2" class="stat">{{ game_stats.amount_earned }} &euro;</td>
+                            <th colspan="2">{% trans "Sold" %}</th>
+                            <td colspan="2" class="stat">&times; {{ game.downloads }}</td>
+                            <th colspan="2">{% trans "Played" %}</th>
+                            <td colspan="2" class="stat">&times; {{ game.plays }}</td>
                         </tr>
                         <tr>
-                            <td>{{ game_stats.amount_earned }} &euro;</td>
-                            <td>{{ game_stats.first_sell }}</td>
+                            <th colspan="3">{% trans "Added" %}</th>
+                            <td colspan="3">{{ game.date_added|date:"SHORT_DATETIME_FORMAT" }}</td>
+                            <th colspan="3">{% trans "First sale" %}</th>
+                            <td colspan="3">{{ game_stats.first_sell|date:"SHORT_DATETIME_FORMAT" }}</td>
                         </tr>
-                   </table>
+                    </table>
                 </div>
             {%  endif %}
         </div>

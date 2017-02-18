@@ -1,0 +1,6 @@
+{% load i18n %}
+
+<form action="{% url "profile:delete-api-key" api_token.pk %}" method="post">
+    {% csrf_token %}
+    <input class="button warning float-right" type="submit" value="{% trans "Delete token" %}">
+</form>
