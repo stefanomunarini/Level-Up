@@ -22,7 +22,11 @@
         <p>{{ user.profile.user.email }}</p>
         <p>{% trans "Last login:" %} {{ user.profile.user.last_login }}</p>
         <p>
-            <a href="{% url 'profile:user-profile-update' %}" class="button success">{% trans 'Update profile' %}</a>
+            <a href="{% url 'profile:user-profile-update' %}"
+               class="button success"
+               id="update-profile">
+                {% trans 'Update profile' %}
+            </a>
         </p>
     </div>
 {% endblock col-main %}

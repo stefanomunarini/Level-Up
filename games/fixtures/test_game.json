@@ -27,7 +27,7 @@
       "display_name": "Developer1",
       "deactivated_until": null,
       "third_party_login": null,
-      "url_slug": null,
+      "url_slug": "dev1_slug",
       "website": null,
       "support_email": null
     }
