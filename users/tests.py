@@ -75,7 +75,7 @@ class UserTest(TestCase):
         self.assertEqual(new_key.developer, self.userQ.profile)
 
         response = self.playerA_client.post(url, {'website_url': 'example.com'})
-        self.assertRaises(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)
 
     def test_delete_api_key(self):
         add_url = reverse_lazy('profile:create-api-key')
