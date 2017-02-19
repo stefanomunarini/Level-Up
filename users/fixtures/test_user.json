@@ -1,0 +1,134 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 3311,
+    "fields": {
+      "password": "test",
+      "last_login": "2017-01-20T14:04:25.781Z",
+      "is_superuser": false,
+      "username": "a@mail.com",
+      "first_name": "",
+      "last_name": "",
+      "email": "a@mail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-01-20T14:04:25.422Z",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3312,
+    "fields": {
+      "password": "test",
+      "last_login": "2017-01-20T14:04:41.530Z",
+      "is_superuser": false,
+      "username": "s@mail.com",
+      "first_name": "",
+      "last_name": "",
+      "email": "s@mail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-01-20T14:04:41.197Z",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3314,
+    "fields": {
+      "password": "test",
+      "last_login": "2017-01-20T14:06:51.345Z",
+      "is_superuser": false,
+      "username": "q@mail.com",
+      "first_name": "",
+      "last_name": "",
+      "email": "q@mail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-01-20T14:06:50.974Z",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3315,
+    "fields": {
+      "password": "test",
+      "last_login": "2017-01-20T14:07:12.638Z",
+      "is_superuser": false,
+      "username": "w@mail.com",
+      "first_name": "",
+      "last_name": "",
+      "email": "w@mail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2017-01-20T14:07:12.313Z",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.userprofile",
+    "pk": 3311,
+    "fields": {
+      "user": 3311,
+      "display_name": "Player A",
+      "deactivated_until": null,
+      "third_party_login": null,
+      "url_slug": null,
+      "website": null,
+      "support_email": null
+    }
+  },
+  {
+    "model": "users.userprofile",
+    "pk": 3312,
+    "fields": {
+      "user": 3312,
+      "display_name": "Player S",
+      "deactivated_until": null,
+      "third_party_login": null,
+      "url_slug": null,
+      "website": null,
+      "support_email": null
+    }
+  },
+  {
+    "model": "users.userprofile",
+    "pk": 3314,
+    "fields": {
+      "user": 3314,
+      "display_name": "Developer Q",
+      "deactivated_until": null,
+      "third_party_login": null,
+      "url_slug": "dq",
+      "website": "",
+      "support_email": ""
+    }
+  },
+  {
+    "model": "users.userprofile",
+    "pk": 3315,
+    "fields": {
+      "user": 3315,
+      "display_name": "Developer W",
+      "deactivated_until": null,
+      "third_party_login": null,
+      "url_slug": "dw",
+      "website": "",
+      "support_email": ""
+    }
+  }
+]

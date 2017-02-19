@@ -18,9 +18,9 @@ class GameTest(TestCase):
             user.save()
         users = User.objects.all()
 
-        developer1 = users[0]
+        developer1 = users[0]  # owner of the game pk=1
         developer2 = users[1]
-        player = users[2]
+        player = users[2]  # bought the game pk=1
 
         self.game = Game.objects.first()
 
@@ -67,6 +67,9 @@ class GameTest(TestCase):
         self._test_devs_game_ownership(url)
 
     def _test_devs_game_ownership(self, url):
+        response = self.player_client.get(url)
+        self.assertEqual(response.status_code, 403)
+
         response = self.another_dev_client.get(url)
         self.assertEqual(response.status_code, 403)
 
@@ -86,7 +89,29 @@ class GameTest(TestCase):
         url = reverse_lazy('game:detail', kwargs={'slug': self.game.slug})
 
         response = self.another_dev_client.get(url)
-        self.assertNotContains(response, 'game_update_button')
+        self.assertNotContains(response, 'edit-game-button')
+
+        response = self.player_client.get(url)
+        self.assertNotContains(response, 'edit-game-button')
 
         response = self.dev_client.get(url)
-        self.assertContains(response, 'game_update_button', status_code=200)
+        self.assertContains(response, 'edit-game-button', status_code=200)
+
+    def test_my_game_list(self):
+        url = reverse_lazy('game:my-games')
+
+        response = self.dev_client.get(url)
+        self.assertEqual(len(response.context_data.get('games')), 0)
+
+        response = self.another_dev_client.get(url)
+        self.assertEqual(len(response.context_data.get('games')), 0)
+
+        response = self.player_client.get(url)
+        self.assertEqual(len(response.context_data.get('games')), 1)
+
+    # def test_developer_own_game_list(self):
+    #     url = reverse_lazy('profile:user-profile')
+    #
+    #     response = self.dev_client.get(url)
+    #     # import ipdb; ipdb.set_trace()
+    #     self.assertEqual(len(response.context_data.get('games')), 1)
