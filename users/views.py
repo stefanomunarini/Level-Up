@@ -165,13 +165,15 @@ class CreateApiKeyView(FormView):
         return HttpResponseRedirect(self.success_url)
 
     def form_valid(self, form):
+        group = self.request.user.groups.get()
+        if group.id == 2:
+            raise PermissionDenied
         form.save(commit=False)
         form.instance.developer = self.request.user.profile
         form.instance.developer_id = self.request.user.profile.id
         form.instance.token = str(uuid.uuid4())
         form.save()
         return super(CreateApiKeyView, self).form_valid(self)
-
 
 
 class DeleteApiKeyView(DeleteView, LoginRequiredMixin):
