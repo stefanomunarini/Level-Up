@@ -4,7 +4,7 @@
 <ul class="row small-up-1 medium-up-2 large-up-3 game-grid">
     {% for game in games %}
         <div class="column column-block">
-            {% include "_game_detail.html" with game=game bought_games=request.user.profile.get_bought_games minimal=True type=type %}
+            {% include "_game_detail.html" with game=game bought_games=request.user.profile.get_bought_games minimal=True type=type|default:"g" %}
         </div>
     {% empty %}
         <p>No games found.</p>
