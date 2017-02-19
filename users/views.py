@@ -166,7 +166,7 @@ class CreateApiKeyView(FormView):
 
     def form_valid(self, form):
         group = self.request.user.groups.get()
-        if group.id == 2:
+        if not group.id == 1:
             raise PermissionDenied
         form.save(commit=False)
         form.instance.developer = self.request.user.profile
