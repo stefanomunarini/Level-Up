@@ -5,8 +5,8 @@
     <body>
         <h3>{% blocktrans %}Congratulations {{ username }}!{% endblocktrans %}</h3>
         <br>
-        <p>{% blocktrans %}You have just bought {{ game.name }}!{% endblocktrans %}</p>
-        <p><a href="{% url 'game:play' game.slug %}">{% trans "Start playing now!" %}</a></p>
+        <p>{% blocktrans %}You have just bought {{ game }}!{% endblocktrans %}</p>
+        <p><a href="{{ url }}{% url 'game:play' game.slug %}">{% trans "Start playing now!" %}</a></p>
         <p>{% blocktrans %}We hope to see you soon on our platform.{% endblocktrans %}</p>
         <p>{% trans "The LevelUp team" %}</p>
     </body>
