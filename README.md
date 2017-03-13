@@ -2,6 +2,45 @@
 
 [Final report](https://docs.google.com/document/d/15QNOq-CncIta7fbMhWHdsbOTx6hg6tU14yXi-KRWPmI/edit?usp=sharing)
 
+### Setup
+
+Download the repository:
+
+`git clone git@git.niksula.hut.fi:munaris1/wsd_project.git`
+
+Create a virtual environment:
+
+`mkvirtualenv levelup`
+
+Activate the environment:
+
+`workon levelup`
+
+Install requirements:
+
+`pip install -r requirements.txt`
+
+Create database migrations:
+
+`python manage.py makemigrations`
+
+Apply migrations:
+
+`python manage.py migrate`
+
+Apply fixtures (load data):
+
+`python manage.py loaddata groups.json`
+
+In development environment, to distinguish how we start the app from the production environment, we need to set an
+environment variable which tell Django to use a different configuration.
+
+`export DJANGO_DEVELOPMENT=true`
+
+Finally, start the server:
+
+`python manage.py runserver`
+
 ### 1. Team
 
 - 604985 Stefano Munarini
