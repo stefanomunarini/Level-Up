@@ -116,7 +116,7 @@ in following actions:
 
 These actions represent the base functionality of the system. As the project develops, new functionality can be added. The following graph shows a rough sketch of how these actions can be grouped into views, and what the information architecture and interaction flow of the system will look like.
 
-![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
+![Views](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
 
 As can be seen from the graph, many of the views can be divided into modular templates. This will ensure rapid redesign and reduce bugs by removing duplicate code.
 
@@ -157,38 +157,18 @@ Because the 3rd party provider may not have enough information to fit our user m
 
 #### RESTful API
 
-We will develop a set of RESTful APIs which will be used by external developers to integrate our service in third party applications.
+We will develop a set of RESTful APIs which will be used by developers to integrate our service in third party applications.
 
 Only registered users will be allowed to use our APIs.
 
-The APIs will require the user to be authenticated before being able to execute any request. Moreover, we will add a mechanism to allow users to execute only 100 requests/day, in order to deny bad uses of the service.
+The APIs will require the user to be authenticated before being able to execute any request.
 
 The APIs will have the following endpoints:
-
-- **POST** /api/v1/login which allows a user to authenticate in order to use the APIs. The body of the request will be
-		
-		{
-			‘username’: ‘username’,
-			‘password’: ‘password'
-		}
-
-    and the response will contain a token to be used for every following request.
-- **GET** /api/v1/games?token=THE_TOKEN which will return a list of games in alphabetical order (with a pagination of 20 games in order to maintain a low response time)
-- **GET** /api/v1/game?token=THE_TOKEN&search_query=QUERY which will search the database for games containing QUERY in their name or description, and will return all the information of a game and the 10 best scores (if available) for that game.
-- **GET** /api/v1/scores?token=THE_TOKEN&game_id=GAME_ID which will return the list of scores for a particular game, ordered by score descending)
-- **POST** /api/v1/game which will allow developers to create a new game. The request body will be
-
-        {
-            ‘token’: token,
-            'price': 0.99,
-            'url': URL,
-            'is_public': True,
-            ‘icon’: byte_stream,
-            ‘name’: ‘game_name’,
-            ‘description’: description,
-            ‘slug’: ‘slug'
-        }
-
+- **GET** /api/v1/developed-games which returns the list of developed games by the developer who is sending the request
+- **GET** /api/v1/sales-stats which returns a set of statistics (total earnings, games sold, etc.) of the developer who is sending the request
+- **GET** /api/v1/game-stats/slug which returns a set of statistics for a particular game
+- **GET** /api/v1/game-search?query=query which returns a list of games which names or descriptions contain the query
+- **GET** /api/v1/top-games which returns the most played and the most sold games
 
 #### Responsive User Interface
 
@@ -216,7 +196,7 @@ The service will possibly also allow the users to share their high scores on soc
 
 #### 3.2. Models
 
-![](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/ER.png)
+![ER](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/ER.png)
 
 ### 4. Priorities
 
