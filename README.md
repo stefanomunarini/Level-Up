@@ -116,7 +116,7 @@ in following actions:
 
 These actions represent the base functionality of the system. As the project develops, new functionality can be added. The following graph shows a rough sketch of how these actions can be grouped into views, and what the information architecture and interaction flow of the system will look like.
 
-![Views](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/Views.png)
+![Views](docs/Views.png)
 
 As can be seen from the graph, many of the views can be divided into modular templates. This will ensure rapid redesign and reduce bugs by removing duplicate code.
 
@@ -196,7 +196,7 @@ The service will possibly also allow the users to share their high scores on soc
 
 #### 3.2. Models
 
-![ER](https://git.niksula.hut.fi/munaris1/wsd_project/raw/master/docs/ER.png)
+![ER](docs/ER.png)
 
 ### 4. Priorities
 
